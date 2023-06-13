@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:insert="~{header.html}">
+</head>
+<body>
+<div style="background-color: #47688d">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 mx-auto" th:insert="~{navbar.html}"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="min-height: 600px">
+    <div class="row">
+        <div class="col-8 mx-auto">
+            <div layout:fragment="siteContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="background-color: #47688d">
+    <div class="container">
+        <div class="row">
+            <div class="col-8 mx-auto" th:insert="~{footer.html}"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:src="@{'/js/bootstrap.js'}"></script>
+</html>
