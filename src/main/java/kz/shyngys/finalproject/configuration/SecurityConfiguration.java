@@ -22,17 +22,19 @@ public class SecurityConfiguration {
 
     private final UserService userService;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         AuthenticationManagerBuilder builder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         builder.userDetailsService(userService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder);
 
         http.formLogin()
                 .loginPage("/login")
-                .loginProcessingUrl("/auth")
+                .loginProcessingUrl("/authorize")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/")
@@ -44,8 +46,4 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
