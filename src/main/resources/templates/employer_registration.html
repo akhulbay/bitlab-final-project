@@ -5,7 +5,9 @@
       layout:decorate="auth_layout.html">
 
 <div class="col-6 mx-auto mt-5" layout:fragment="siteAuth">
+    <h6 class="text-center" style="font-weight: 600">1/2</h6>
     <h4 class="text-center" style="font-weight: 600">Регистрация</h4>
+    <h5 class="text-center" style="font-weight: 600">для Работодателей</h5>
     <div th:if="${param.emailerror}">
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Email</strong> already exists!
@@ -18,7 +20,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </div>
-    <form th:action="@{'/auth/signup/user'}" method="post">
+    <form th:action="@{'/auth/signup/employer'}" method="post">
         <div class="form-group">
             <label for="inputFirstName" class="ms-2">Имя</label>
             <input type="text" class="form-control" id="inputFirstName" aria-describedby="emailHelp"
@@ -49,7 +51,7 @@
     </form>
     <div class="mt-3">
         <div class="text-center mb-3" style="color: #9da3ac">
-            <span>У вас уже есть учетная запись? <a th:href="@{'/auth/signin/user'}"
+            <span>У вас уже есть учетная запись? <a th:href="@{'/auth/signin/employer'}"
                                                     style="text-decoration: none; color: #0b5ed7">Войти</a></span>
         </div>
     </div>

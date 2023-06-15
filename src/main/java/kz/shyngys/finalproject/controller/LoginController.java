@@ -31,14 +31,40 @@ public class LoginController {
                                    @RequestParam("repeatPassword") String repeatPassword) {
 
         if (userService.isUsernameExists(user.getUsername())) {
-            return "redirect:/auth/signup/user?email-error";
+            return "redirect:/auth/signup/user?emailerror";
         }
 
         if (!user.getPassword().equals(repeatPassword)) {
-            return "redirect:/auth/signup/user?password-error";
+            return "redirect:/auth/signup/user?passworderror";
         }
 
         userService.saveUser(user);
+        return "redirect:/profile";
+    }
+
+    @GetMapping("/signin/employer")
+    public String employerLoginPage() {
+        return "employer_login";
+    }
+
+    @GetMapping("/signup/employer")
+    public String employerRegistrationPage() {
+        return "employer_registration";
+    }
+
+    @PostMapping("signup/employer")
+    public String employerRegistration(UserCreateEditDto user,
+                                   @RequestParam("repeatPassword") String repeatPassword) {
+
+        if (userService.isUsernameExists(user.getUsername())) {
+            return "redirect:/auth/signup/user?emailerror";
+        }
+
+        if (!user.getPassword().equals(repeatPassword)) {
+            return "redirect:/auth/signup/user?passworderror";
+        }
+
+        userService.saveEmployer(user);
         return "redirect:/profile";
     }
 }
