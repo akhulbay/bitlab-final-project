@@ -21,6 +21,8 @@
         </div>
     </div>
     <form th:action="@{'/auth/signup/company'}" enctype="multipart/form-data" method="post">
+<!--        <input type="hidden" th:value="${#auth}" name="ownerId">-->
+        <h4 th:text="${#authentication.principal}"></h4>
         <div class="form-group">
             <label for="inputFirstName" class="ms-2">Название</label>
             <input type="text" class="form-control" id="inputFirstName" aria-describedby="emailHelp"

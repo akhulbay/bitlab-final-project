@@ -12,4 +12,6 @@ public interface CompanyService {
     CompanyReadDto findById(Long id);
 
     CompanyReadDto save(CompanyCreateEditDto company);
+
+    boolean isEmailExists(String email);
 }

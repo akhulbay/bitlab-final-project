@@ -1,10 +1,5 @@
 package kz.shyngys.finalproject.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
-import kz.shyngys.finalproject.model.Company;
 import kz.shyngys.finalproject.model.WorkSchedule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

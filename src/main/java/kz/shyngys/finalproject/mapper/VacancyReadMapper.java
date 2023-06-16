@@ -5,18 +5,13 @@ import kz.shyngys.finalproject.dto.VacancyReadDto;
 import kz.shyngys.finalproject.model.Company;
 import kz.shyngys.finalproject.model.Vacancy;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class VacancyReadMapper implements Mapper<Vacancy, VacancyReadDto> {
 
-    private CompanyReadMapper companyReadMapper;
-
-    @Autowired
-    public void setCompanyReadMapper(CompanyReadMapper companyReadMapper) {
-        this.companyReadMapper = companyReadMapper;
-    };
+    private final CompanyReadMapper companyReadMapper;
 
     @Override
     public VacancyReadDto map(Vacancy object) {

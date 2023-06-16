@@ -22,5 +22,4 @@ public class CompanyReadDto {
     private String location;
     private String image;
     private UserReadDto owner;
-    private List<VacancyReadDto> vacancies;
 }

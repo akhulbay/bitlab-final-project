@@ -67,6 +67,7 @@ public class UserServiceImpl implements UserService {
                 .map(userCreateMapper::map)
                 .map(entity -> {
                     entity.setRole(Role.ROLE_EMPLOYER);
+                    entity.setPassword(passwordEncoder.encode(entity.getPassword()));
                     return entity;
                 })
                 .map(userRepository::save)

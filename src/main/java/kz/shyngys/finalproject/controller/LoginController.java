@@ -1,6 +1,8 @@
 package kz.shyngys.finalproject.controller;
 
+import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
 import kz.shyngys.finalproject.dto.UserCreateEditDto;
+import kz.shyngys.finalproject.service.CompanyService;
 import kz.shyngys.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
 
     private final UserService userService;
+    private final CompanyService companyService;
 
     @GetMapping("/signin/user")
     public String userLoginPage() {
@@ -26,7 +29,7 @@ public class LoginController {
         return "user_registration";
     }
 
-    @PostMapping("signup/user")
+    @PostMapping("/signup/user")
     public String userRegistration(UserCreateEditDto user,
                                    @RequestParam("repeatPassword") String repeatPassword) {
 
@@ -39,7 +42,7 @@ public class LoginController {
         }
 
         userService.saveUser(user);
-        return "redirect:/profile";
+        return "redirect:/auth/signin/user";
     }
 
     @GetMapping("/signin/employer")
@@ -52,7 +55,7 @@ public class LoginController {
         return "employer_registration";
     }
 
-    @PostMapping("signup/employer")
+    @PostMapping("/signup/employer")
     public String employerRegistration(UserCreateEditDto user,
                                    @RequestParam("repeatPassword") String repeatPassword) {
 
@@ -65,6 +68,23 @@ public class LoginController {
         }
 
         userService.saveEmployer(user);
-        return "redirect:/profile";
+        return "redirect:/auth/signin/employer";
     }
+
+    @GetMapping("/signup/company")
+    public String companyRegistration() {
+        return "company_registration";
+    }
+
+    @PostMapping("/signup/company")
+    public String employerRegistration(CompanyCreateEditDto company) {
+
+        if (companyService.isEmailExists(company.getEmail())) {
+            return "redirect:/auth/signup/company?emailerror";
+        }
+
+        companyService.save(company);
+        return "redirect:/";
+    }
+
 }

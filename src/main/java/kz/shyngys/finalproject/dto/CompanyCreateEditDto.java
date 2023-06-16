@@ -18,5 +18,5 @@ public class CompanyCreateEditDto {
     private String email;
     private String location;
     private MultipartFile image;
-    private List<VacancyReadDto> vacancies;
+    private Long ownerId;
 }

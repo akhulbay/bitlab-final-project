@@ -48,10 +48,17 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow();
     }
 
+    @Override
+    public boolean isEmailExists(String email) {
+        return companyRepository.findByEmail(email).isPresent();
+    }
+
     @SneakyThrows
     private void uploadImage(MultipartFile image) {
         if (!image.isEmpty()) {
             imageService.upload(image.getOriginalFilename(), image.getInputStream());
         }
     }
+
+
 }

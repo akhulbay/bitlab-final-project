@@ -28,9 +28,6 @@ public class Company {
 
     private String image;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private User owner;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Vacancy> vacancies;
 }
