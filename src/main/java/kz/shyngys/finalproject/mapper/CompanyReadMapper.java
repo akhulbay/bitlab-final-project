@@ -26,6 +26,6 @@ public class CompanyReadMapper implements Mapper<Company, CompanyReadDto> {
     }
 
     private UserReadDto getUserDto(User user) {
-        return userReadMapper.map(user);
+        return userReadMapper.toDto(user);
     }
 }

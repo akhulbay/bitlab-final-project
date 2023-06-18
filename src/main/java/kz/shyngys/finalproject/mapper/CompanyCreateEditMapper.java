@@ -3,7 +3,6 @@ package kz.shyngys.finalproject.mapper;
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
 import kz.shyngys.finalproject.model.Company;
 import kz.shyngys.finalproject.model.User;
-import kz.shyngys.finalproject.repository.CompanyRepository;
 import kz.shyngys.finalproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,7 @@ import static java.util.function.Predicate.*;
 
 @Component
 @RequiredArgsConstructor
-public class CompanyCreateEditMapper implements Mapper<CompanyCreateEditDto, Company>{
+public class CompanyCreateEditMapper implements Mapper<CompanyCreateEditDto, Company> {
 
     private final UserRepository userRepository;
 

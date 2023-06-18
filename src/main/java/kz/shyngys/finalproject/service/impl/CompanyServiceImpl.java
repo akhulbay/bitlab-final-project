@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
-    
+
     private final ImageService imageService;
 
     private final CompanyRepository companyRepository;

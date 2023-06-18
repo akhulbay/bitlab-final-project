@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserReadDto findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .map(userReadMapper::map)
+                .map(userReadMapper::toDto)
                 .orElseThrow();
     }
 
@@ -49,14 +49,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserReadDto saveUser(UserCreateEditDto user) {
         return Optional.of(user)
-                .map(userCreateMapper::map)
+                .map(userCreateMapper::toEntity)
                 .map(entity -> {
                     entity.setRole(Role.ROLE_USER);
                     entity.setPassword(passwordEncoder.encode(entity.getPassword()));
                     return entity;
                 })
                 .map(userRepository::save)
-                .map(userReadMapper::map)
+                .map(userReadMapper::toDto)
                 .orElseThrow();
     }
 
@@ -64,14 +64,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserReadDto saveEmployer(UserCreateEditDto user) {
         return Optional.of(user)
-                .map(userCreateMapper::map)
+                .map(userCreateMapper::toEntity)
                 .map(entity -> {
                     entity.setRole(Role.ROLE_EMPLOYER);
                     entity.setPassword(passwordEncoder.encode(entity.getPassword()));
                     return entity;
                 })
                 .map(userRepository::save)
-                .map(userReadMapper::map)
+                .map(userReadMapper::toDto)
                 .orElseThrow();
     }
 

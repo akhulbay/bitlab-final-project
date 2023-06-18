@@ -57,7 +57,7 @@ public class LoginController {
 
     @PostMapping("/signup/employer")
     public String employerRegistration(UserCreateEditDto user,
-                                   @RequestParam("repeatPassword") String repeatPassword) {
+                                       @RequestParam("repeatPassword") String repeatPassword) {
 
         if (userService.isUsernameExists(user.getUsername())) {
             return "redirect:/auth/signup/user?emailerror";
