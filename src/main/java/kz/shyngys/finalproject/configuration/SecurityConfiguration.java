@@ -57,8 +57,11 @@ public class SecurityConfiguration {
 
         http.logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/signin/user")
+                .logoutSuccessUrl("/auth/signout")
                 .deleteCookies("JSESSIONID");
+
+        http.csrf()
+                .disable();
 
         return http.build();
     }
