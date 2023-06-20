@@ -7,5 +7,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface UserCreateEditMapper {
 
-    User toEntity(UserCreateEditDto userDto);
+    User toEntity(UserCreateEditDto dto);
 }
