@@ -79,10 +79,6 @@ public class AuthController {
     @PostMapping("/signup/company")
     public String employerRegistration(CompanyCreateEditDto company) {
 
-        if (companyService.isEmailExists(company.getEmail())) {
-            return "redirect:/auth/signup/company?emailerror";
-        }
-
         companyService.save(company);
         return "redirect:/";
     }

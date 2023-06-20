@@ -13,8 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class CompanyCreateEditDto {
 
     private String name;
-    private String email;
+    private String aboutCompany;
     private String location;
+    private String website;
+    private String establishDate;
+    private Integer employeesNumber;
     private MultipartFile image;
+    private String whatsappLink;
+    private String linkedinLink;
     private Long ownerId;
 }

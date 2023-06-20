@@ -41,16 +41,11 @@ public class CompanyServiceImpl implements CompanyService {
         return Optional.of(company)
                 .map(dto -> {
                     uploadImage(dto.getImage());
-                    return companyCreateEditMapper.map(dto);
+                    return companyCreateEditMapper.toEntity(dto);
                 })
                 .map(companyRepository::save)
-                .map(companyReadMapper::map)
+                .map(companyReadMapper::toDto)
                 .orElseThrow();
-    }
-
-    @Override
-    public boolean isEmailExists(String email) {
-        return companyRepository.findByEmail(email).isPresent();
     }
 
     @SneakyThrows

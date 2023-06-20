@@ -2,50 +2,27 @@ package kz.shyngys.finalproject.mapper;
 
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
 import kz.shyngys.finalproject.model.Company;
-import kz.shyngys.finalproject.model.User;
-import kz.shyngys.finalproject.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static java.util.function.Predicate.*;
+import static java.util.function.Predicate.not;
 
-@Component
-@RequiredArgsConstructor
-public class CompanyCreateEditMapper implements Mapper<CompanyCreateEditDto, Company> {
+@Mapper(componentModel = "spring")
+public interface CompanyCreateEditMapper {
 
-    private final UserRepository userRepository;
+    @Mapping(source = "ownerId", target = "owner.id")
+    @Mapping(source = "image", target = "image", qualifiedByName = "getImage")
+    Company toEntity(CompanyCreateEditDto dto);
 
-    @Override
-    public Company map(CompanyCreateEditDto object) {
-        Company company = new Company();
-        copy(object, company);
-
-        return company;
-    }
-
-    @Override
-    public Company map(CompanyCreateEditDto fromObject, Company toObject) {
-        copy(fromObject, toObject);
-
-        return toObject;
-    }
-
-    private void copy(CompanyCreateEditDto object, Company company) {
-        company.setName(object.getName());
-        company.setEmail(object.getEmail());
-        company.setLocation(object.getLocation());
-        company.setOwner(getOwner(object.getOwnerId()));
-
-        Optional.ofNullable(object.getImage())
+    @Named("getImage")
+    default String getImage(MultipartFile image) {
+        return Optional.ofNullable(image)
                 .filter(not(MultipartFile::isEmpty))
-                .ifPresent(image -> company.setImage(image.getOriginalFilename()));
-    }
-
-    private User getOwner(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow();
+                .map(MultipartFile::getOriginalFilename)
+                .orElse(null);
     }
 }

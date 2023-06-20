@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,11 +22,26 @@ public class Company {
 
     private String name;
 
-    private String email;
+    @Column(name = "about_company", columnDefinition = "text")
+    private String aboutCompany;
 
     private String location;
 
+    private String website;
+
+    @Column(name = "establish_date")
+    private LocalDate establishDate;
+
+    @Column(name = "employees_number")
+    private Integer employeesNumber;
+
     private String image;
+
+    @Column(name = "whatsapp_link")
+    private String whatsappLink;
+
+    @Column(name = "linkedin_link")
+    private String linkedinLink;
 
     @OneToOne(fetch = FetchType.EAGER)
     private User owner;

@@ -42,7 +42,8 @@ public class UserProfileServiceImpl implements UserProfileService {
         return Optional.of(user)
                 .map(userProfileCreateEditMapper::toEntity)
                 .map(entity -> {
-                    User newUser = userRepository.findById(entity.getUser().getId()).orElse(null);
+                    User newUser = userRepository.findById(entity.getUser().getId())
+                            .orElseThrow();
                     entity.setUser(newUser);
                     return entity;
                 })

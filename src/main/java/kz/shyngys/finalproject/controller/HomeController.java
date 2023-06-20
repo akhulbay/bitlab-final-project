@@ -15,4 +15,9 @@ public class HomeController {
     public String profilePage() {
         return "profile";
     }
+
+    @GetMapping("/employerprofile")
+    public String employerProfilePage() {
+        return "employer-profile";
+    }
 }
