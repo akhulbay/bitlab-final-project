@@ -25,4 +25,9 @@ public class HomeController {
     public String companyProfilePage() {
         return "company-profile";
     }
+
+    @GetMapping("/postjob")
+    public String postJobPage() {
+        return "post-job";
+    }
 }
