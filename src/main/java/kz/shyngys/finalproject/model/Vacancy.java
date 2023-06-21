@@ -20,18 +20,21 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
-    @Column(name = "starting_salary")
-    private Integer startingSalary;
+    @Column(name = "offered_salary")
+    private Integer offeredSalary;
+
+    @Column(columnDefinition = "text")
+    private String description;
 
     private String city;
 
+    @Column(columnDefinition = "text")
     private String responsibilities;
 
-    private String requirements;
-
-    private String conditions;
+    @Column(columnDefinition = "text")
+    private String requiredSkills;
 
     @Column(name = "work_schedule")
     @Enumerated(EnumType.STRING)
@@ -39,6 +42,12 @@ public class Vacancy {
 
     @Column(name = "keySkills")
     private String keySkills;
+
+    private String position;
+
+    private String category;
+
+    private String experience;
 
     @Column(name = "created_at")
     private LocalDate createdAt;

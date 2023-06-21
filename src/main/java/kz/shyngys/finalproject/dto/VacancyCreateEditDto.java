@@ -12,20 +12,19 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VacancyReadDto {
+public class VacancyCreateEditDto {
 
-    private Long id;
     private String title;
     private Integer offeredSalary;
     private String description;
     private String city;
     private String responsibilities;
     private String requiredSkills;
-    private WorkSchedule workSchedule;
+    private String workSchedule;
     private String keySkills;
     private String position;
     private String category;
     private String experience;
-    private LocalDate createdAt;
-    private CompanyReadDto company;
+    private String createdAt;
+    private Long companyId;
 }

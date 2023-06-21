@@ -16,6 +16,7 @@ public interface CompanyCreateEditMapper {
 
     @Mapping(source = "ownerId", target = "owner.id")
     @Mapping(source = "image", target = "image", qualifiedByName = "getImage")
+    @Mapping(target = "id", ignore = true)
     Company toEntity(CompanyCreateEditDto dto);
 
     @Named("getImage")

@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface UserProfileCreateEditMapper {
 
     @Mapping(source = "userId", target = "user.id")
+    @Mapping(target = "id", ignore = true)
     UserProfile toEntity(UserProfileCreateEditDto dto);
 }
