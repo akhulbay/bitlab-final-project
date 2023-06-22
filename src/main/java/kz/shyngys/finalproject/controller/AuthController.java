@@ -1,6 +1,5 @@
 package kz.shyngys.finalproject.controller;
 
-import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
 import kz.shyngys.finalproject.dto.UserCreateEditDto;
 import kz.shyngys.finalproject.service.CompanyService;
 import kz.shyngys.finalproject.service.UserService;
@@ -69,18 +68,6 @@ public class AuthController {
 
         userService.saveEmployer(user);
         return "redirect:/auth/signin/employer";
-    }
-
-    @GetMapping("/signup/company")
-    public String companyRegistration() {
-        return "company_registration";
-    }
-
-    @PostMapping("/signup/company")
-    public String employerRegistration(CompanyCreateEditDto company) {
-
-        companyService.save(company);
-        return "redirect:/";
     }
 
     @GetMapping("/signout")
