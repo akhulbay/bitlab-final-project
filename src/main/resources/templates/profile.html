@@ -57,10 +57,12 @@
                         <div class="card profile-sidebar me-lg-4">
                             <div class="card-body p-4">
                                 <div class="text-center pb-4 border-bottom">
+                                    <input type="hidden" th:value="${#authentication.principal.id}" id="userId">
                                     <img src="/images/profile.jpg" alt=""
                                          class="avatar-lg img-thumbnail rounded-circle mb-4"/>
-                                    <h5 class="mb-0">Jansh Dickens</h5>
-                                    <p class="text-muted">Developer</p>
+                                    <h5 class="mb-0" id="overviewFullName"
+                                    ></h5>
+                                    <p class="text-muted" id="overviewCategory"></p>
                                     <ul class="candidate-detail-social-menu list-inline mb-0">
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
@@ -74,12 +76,12 @@
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
-                                               class="social-link rounded-3 btn-soft-success"><i
-                                                    class="uil uil-whatsapp"></i></a>
+                                               class="social-link rounded-3 btn-soft-primary"><i
+                                                    class="uil uil-github"></i></a>
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
-                                               class="social-link rounded-3 btn-soft-danger"><i
+                                               class="social-link rounded-3 btn-soft-info"><i
                                                     class="uil uil-linkedin"></i></a>
                                         </li>
                                     </ul>
@@ -93,8 +95,8 @@
                                                 <div class="d-flex">
                                                     <label>Email</label>
                                                     <div>
-                                                        <p class="text-muted text-break mb-0">
-                                                            Jansh@gmail.com
+                                                        <p class="text-muted text-break mb-0" id="contactEmail"
+                                                        >
                                                         </p>
                                                     </div>
                                                 </div>
@@ -103,7 +105,7 @@
                                                 <div class="d-flex">
                                                     <label>Phone Number</label>
                                                     <div>
-                                                        <p class="text-muted mb-0">+2 345 678 0000</p>
+                                                        <p class="text-muted mb-0" id="contactPhone"></p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -111,7 +113,7 @@
                                                 <div class="d-flex">
                                                     <label>Location</label>
                                                     <div>
-                                                        <p class="text-muted mb-0">New Caledonia</p>
+                                                        <p class="text-muted mb-0" id="contactLocation"></p>
                                                     </div>
                                                 </div>
                                             </li>
@@ -170,53 +172,32 @@
                                          aria-labelledby="overview-tab">
                                         <div>
                                             <h5 class="fs-18 fw-bold">About</h5>
-                                            <p class="text-muted mt-4">
-                                                Developer with over 5 years' experience working in both
-                                                the public and private sectors. Diplomatic, personable,
-                                                and adept at managing sensitive situations. Highly
-                                                organized, self-motivated, and proficient with
-                                                computers. Looking to boost students’ satisfactions
-                                                scores for <b>International University</b>. Bachelor's
-                                                degree in communications.
-                                            </p>
-                                            <p class="text-muted">
-                                                It describes the candidate's relevant experience,
-                                                skills, and achievements. The purpose of this career
-                                                summary is to explain your qualifications for the job in
-                                                3-5 sentences and convince the manager to read the whole
-                                                resume document.
+                                            <p class="text-muted mt-4" id="overviewAboutUser">
                                             </p>
                                         </div>
                                         <div class="candidate-education-details mt-4">
                                             <h6 class="fs-18 fw-bold mb-0">Education</h6>
                                             <div class="candidate-education-content mt-4 d-flex">
-                                                <div class="circle flex-shrink-0 bg-soft-primary">
-                                                    B
+                                                <div class="circle flex-shrink-0 bg-soft-primary"
+                                                     id="overviewUsersDegree">
                                                 </div>
                                                 <div class="ms-4">
-                                                    <h6 class="fs-16 mb-1">
-                                                        Bachelor of Computer Applications
+                                                    <h6 class="fs-16 mb-1" id="overviewUsersMajor">
                                                     </h6>
-                                                    <p class="mb-2 text-muted">
-                                                        International University - (2004 - 2010)
+                                                    <p class="mb-2 text-muted" id="overviewUsersUniAndStudyYears">
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mt-4">
                                             <h5 class="fs-18 fw-bold">Skills</h5>
-                                            <span class="badge fs-13 bg-soft-blue mt-2">Cloud Management</span>
-                                            <span class="badge fs-13 bg-soft-blue mt-2">Responsive Design</span>
-                                            <span class="badge fs-13 bg-soft-blue mt-2">Network Architecture</span>
-                                            <span class="badge fs-13 bg-soft-blue mt-2">PHP</span>
-                                            <span class="badge fs-13 bg-soft-blue mt-2">Bootstrap</span>
-                                            <span class="badge fs-13 bg-soft-blue mt-2">UI & UX Designer</span>
+                                            <div id="overviewSkills">
+                                            </div>
                                         </div>
                                         <div class="mt-4">
                                             <h5 class="fs-18 fw-bold">Spoken languages</h5>
-                                            <span class="badge fs-13 bg-soft-success mt-2">English</span>
-                                            <span class="badge fs-13 bg-soft-success mt-2">German</span>
-                                            <span class="badge fs-13 bg-soft-success mt-2">French</span>
+                                            <div id="overviewLanguages">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="settings" role="tabpanel"
@@ -224,13 +205,14 @@
                                         <form action="#">
                                             <div>
                                                 <h5 class="fs-17 fw-semibold mb-3 mb-0">My Account</h5>
+                                                <div id="userDataAlert"></div>
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="firstName" class="form-label">First
                                                                 Name</label>
                                                             <input type="text" class="form-control" id="firstName"
-                                                                   value="Jansh"/>
+                                                                   value=""/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -239,7 +221,7 @@
                                                             <label for="lastName" class="form-label">Last
                                                                 Name</label>
                                                             <input type="text" class="form-control" id="lastName"
-                                                                   value="Dickens"/>
+                                                                   value=""/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -247,7 +229,7 @@
                                                         <div class="mb-3">
                                                             <label for="email" class="form-label">Email</label>
                                                             <input type="text" class="form-control" id="email"
-                                                                   value="Jansh@gmail.com"/>
+                                                                   value="" readonly/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -256,7 +238,9 @@
                                             </div>
                                             <!--end account-->
                                             <div class="mt-4 text-end">
-                                                <a href="javascript:void(0)" class="btn btn-primary">Update</a>
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="updatePersonalData()">Update
+                                                </button>
                                             </div>
                                         </form>
                                         <!--end form-->
@@ -267,6 +251,7 @@
                                         <form action="#">
                                             <div>
                                                 <h5 class="fs-17 fw-semibold mb-3 mb-0">My Profile</h5>
+                                                <div id="profileAlert"></div>
                                                 <div class="text-center">
                                                     <div class="mb-4 profile-user">
                                                         <img src="/images/user/img-02.jpg"
@@ -286,11 +271,11 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="choices-single-categories"
+                                                            <label for="profileCategory"
                                                                    class="form-label">Account Type</label>
                                                             <select class="form-select" data-trigger
                                                                     name="choices-single-categories"
-                                                                    id="choices-single-categories"
+                                                                    id="profileCategory"
                                                                     aria-label="Default select example">
                                                                 <option value="Accounting">Accounting</option>
                                                                 <option value="IT & Software">IT & Software</option>
@@ -302,9 +287,10 @@
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="phoneNumber"
+                                                            <label for="profilePhoneNumber"
                                                                    class="form-label">Phone Number</label>
-                                                            <input type="text" class="form-control" id="phoneNumber"
+                                                            <input type="text" class="form-control"
+                                                                   id="profilePhoneNumber"
                                                                    value="" placeholder="+7 777 777 77 77"/>
                                                         </div>
                                                     </div>
@@ -319,29 +305,31 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
-                                                            <label for="exampleFormControlTextarea1"
+                                                            <label for="profileAboutUser"
                                                                    class="form-label">Introduce Yourself</label>
                                                             <textarea class="form-control"
-                                                                      id="exampleFormControlTextarea1"
-                                                                      rows="5">Developer with over 5 years' experience working in both the public and private sectors. Diplomatic, personable, and adept at managing sensitive situations. Highly organized, self-motivated, and proficient with computers. Looking to boost students’ satisfactions scores for International University. Bachelor's degree in communications.</textarea>
+                                                                      id="profileAboutUser"
+                                                                      rows="5"></textarea>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="languages"
+                                                            <label for="profileLanguages"
                                                                    class="form-label">Languages</label>
-                                                            <input type="text" class="form-control" id="languages"
-                                                                   value="English, German, French"/>
+                                                            <input type="text" class="form-control"
+                                                                   id="profileLanguages"
+                                                                   placeholder="English, German, French"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="choices-single-location" class="form-label">Location</label>
+                                                            <label for="profileLocation"
+                                                                   class="form-label">Location</label>
                                                             <select class="form-select" data-trigger
                                                                     name="choices-single-location"
-                                                                    id="choices-single-location"
+                                                                    id="profileLocation"
                                                                     aria-label="Default select exam
                                                                             ple">
                                                                 <option value="Almaty">Almaty</option>
@@ -362,36 +350,37 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="facebook"
+                                                            <label for="facebookLink"
                                                                    class="form-label">Facebook</label>
-                                                            <input type="text" class="form-control" id="facebook"
-                                                                   value="https://www.facebook.com"/>
+                                                            <input type="text" class="form-control" id="facebookLink"
+                                                                   placeholder="https://www.facebook.com"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="twitter" class="form-label">Telegram</label>
-                                                            <input type="text" class="form-control" id="twitter"
-                                                                   value="https://telegram.org/"/>
+                                                            <label for="telegramLink"
+                                                                   class="form-label">Telegram</label>
+                                                            <input type="text" class="form-control" id="telegramLink"
+                                                                   placeholder="@username"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="linkedin"
+                                                            <label for="linkedinLink"
                                                                    class="form-label">Linkedin</label>
-                                                            <input type="text" class="form-control" id="linkedin"
-                                                                   value="https://www.linkedin.com"/>
+                                                            <input type="text" class="form-control" id="linkedinLink"
+                                                                   placeholder="https://www.linkedin.com"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="whatsapp"
-                                                                   class="form-label">Whatsapp</label>
-                                                            <input type="text" class="form-control" id="whatsapp"
-                                                                   value="https://www.whatsapp.com"/>
+                                                            <label for="githubLink"
+                                                                   class="form-label">Github</label>
+                                                            <input type="text" class="form-control" id="githubLink"
+                                                                   placeholder="username"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -404,10 +393,10 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
-                                                            <label for="skillsList"
+                                                            <label for="profileSkills"
                                                                    class="form-label">List your skills</label>
                                                             <textarea class="form-control"
-                                                                      id="skillsList"
+                                                                      id="profileSkills"
                                                                       rows="2"
                                                                       placeholder="Java EE, Java SE"></textarea>
                                                         </div>
@@ -447,18 +436,18 @@
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="faculty"
+                                                            <label for="eduFaculty"
                                                                    class="form-label">Faculty</label>
-                                                            <input type="text" class="form-control" id="faculty"
+                                                            <input type="text" class="form-control" id="eduFaculty"
                                                                    value=""/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="major"
+                                                            <label for="eduMajor"
                                                                    class="form-label">Major</label>
-                                                            <input type="text" class="form-control" id="major"
+                                                            <input type="text" class="form-control" id="eduMajor"
                                                                    value=""/>
                                                         </div>
                                                     </div>
@@ -488,7 +477,9 @@
                                             </div>
                                             <!--end skills-->
                                             <div class="mt-4 text-end">
-                                                <a href="javascript:void(0)" class="btn btn-primary">Update</a>
+                                                <button type="button" class="btn btn-primary" onclick="saveProfile()">
+                                                    Update
+                                                </button>
                                             </div>
                                         </form>
                                         <!--end form-->
@@ -500,34 +491,35 @@
                                                 <h5 class="fs-17 fw-semibold mb-3 mb-3">
                                                     Change Password
                                                 </h5>
+                                                <div id="passwordAlert"></div>
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="mb-3">
-                                                            <label for="current-password-input" class="form-label">Current
+                                                            <label for="currentPasswordInput" class="form-label">Current
                                                                 password</label>
                                                             <input type="password" class="form-control"
                                                                    placeholder="Enter Current password"
-                                                                   id="current-password-input"/>
+                                                                   id="currentPasswordInput"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="new-password-input" class="form-label">New
+                                                            <label for="newPasswordInput" class="form-label">New
                                                                 password</label>
                                                             <input type="password" class="form-control"
                                                                    placeholder="Enter new password"
-                                                                   id="new-password-input"/>
+                                                                   id="newPasswordInput"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="confirm-password-input" class="form-label">Confirm
+                                                            <label for="confirmPasswordInput" class="form-label">Confirm
                                                                 Password</label>
                                                             <input type="password" class="form-control"
                                                                    placeholder="Confirm Password"
-                                                                   id="confirm-password-input"/>
+                                                                   id="confirmPasswordInput"/>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -536,7 +528,9 @@
                                             </div>
                                             <!--end Change-password-->
                                             <div class="mt-4 text-end">
-                                                <a href="javascript:void(0)" class="btn btn-primary">Update</a>
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="updatePassword()">Update
+                                                </button>
                                             </div>
                                         </form>
                                         <!--end form-->
@@ -560,4 +554,6 @@
     <!-- End Page-content -->
 </div>
 <!-- end main content-->
+
 </html>
+<script src="/js/pages/profile.js"></script>

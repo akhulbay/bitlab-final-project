@@ -73,7 +73,8 @@
                                                     <h5>1/2</h5>
                                                     <h5>Registration for Employers</h5>
                                                 </div>
-                                                <form th:action="@{/auth/signup/employer}" method="post"
+                                                <div id="liveAlertPlaceholder"></div>
+                                                <form action="#" method="post"
                                                       class="auth-form">
                                                     <div class="mb-3">
                                                         <label for="firstNameInput" class="form-label">First
@@ -83,19 +84,19 @@
                                                                name="firstName">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="usernameInput" class="form-label">Last Name</label>
+                                                        <label for="lastNameInput" class="form-label">Last Name</label>
                                                         <input type="text" class="form-control" required
-                                                               id="usernameInput" placeholder="Enter your lastname"
+                                                               id="lastNameInput" placeholder="Enter your lastname"
                                                                name="lastName">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="passwordInput" class="form-label">Email</label>
+                                                        <label for="usernameInput" class="form-label">Email</label>
                                                         <input type="email" class="form-control" required
-                                                               id="emailInput" placeholder="Enter your email"
+                                                               id="usernameInput" placeholder="Enter your email"
                                                                name="username">
                                                     </div>
                                                     <div class="mb-3">
-                                                        <label for="emailInput" class="form-label">Password</label>
+                                                        <label for="passwordInput" class="form-label">Password</label>
                                                         <input type="password" class="form-control" id="passwordInput"
                                                                placeholder="Enter your password" name="password">
                                                     </div>
@@ -107,7 +108,8 @@
                                                                placeholder="Enter your password" name="repeatPassword">
                                                     </div>
                                                     <div class="text-center">
-                                                        <button type="submit" class="btn btn-white btn-hover w-100">Sign
+                                                        <button type="button" class="btn btn-white btn-hover w-100"
+                                                        onclick="registerEmployer()">Sign
                                                             Up
                                                         </button>
                                                     </div>
@@ -181,6 +183,8 @@
 <script src="/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://unicons.iconscout.com/release/v4.0.0/script/monochrome/bundle.js"></script>
 
+<!--Page Script-->
+<script src="/js/pages/auth/employer-sign-up.js"></script>
 
 <!-- Switcher Js -->
 <script src="/js/pages/switcher.init.js"></script>

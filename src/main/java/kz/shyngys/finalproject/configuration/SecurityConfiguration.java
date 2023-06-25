@@ -1,6 +1,6 @@
 package kz.shyngys.finalproject.configuration;
 
-import kz.shyngys.finalproject.dto.UserCreateEditDto;
+import kz.shyngys.finalproject.dto.UserCreateDto;
 import kz.shyngys.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -63,6 +63,9 @@ public class SecurityConfiguration {
         http.csrf()
                 .disable();
 
+        http.exceptionHandling()
+                .accessDeniedPage("/auth/403-error");
+
         return http.build();
     }
 
@@ -76,13 +79,13 @@ public class SecurityConfiguration {
                 String firstName = userRequest.getIdToken().getClaim("given_name");
                 String lastName = userRequest.getIdToken().getClaim("family_name");
 
-                UserCreateEditDto user = new UserCreateEditDto();
+                UserCreateDto user = new UserCreateDto();
                 user.setUsername(email);
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setPassword(TEMP_PASSWORD);
 
-                userService.saveUser(user);
+                userService.createUser(user);
 
                 userDetails = userService.loadUserByUsername(email);
             }

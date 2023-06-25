@@ -40,8 +40,8 @@ public class UserProfile {
     @Column(name = "linkedin_link")
     private String linkedinLink;
 
-    @Column(name = "whatsapp_link")
-    private String whatsappLink;
+    @Column(name = "github_link")
+    private String githubLink;
 
     private String skills;
 

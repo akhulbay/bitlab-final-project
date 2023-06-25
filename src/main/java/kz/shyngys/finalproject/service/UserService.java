@@ -1,6 +1,8 @@
 package kz.shyngys.finalproject.service;
 
-import kz.shyngys.finalproject.dto.UserCreateEditDto;
+import kz.shyngys.finalproject.dto.UserCreateDto;
+import kz.shyngys.finalproject.dto.UserEditDto;
+import kz.shyngys.finalproject.dto.UserEditPasswordDto;
 import kz.shyngys.finalproject.dto.UserReadDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -10,17 +12,19 @@ public interface UserService extends UserDetailsService {
 
     List<UserReadDto> findAll();
 
-    UserReadDto findById();
+    UserReadDto findById(Long id);
 
     UserReadDto findByUsername(String username);
 
-    UserReadDto saveUser(UserCreateEditDto user);
+    UserReadDto createUser(UserCreateDto user);
 
-    UserReadDto saveEmployer(UserCreateEditDto user);
+    UserReadDto createEmployer(UserCreateDto user);
 
-    UserReadDto update();
+    UserReadDto updateData(Long id, UserEditDto user);
 
-    void delete();
+    UserReadDto updatePassword(Long id, UserEditPasswordDto user);
+
+    void delete(Long id);
 
     boolean isUsernameExists(String username);
 }

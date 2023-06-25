@@ -20,7 +20,7 @@ public class UserProfileReadDto {
     private String facebookLink;
     private String telegramLink;
     private String linkedinLink;
-    private String whatsappLink;
+    private String githubLink;
     private String skills;
     private String degree;
     private String university;

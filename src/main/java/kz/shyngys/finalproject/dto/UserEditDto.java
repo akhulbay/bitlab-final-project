@@ -10,11 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateEditDto {
+public class UserEditDto {
 
     private String firstName;
     private String lastName;
-    private String username;
-    private String password;
     private Role role;
 }

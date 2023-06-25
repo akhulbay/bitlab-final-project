@@ -1,6 +1,5 @@
 package kz.shyngys.finalproject.service.impl;
 
-import kz.shyngys.finalproject.dto.UserCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileReadDto;
 import kz.shyngys.finalproject.mapper.UserProfileCreateEditMapper;
@@ -18,6 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
@@ -36,10 +36,17 @@ public class UserProfileServiceImpl implements UserProfileService {
         return null;
     }
 
+    @Override
+    public UserProfileReadDto findByUserId(Long userId) {
+        return userProfileRepository.findByUserId(userId)
+                .map(userProfileReadMapper::toDto)
+                .orElse(null);
+    }
+
     @Transactional
     @Override
-    public UserProfileReadDto save(UserProfileCreateEditDto user) {
-        return Optional.of(user)
+    public UserProfileReadDto save(UserProfileCreateEditDto userProfile) {
+        return Optional.of(userProfile)
                 .map(userProfileCreateEditMapper::toEntity)
                 .map(entity -> {
                     User newUser = userRepository.findById(entity.getUser().getId())
@@ -49,12 +56,24 @@ public class UserProfileServiceImpl implements UserProfileService {
                 })
                 .map(userProfileRepository::saveAndFlush)
                 .map(userProfileReadMapper::toDto)
-                .orElseThrow();
+                .orElse(null);
     }
 
+    @Transactional
     @Override
     public UserProfileReadDto update(Long id, UserProfileCreateEditDto user) {
-        return null;
+        return Optional.of(user)
+                .map(userProfileCreateEditMapper::toEntity)
+                .map(entity -> {
+                    User newUser = userRepository.findById(entity.getUser().getId())
+                            .orElseThrow();
+                    entity.setUser(newUser);
+                    entity.setId(id);
+                    return entity;
+                })
+                .map(userProfileRepository::saveAndFlush)
+                .map(userProfileReadMapper::toDto)
+                .orElse(null);
     }
 
     @Override

@@ -1,10 +1,14 @@
 package kz.shyngys.finalproject.service.impl;
 
-import kz.shyngys.finalproject.dto.UserCreateEditDto;
+import kz.shyngys.finalproject.dto.UserCreateDto;
+import kz.shyngys.finalproject.dto.UserEditDto;
+import kz.shyngys.finalproject.dto.UserEditPasswordDto;
 import kz.shyngys.finalproject.dto.UserReadDto;
-import kz.shyngys.finalproject.mapper.UserCreateEditMapper;
+import kz.shyngys.finalproject.mapper.UserCreateMapper;
+import kz.shyngys.finalproject.mapper.UserEditMapper;
 import kz.shyngys.finalproject.mapper.UserReadMapper;
 import kz.shyngys.finalproject.model.Role;
+import kz.shyngys.finalproject.model.User;
 import kz.shyngys.finalproject.repository.UserRepository;
 import kz.shyngys.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +27,24 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserCreateEditMapper userCreateMapper;
+    private final UserCreateMapper userCreateMapper;
     private final UserReadMapper userReadMapper;
+    private final UserEditMapper userEditMapper;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserReadDto> findAll() {
-        return null;
+        return userRepository.findAll().stream()
+                .map(userReadMapper::toDto)
+                .toList();
     }
 
     @Override
-    public UserReadDto findById() {
-        return null;
+    public UserReadDto findById(Long id) {
+        return userRepository.findById(id)
+                .map(userReadMapper::toDto)
+                .orElse(null);
     }
 
     @Override
@@ -47,7 +56,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserReadDto saveUser(UserCreateEditDto user) {
+    public UserReadDto createUser(UserCreateDto user) {
         return Optional.of(user)
                 .map(userCreateMapper::toEntity)
                 .map(entity -> {
@@ -62,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserReadDto saveEmployer(UserCreateEditDto user) {
+    public UserReadDto createEmployer(UserCreateDto user) {
         return Optional.of(user)
                 .map(userCreateMapper::toEntity)
                 .map(entity -> {
@@ -75,14 +84,42 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow();
     }
 
+    @Transactional
     @Override
-    public UserReadDto update() {
-        return null;
+    public UserReadDto updateData(Long id, UserEditDto userDto) {
+        return userRepository.findById(id)
+                .map(entity -> {
+                    User newEntity = userEditMapper.toEntity(userDto);
+                    newEntity.setId(entity.getId());
+                    newEntity.setPassword(entity.getPassword());
+                    newEntity.setUsername(entity.getUsername());
+                    newEntity.setRole(entity.getRole());
+                    return newEntity;
+                })
+                .map(userRepository::saveAndFlush)
+                .map(userReadMapper::toDto)
+                .orElse(null);
     }
 
+    @Transactional
     @Override
-    public void delete() {
+    public UserReadDto updatePassword(Long id, UserEditPasswordDto userPassword) {
+        return userRepository.findById(id)
+                .filter(user -> passwordEncoder.matches(userPassword.getCurrentPassword(), user.getPassword()))
+                .map(entity -> {
+                    entity.setPassword(passwordEncoder.encode(userPassword.getNewPassword()));
+                    return entity;
+                })
+                .map(userRepository::saveAndFlush)
+                .map(userReadMapper::toDto)
+                .orElse(null);
+    }
 
+    @Transactional
+    @Override
+    public void delete(Long id) {
+         userRepository.findById(id)
+                 .ifPresent(userRepository::delete);
     }
 
     @Override

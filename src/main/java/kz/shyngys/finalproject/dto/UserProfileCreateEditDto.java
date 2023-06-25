@@ -19,7 +19,7 @@ public class UserProfileCreateEditDto {
     private String facebookLink;
     private String telegramLink;
     private String linkedinLink;
-    private String whatsappLink;
+    private String githubLink;
     private String skills;
     private String degree;
     private String university;
@@ -27,5 +27,5 @@ public class UserProfileCreateEditDto {
     private String major;
     private Integer yearOfAdmission;
     private Integer yearOfGraduation;
-    private Long userId;
+    private String userId;
 }

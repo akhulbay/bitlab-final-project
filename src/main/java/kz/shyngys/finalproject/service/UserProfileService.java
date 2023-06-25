@@ -1,6 +1,5 @@
 package kz.shyngys.finalproject.service;
 
-import kz.shyngys.finalproject.dto.UserCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileReadDto;
 
@@ -11,6 +10,8 @@ public interface UserProfileService {
     List<UserProfileReadDto> findAll();
 
     UserProfileReadDto findById(Long id);
+
+    UserProfileReadDto findByUserId(Long userId);
 
     UserProfileReadDto save(UserProfileCreateEditDto user);
 

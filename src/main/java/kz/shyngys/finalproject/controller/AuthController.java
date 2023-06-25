@@ -1,6 +1,6 @@
 package kz.shyngys.finalproject.controller;
 
-import kz.shyngys.finalproject.dto.UserCreateEditDto;
+import kz.shyngys.finalproject.dto.UserCreateDto;
 import kz.shyngys.finalproject.service.CompanyService;
 import kz.shyngys.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/user")
-    public String userRegistration(UserCreateEditDto user,
+    public String userRegistration(UserCreateDto user,
                                    @RequestParam("repeatPassword") String repeatPassword) {
 
         if (userService.isUsernameExists(user.getUsername())) {
@@ -40,7 +40,7 @@ public class AuthController {
             return "redirect:/auth/signup/user?passworderror";
         }
 
-        userService.saveUser(user);
+        userService.createUser(user);
         return "redirect:/auth/signin/user";
     }
 
@@ -55,7 +55,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/employer")
-    public String employerRegistration(UserCreateEditDto user,
+    public String employerRegistration(UserCreateDto user,
                                        @RequestParam("repeatPassword") String repeatPassword) {
 
         if (userService.isUsernameExists(user.getUsername())) {
@@ -66,13 +66,18 @@ public class AuthController {
             return "redirect:/auth/signup/user?passworderror";
         }
 
-        userService.saveEmployer(user);
+        userService.createEmployer(user);
         return "redirect:/auth/signin/employer";
     }
 
     @GetMapping("/signout")
     public String userLogoutPage() {
         return "sign-out";
+    }
+
+    @GetMapping("/403-error")
+    public String page403() {
+        return "403-error";
     }
 
 }
