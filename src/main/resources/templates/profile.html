@@ -59,29 +59,29 @@
                                 <div class="text-center pb-4 border-bottom">
                                     <input type="hidden" th:value="${#authentication.principal.id}" id="userId">
                                     <img src="/images/profile.jpg" alt=""
-                                         class="avatar-lg img-thumbnail rounded-circle mb-4"/>
+                                         class="avatar-lg img-thumbnail rounded-circle mb-4" id="overviewImg"/>
                                     <h5 class="mb-0" id="overviewFullName"
                                     ></h5>
                                     <p class="text-muted" id="overviewCategory"></p>
                                     <ul class="candidate-detail-social-menu list-inline mb-0">
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
-                                               class="social-link rounded-3 btn-soft-primary"><i
+                                               class="social-link rounded-3 btn-soft-primary" id="userFacebook"><i
                                                     class="uil uil-facebook-f"></i></a>
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
-                                               class="social-link rounded-3 btn-soft-info"><i
+                                               class="social-link rounded-3 btn-soft-info" id="userTelegram"><i
                                                     class="uil uil-telegram-alt"></i></a>
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
-                                               class="social-link rounded-3 btn-soft-primary"><i
+                                               class="social-link rounded-3 btn-soft-primary" id="userGithub"><i
                                                     class="uil uil-github"></i></a>
                                         </li>
                                         <li class="list-inline-item">
                                             <a href="javascript:void(0)"
-                                               class="social-link rounded-3 btn-soft-info"><i
+                                               class="social-link rounded-3 btn-soft-info" id="userLinkedin"><i
                                                     class="uil uil-linkedin"></i></a>
                                         </li>
                                     </ul>
@@ -256,12 +256,11 @@
                                                     <div class="mb-4 profile-user">
                                                         <img src="/images/user/img-02.jpg"
                                                              class="rounded-circle img-thumbnail profile-img"
-                                                             id="profile-img" alt="">
+                                                             id="profileImg" alt="">
                                                         <div class="p-0 rounded-circle profile-photo-edit">
-                                                            <input id="profile-img-file-input" type="file"
-                                                                   class="profile-img-file-input"
-                                                                   onchange="previewImg()">
-                                                            <label for="profile-img-file-input"
+                                                            <input id="profileImgFile" type="file"
+                                                                   class="profile-img-file-input">
+                                                            <label for="profileImgFile"
                                                                    class="profile-photo-edit avatar-xs">
                                                                 <i class="uil uil-edit"></i>
                                                             </label>

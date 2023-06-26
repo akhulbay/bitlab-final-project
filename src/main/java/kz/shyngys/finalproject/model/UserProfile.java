@@ -59,6 +59,8 @@ public class UserProfile {
     @Column(name = "year_of_graduation")
     private Integer yearOfGraduation;
 
+    private String image;
+
     @OneToOne
     private User user;
 }

@@ -13,6 +13,8 @@ public interface UserProfileService {
 
     UserProfileReadDto findByUserId(Long userId);
 
+    byte[] findAvatar(Long id);
+
     UserProfileReadDto save(UserProfileCreateEditDto user);
 
     UserProfileReadDto update(Long id, UserProfileCreateEditDto user);

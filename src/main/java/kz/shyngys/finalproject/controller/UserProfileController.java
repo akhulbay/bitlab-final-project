@@ -40,8 +40,17 @@ public class UserProfileController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/{id}/avatar")
+    public ResponseEntity<byte[]> findAvatar(@PathVariable Long id) {
+        byte[] image = userProfileService.findAvatar(id);
+        if (image == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(image);
+    }
+
     @PostMapping
-    public ResponseEntity<UserProfileReadDto> create(@RequestBody UserProfileCreateEditDto user) {
+    public ResponseEntity<UserProfileReadDto> create(UserProfileCreateEditDto user) {
         UserProfileReadDto newUser = userProfileService.save(user);
         if (newUser == null) {
             return ResponseEntity.badRequest().build();
@@ -51,7 +60,7 @@ public class UserProfileController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserProfileReadDto> update(@PathVariable("id") Long id,
-                                                     @RequestBody UserProfileCreateEditDto user) {
+                                                     UserProfileCreateEditDto user) {
         UserProfileReadDto newUser = userProfileService.update(id, user);
         if (newUser == null) {
             return ResponseEntity.badRequest().build();

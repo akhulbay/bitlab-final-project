@@ -5,12 +5,17 @@ import kz.shyngys.finalproject.dto.UserProfileReadDto;
 import kz.shyngys.finalproject.mapper.UserProfileCreateEditMapper;
 import kz.shyngys.finalproject.mapper.UserProfileReadMapper;
 import kz.shyngys.finalproject.model.User;
+import kz.shyngys.finalproject.model.UserProfile;
 import kz.shyngys.finalproject.repository.UserProfileRepository;
 import kz.shyngys.finalproject.repository.UserRepository;
+import kz.shyngys.finalproject.service.ImageService;
 import kz.shyngys.finalproject.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +30,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserProfileCreateEditMapper userProfileCreateEditMapper;
     private final UserProfileReadMapper userProfileReadMapper;
+
+    private final ImageService imageService;
 
     @Override
     public List<UserProfileReadDto> findAll() {
@@ -43,11 +50,23 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .orElse(null);
     }
 
+    @Override
+    public byte[] findAvatar(Long id) {
+        return userProfileRepository.findById(id)
+                .map(UserProfile::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get)
+                .orElse(null);
+    }
+
     @Transactional
     @Override
     public UserProfileReadDto save(UserProfileCreateEditDto userProfile) {
         return Optional.of(userProfile)
-                .map(userProfileCreateEditMapper::toEntity)
+                .map(dto -> {
+                    uploadImage(dto.getImage());
+                    return userProfileCreateEditMapper.toEntity(dto);
+                })
                 .map(entity -> {
                     User newUser = userRepository.findById(entity.getUser().getId())
                             .orElseThrow();
@@ -63,7 +82,10 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfileReadDto update(Long id, UserProfileCreateEditDto user) {
         return Optional.of(user)
-                .map(userProfileCreateEditMapper::toEntity)
+                .map(dto -> {
+                    uploadImage(dto.getImage());
+                    return userProfileCreateEditMapper.toEntity(dto);
+                })
                 .map(entity -> {
                     User newUser = userRepository.findById(entity.getUser().getId())
                             .orElseThrow();
@@ -79,5 +101,12 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void delete(Long id) {
 
+    }
+
+    @SneakyThrows
+    private void uploadImage(MultipartFile image) {
+        if (!image.isEmpty()) {
+            imageService.upload(image.getOriginalFilename(), image.getInputStream());
+        }
     }
 }

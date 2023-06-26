@@ -13,6 +13,7 @@ public class HomeController {
     }
 
     @GetMapping("/profile")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
     public String profilePage() {
         return "profile";
     }
