@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name = "t_vacancy")
-public class Vacancy {
+public class Job {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

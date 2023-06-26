@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VacancyReadDto {
+public class JobReadDto {
 
     private Long id;
     private String title;

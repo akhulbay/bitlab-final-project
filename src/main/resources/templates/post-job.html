@@ -21,9 +21,9 @@
                                         <li class="breadcrumb-item"><a
                                                 href="../../../../../../Desktop/Jobcy/HTML/dist/index.html">Home</a>
                                         </li>
-                                        <li class="breadcrumb-item"><a href="javascript:void(0)">Post Vacancy</a>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0)">Post Job</a>
                                         </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Post Vacancy</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Post Job</li>
                                     </ol>
                                 </nav>
                             </div>
@@ -55,31 +55,33 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="bg-soft-primary p-3">
-                            <h5 class="mb-0 fs-17">Post a New Job!</h5>
+                            <h5 class="mb-0 fs-17 text-center">Post a New Job!</h5>
                         </div>
                     </div><!--end col-->
                 </div><!--end row-->
                 <form action="#" class="job-post-form shadow mt-4">
+                    <input type="hidden" th:value="${#authentication.principal.id}" id="postJobUserId">
                     <div class="job-post-content box-shadow-md rounded-3 p-4">
                         <div class="row">
+                            <div id="postJobAlert"></div>
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <label for="jobtitle" class="form-label">Job Title</label>
-                                    <input type="text" class="form-control" id="jobtitle" placeholder="Title">
+                                    <label for="postJobTitle" class="form-label">Job Title</label>
+                                    <input type="text" class="form-control" id="postJobTitle" placeholder="Title">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <label for="jobdescription" class="form-label">Job Description</label>
-                                    <textarea class="form-control" id="jobdescription" rows="3"
+                                    <label for="postJobDescription" class="form-label">Job Description</label>
+                                    <textarea class="form-control" id="postJobDescription" rows="3"
                                               placeholder="Enter Job Description"></textarea>
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="choices-single-categories" class="form-label">Categories</label>
+                                    <label for="postJobCategories" class="form-label">Categories</label>
                                     <select class="form-select" data-trigger="" name="choices-single-categories"
-                                            id="choices-single-categories" aria-label="Default select example">
+                                            id="postJobCategories" aria-label="Default select example">
                                         <option value="Digital & Creative">Digital & Creative</option>
                                         <option value="Retail">Retail</option>
                                         <option value="Management">Management</option>
@@ -93,9 +95,9 @@
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="workSchedule" class="form-label">Job Type</label>
+                                    <label for="postJobType" class="form-label">Job Type</label>
                                     <select class="form-select" data-trigger="" name="choices-single-categories"
-                                            id="workSchedule" aria-label="Default select example">
+                                            id="postJobType" aria-label="Default select example">
                                         <option value="FREELANCE">Freelance</option>
                                         <option value="INTERNSHIP">Internship</option>
                                         <option value="FULL_TIME">Full Time</option>
@@ -105,9 +107,9 @@
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="position" class="form-label">Position</label>
-                                    <select class="form-select" data-trigger="" name="choices-single-categories"
-                                            id="position" aria-label="Default select example">
+                                    <label for="postJobPosition" class="form-label">Position</label>
+                                    <select class="form-select" data-trigger="" name="postJobPosition"
+                                            id="postJobPosition" aria-label="Default select example">
                                         <option value="Trainee">Trainee</option>
                                         <option value="Junior">Junior</option>
                                         <option value="Middle">Middle</option>
@@ -117,16 +119,16 @@
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="offeredSalary" class="form-label">Offered Salary($)</label>
-                                    <input type="number" class="form-control" id="offeredSalary"
+                                    <label for="postJobOfferedSalary" class="form-label">Offered Salary($)</label>
+                                    <input type="number" class="form-control" id="postJobOfferedSalary"
                                            placeholder="Salary">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="qualification" class="form-label">Qualification</label>
+                                    <label for="postJobQualification" class="form-label">Qualification</label>
                                     <select class="form-select" data-trigger="" name="choices-single-categories"
-                                            id="qualification" aria-label="Default select example">
+                                            id="postJobQualification" aria-label="Default select example">
                                         <option value="Trainee">No Qualification</option>
                                         <option value="Junior">Bachelor</option>
                                         <option value="Middle">Master</option>
@@ -136,15 +138,24 @@
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="city" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="city" placeholder="City">
+                                    <label for="postJobCity" class="form-label">City</label>
+                                    <select class="form-select" data-trigger
+                                            name="choices-single-location"
+                                            id="postJobCity"
+                                            aria-label="Default select example">
+                                        <option value="Almaty">Almaty</option>
+                                        <option value="Astana">Astana</option>
+                                        <option value="Aktau">Aktau</option>
+                                        <option value="Atyrau">Atyrau</option>
+                                        <option value="Shymkent">Shymkent</option>
+                                    </select>
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-6">
                                 <div class="mb-4">
-                                    <label for="experience" class="form-label">Experience</label>
+                                    <label for="postJobExperience" class="form-label">Experience</label>
                                     <select class="form-select" data-trigger="" name="choices-single-categories"
-                                            id="experience" aria-label="Default select example">
+                                            id="postJobExperience" aria-label="Default select example">
                                         <option value="No Experience">No Experience</option>
                                         <option value="from 1 to 3 years">from 1 to 3 years</option>
                                         <option value="from 3 to 6 years">from 3 to 6 years</option>
@@ -153,30 +164,29 @@
                             </div><!--end col-->
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <label for="responsibilities" class="form-label">Responsibilities</label>
-                                    <textarea class="form-control" id="responsibilities" rows="3"
+                                    <label for="postJobResponsibilities" class="form-label">Responsibilities</label>
+                                    <textarea class="form-control" id="postJobResponsibilities" rows="3"
                                               placeholder="Developing microservice architecture; Working with non-relational databases; ..."></textarea>
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <label for="requiredSkills" class="form-label">Required Skills</label>
-                                    <textarea class="form-control" id="requiredSkills" rows="3"
+                                    <label for="postJobRequiredSkills" class="form-label">Required Skills</label>
+                                    <textarea class="form-control" id="postJobRequiredSkills" rows="3"
                                               placeholder="Basic OOP knowledge; SQL; ..."></textarea>
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
                                 <div class="mb-4">
-                                    <label for="keySkills" class="form-label">Key Skills</label>
-                                    <input type="text" class="form-control" id="keySkills"
+                                    <label for="postJobKeySkills" class="form-label">Key Skills</label>
+                                    <input type="text" class="form-control" id="postJobKeySkills"
                                            placeholder="Java, MySQL, SQL ...">
                                 </div>
                             </div><!--end col-->
                             <div class="col-lg-12">
                                 <div class="text-end">
-                                    <a href="javascript:void(0)" class="btn btn-success">Back</a>
-                                    <a href="javascript:void(0)" class="btn btn-primary">Post Now <i
-                                            class="mdi mdi-send"></i></a>
+                                    <button type="button" class="btn btn-primary" onclick="createJob()">Post Now <i
+                                            class="mdi mdi-send"></i></button>
                                 </div>
                             </div><!--end col-->
                         </div><!--end row-->
@@ -191,3 +201,4 @@
 </div>
 <!-- end main content-->
 </html>
+<script src="/js/pages/post-job.js"></script>

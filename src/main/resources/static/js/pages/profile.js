@@ -86,14 +86,9 @@ const appendPasswordAlert = (message, type) => {
 let hasProfile = false;
 let profileId = null;
 
-pageInit(userId);
+getProfileData();
 
-
-function pageInit(userId) {
-    getProfileData(userId);
-}
-
-function getProfileData(userId) {
+function getProfileData() {
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", "/user-profiles/user/" + userId, true);
     httpRequest.onreadystatechange = () => {

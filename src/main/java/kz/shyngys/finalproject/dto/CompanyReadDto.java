@@ -22,5 +22,6 @@ public class CompanyReadDto {
     private String image;
     private String whatsappLink;
     private String linkedinLink;
-    private UserReadDto owner;
+    private String ownerName;
+    private UserReadDto user;
 }

@@ -11,5 +11,11 @@ public interface CompanyService {
 
     CompanyReadDto findById(Long id);
 
-    CompanyReadDto save(CompanyCreateEditDto company);
+    CompanyReadDto findByUserId(Long id);
+
+    byte[] findAvatar(Long id);
+
+    CompanyReadDto create(CompanyCreateEditDto company);
+
+    CompanyReadDto update(Long id, CompanyCreateEditDto company);
 }

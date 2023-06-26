@@ -21,5 +21,6 @@ public class CompanyCreateEditDto {
     private MultipartFile image;
     private String whatsappLink;
     private String linkedinLink;
-    private Long ownerId;
+    private String ownerName;
+    private Long userId;
 }

@@ -42,7 +42,10 @@ public class Company {
 
     @Column(name = "linkedin_link")
     private String linkedinLink;
+    
+    @Column(name = "owner_name")
+    private String ownerName;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private User owner;
+    @OneToOne
+    private User user;
 }

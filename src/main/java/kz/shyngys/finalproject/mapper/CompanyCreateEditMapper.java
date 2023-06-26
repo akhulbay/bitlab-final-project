@@ -14,7 +14,7 @@ import static java.util.function.Predicate.not;
 @Mapper(componentModel = "spring")
 public interface CompanyCreateEditMapper {
 
-    @Mapping(source = "ownerId", target = "owner.id")
+    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "image", target = "image", qualifiedByName = "getImage")
     @Mapping(target = "id", ignore = true)
     Company toEntity(CompanyCreateEditDto dto);

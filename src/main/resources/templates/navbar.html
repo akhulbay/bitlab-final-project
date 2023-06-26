@@ -275,7 +275,7 @@
                                sec:authorize="hasAnyRole('ROLE_EMPLOYER')">Company
                             Profile</a></li>
                         <li><a class="dropdown-item" th:href="@{/post-job}" sec:authorize="hasAnyRole('ROLE_EMPLOYER')">Post
-                            Vacancy</a></li>
+                            Job</a></li>
                         <li>
                             <form th:action="@{/logout}" method="post">
                                 <button class="dropdown-item" th:href="@{/logout}">Logout</button>
