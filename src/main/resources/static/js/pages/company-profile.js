@@ -274,7 +274,7 @@ function setCompanyOpenJobs(jobList) {
                         <!--end col-->
                         <div class="col-md-4">
                             <div class="text-md-end">
-                                <a href="#" data-bs-toggle="modal"
+                                <a href="/job-details/${jobList[i].id}"
                                    class="primary-link">Apply Now <i
                                         class="mdi mdi-chevron-double-right"></i></a>
                             </div>
