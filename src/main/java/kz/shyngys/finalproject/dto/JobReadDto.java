@@ -26,6 +26,7 @@ public class JobReadDto {
     private String position;
     private String category;
     private String experience;
+    private String qualification;
     private LocalDate createdAt;
     private CompanyReadDto company;
 }

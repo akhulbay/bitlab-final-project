@@ -22,5 +22,6 @@ public class JobCreateEditDto {
     private String position;
     private String category;
     private String experience;
+    private String qualification;
     private Long companyId;
 }

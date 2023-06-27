@@ -1,5 +1,6 @@
 package kz.shyngys.finalproject.model;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -49,9 +50,16 @@ public class Job {
 
     private String experience;
 
+    private String qualification;
+
     @Column(name = "created_at")
     private LocalDate createdAt;
 
     @ManyToOne
     private Company company;
+
+    @PostConstruct
+    public void init() {
+        createdAt = LocalDate.now();
+    }
 }

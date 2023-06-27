@@ -15,6 +15,7 @@ import kz.shyngys.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CompanyServiceImpl implements CompanyService {
 
     private final ImageService imageService;
@@ -61,6 +63,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElse(null);
     }
 
+    @Transactional
     @Override
     public CompanyReadDto create(CompanyCreateEditDto company) {
         return Optional.of(company)
@@ -79,6 +82,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElse(null);
     }
 
+    @Transactional
     @Override
     public CompanyReadDto update(Long id, CompanyCreateEditDto company) {
         return Optional.of(company)

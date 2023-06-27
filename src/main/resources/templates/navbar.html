@@ -260,11 +260,14 @@
                               th:text="${#authentication.principal.firstName}"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown">
-                        <li><a class="dropdown-item" href="../../../../../../Desktop/Jobcy/HTML/dist/manage-jobs.html"
-                               sec:authorize="hasAnyRole('ROLE_EMPLOYER')">Manage
-                            Jobs</a></li>
                         <li><a class="dropdown-item"
                                href="../../../../../../Desktop/Jobcy/HTML/dist/bookmark-jobs.html">Bookmarks Jobs</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               th:href="@{/manage-jobs}"
+                               sec:authorize="hasAnyRole('ROLE_EMPLOYER')">Manage
+                                Jobs</a>
                         </li>
                         <li><a class="dropdown-item" th:href="@{/profile}" sec:authorize="hasAnyRole('ROLE_USER')">My
                             Profile</a></li>

@@ -45,7 +45,7 @@ function createJob() {
                     let result = httpRequest.responseText;
                     clearInputs();
                     appendPostJobAlert('You successfully posted a job!', 'success');
-
+                    topFunction();
                 } else {
                     let error = httpRequest.responseText;
                     console.log(error);
@@ -64,6 +64,7 @@ function createJob() {
             "position": jobPosition.value,
             "category": jobCategory.value,
             "experience": jobExperience.value,
+            "qualification": jobQualification.value,
             "companyId": companyId
         }
 
