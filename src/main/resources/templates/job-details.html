@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="main_layout.html">
+
+<div class="main-content" layout:fragment="siteContent">
+    <div class="page-content">
+        <!-- Start home -->
+        <section class="page-title-box">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="text-center text-white">
+                            <h3 class="mb-4">Job Details</h3>
+                            <div class="page-next">
+                                <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                    <ol class="breadcrumb justify-content-center">
+                                        <li class="breadcrumb-item"><a
+                                                href="../../../../../../Desktop/Jobcy/HTML/dist/index.html">Home</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0)">Job Details</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page"> Job Details</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!-- end home -->
+
+        <!-- START SHAPE -->
+        <div class="position-relative" style="z-index: 1">
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                    <path fill="#FFFFFF" fill-opacity="1"
+                          d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- END SHAPE -->
+
+
+        <!-- START JOB-DEATILS -->
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card job-detail overflow-hidden">
+                            <div class="card-body p-4">
+                                <input type="hidden" th:value="${#authentication.principal.id}" id="jobDetailsUserId">
+                                <input type="hidden" th:value="${id}" id="jobDetailsJobId">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h3 class="mb-1" id="jobDetailsTitle"></h3>
+                                            <ul class="list-inline text-muted mb-0">
+                                                <li class="list-inline-item">
+                                                    <i class="mdi mdi-account"></i> <strong
+                                                        id="jobDetailsAppliedUsersCount">8 Vacancy</strong>
+                                                </li>
+                                            </ul>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </div>
+
+                                <div class="mt-4">
+                                    <div class="row g-2">
+                                        <div class="col-lg-3">
+                                            <div class="border rounded-start p-3 text-center">
+                                                <p class="text-muted mb-0 fs-13">Experience</p>
+                                                <p class="fw-medium fs-15 mb-0" id="jobDetailsExperience">Minimum 1
+                                                    Year</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="border p-3 text-center">
+                                                <p class="text-muted fs-13 mb-0">Employee type</p>
+                                                <p class="fw-medium mb-0" id="jobDetailsEmployeeType">Full Time</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="border p-3 text-center">
+                                                <p class="text-muted fs-13 mb-0">Position</p>
+                                                <p class="fw-medium mb-0" id="jobDetailsPosition" ></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="border rounded-end p-3 text-center">
+                                                <p class="text-muted fs-13 mb-0">Offer Salary</p>
+                                                <p class="fw-medium mb-0" id="jobDetailsOfferedSalary"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!--end Experience-->
+
+                                <div class="mt-4">
+                                    <h5 class="mb-3">Job Description</h5>
+                                    <div class="job-detail-desc">
+                                        <p class="text-muted mb-0" id="jobDetailsDesc">
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h5 class="mb-3">Responsibilities</h5>
+                                    <div class="job-detail-desc mt-2">
+                                        <ul class="job-detail-list list-unstyled mb-0 text-muted"
+                                            id="jobDetailsResponsibilitiesList">
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h5 class="mb-3">Skills</h5>
+                                    <div class="job-details-desc">
+                                        <ul class="job-detail-list list-unstyled mb-0 text-muted"
+                                            id="jobDetailsSkillsList">
+                                        </ul>
+                                        <div class="mt-4" id="jobDetailsKeySkillsList">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end job-detail-->
+                    </div><!--end col-->
+
+                    <div class="col-lg-4 mt-4 mt-lg-0">
+                        <!--start side-bar-->
+                        <div class="side-bar ms-lg-4">
+                            <div class="card job-overview">
+                                <div class="card-body p-4">
+                                    <h6 class="fs-17">Job Overview</h6>
+                                    <ul class="list-unstyled mt-4 mb-0">
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-user icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Job Title</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewTitle"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-star-half-alt icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Experience</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewExperience"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-location-point icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Location</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewCity"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-usd-circle icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Offered Salary</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewOfferedSalary"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-graduation-cap icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Qualification</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewQualification"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-building icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Industry</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewCategory"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="d-flex mt-4">
+                                                <i class="uil uil-history icon bg-soft-primary"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Date Posted</h6>
+                                                    <p class="text-muted mb-0" id="jobDetailsOverviewCreatedAt"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="mt-3">
+                                        <a href="#applyNow" data-bs-toggle="modal"
+                                           class="btn btn-primary btn-hover w-100 mt-2">Apply Now <i
+                                                class="uil uil-arrow-right"></i></a>
+                                        <a href="../../../../../../Desktop/Jobcy/HTML/dist/bookmark-jobs.html"
+                                           class="btn btn-soft-warning btn-hover w-100 mt-2"><i
+                                                class="uil uil-bookmark"></i> Add Bookmark</a>
+                                    </div>
+                                </div><!--end card-body-->
+                            </div><!--end job-overview-->
+
+                            <div class="card company-profile mt-4">
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <img src="/images/featured-job/img-02.png" alt=""
+                                             class="avatar-lg img-thumbnail rounded-circle" id="jobDetailsCompanyImg">
+
+                                        <div class="mt-2">
+                                            <h6 class="fs-17 mb-1" id="jobDetailsCompanyName"></h6>
+                                        </div>
+                                    </div>
+                                    <ul class="list-unstyled mt-4">
+                                        <li>
+                                            <div class="d-flex">
+                                                <i class="uil uil-globe text-primary fs-4"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Website</h6>
+                                                    <p class="text-muted fs-14 text-break mb-0"
+                                                       id="jobDetailsCompanyWebsite"></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="mt-3">
+                                            <div class="d-flex">
+                                                <i class="uil uil-map-marker text-primary fs-4"></i>
+                                                <div class="ms-3">
+                                                    <h6 class="fs-14 mb-2">Location</h6>
+                                                    <p class="text-muted fs-14 mb-0" id="jobDetailsCompanyLocation">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="mt-4">
+                                        <a href="#"
+                                           class="btn btn-primary btn-hover w-100 rounded" id="jobDetailsCompanyDetailsLink"><i class="mdi mdi-eye"></i>
+                                            View Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end side-bar-->
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section>
+        <!-- START JOB-DEATILS -->
+
+        <!-- START APPLY MODAL -->
+        <div class="modal fade" id="applyNow" tabindex="-1" aria-labelledby="applyNow" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body p-5">
+                        <div class="text-center mb-4">
+                            <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageControlTextarea" class="form-label">Cover Letter</label>
+                            <textarea class="form-control" id="messageControlTextarea" rows="4"
+                                      placeholder="Enter your message"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Application</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- END APPLY MODAL -->
+
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+</html>
+<script src="/js/pages/job-details.js"></script>

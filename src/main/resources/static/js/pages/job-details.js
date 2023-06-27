@@ -1,0 +1,163 @@
+let userId = document.getElementById("jobDetailsUserId").value;
+let jobId = document.getElementById("jobDetailsJobId").value;
+
+let title = document.getElementById("jobDetailsTitle");
+let appliedUsersCount = document.getElementById("jobDetailsAppliedUsersCount");
+let experience = document.getElementById("jobDetailsExperience");
+let employeeType = document.getElementById("jobDetailsEmployeeType");
+let position = document.getElementById("jobDetailsPosition");
+let offeredSalary = document.getElementById("jobDetailsOfferedSalary");
+let desc = document.getElementById("jobDetailsDesc");
+let responsibilitiesList = document.getElementById("jobDetailsResponsibilitiesList");
+let skillsList = document.getElementById("jobDetailsSkillsList");
+let keySkillsList = document.getElementById("jobDetailsKeySkillsList");
+
+let overviewTitle = document.getElementById("jobDetailsOverviewTitle");
+let overviewExperience = document.getElementById("jobDetailsOverviewExperience");
+let overviewCity = document.getElementById("jobDetailsOverviewCity");
+let overviewOfferedSalary = document.getElementById("jobDetailsOverviewOfferedSalary");
+let overviewQualification = document.getElementById("jobDetailsOverviewQualification");
+let overviewCategory = document.getElementById("jobDetailsOverviewCategory");
+let overviewCreatedAt = document.getElementById("jobDetailsOverviewCreatedAt");
+
+let companyImg = document.getElementById("jobDetailsCompanyImg");
+let companyName = document.getElementById("jobDetailsCompanyName");
+let companyWebsite = document.getElementById("jobDetailsCompanyWebsite");
+let companyLocation = document.getElementById("jobDetailsCompanyLocation");
+let companyDetailsLink = document.getElementById("jobDetailsCompanyDetailsLink");
+
+getJob();
+
+function getJob() {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("GET", "/jobs/" + jobId, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let job = JSON.parse(httpRequest.responseText);
+                setJobData(job);
+                setCompanyData(job.company);
+                getCompanyImage(job.company.id)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function getCompanyImage(companyId) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/companies/" + companyId + "/avatar", true);
+    httpRequest.responseType = "arraybuffer";
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                const imageBytes = new Uint8Array(httpRequest.response);
+                const blob = new Blob([imageBytes], {type: "image/jpeg"});
+
+                companyImg.src = URL.createObjectURL(blob);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setJobData(job) {
+    title.innerHTML = job.title;
+    experience.innerHTML = job.experience;
+    employeeType.innerHTML = getEmployeeType(job.workSchedule);
+    position.innerHTML = job.position;
+    offeredSalary.innerHTML = " $" + job.offeredSalary + "/ month";
+    desc.innerHTML = job.description;
+    responsibilitiesList.innerHTML = getResponsibilities(job.responsibilities)
+    skillsList.innerHTML = getSkills(job.requiredSkills)
+    keySkillsList.innerHTML = getKeySkills(job.keySkills)
+
+    overviewTitle.innerHTML = job.title;
+    overviewExperience.innerHTML = job.experience;
+    overviewCity.innerHTML = job.city;
+    overviewOfferedSalary.innerHTML = " $" + job.offeredSalary;
+    overviewQualification.innerHTML = job.qualification + " Degree";
+    overviewCategory.innerHTML = job.category;
+    overviewCreatedAt.innerHTML = job.createdAt;
+}
+
+function setCompanyData(company) {
+    companyName.innerHTML = company.name;
+    companyWebsite.innerHTML = company.website;
+    companyLocation.innerHTML = company.location;
+    companyDetailsLink.href = "/company-details/" + company.id;
+}
+
+function getEmployeeType(employeeType) {
+    let result;
+    switch (employeeType) {
+        case "FULL_TIME":
+            result = "Full Time"
+            break;
+        case "PART_TIME":
+            result = "Part Time"
+            break;
+        case "INTERNSHIP":
+            result = "Internship"
+            break;
+        case "FREELANCE":
+            result = "Freelance"
+            break;
+        default:
+            result = "Not defined";
+    }
+    return result;
+}
+
+function getResponsibilities(responsibilities) {
+    let result = '';
+    let respList = responsibilities.split('; ');
+    for (let i = 0; i < respList.length; i++) {
+        result += `
+            <li><i class="uil uil-circle"></i> ${respList[i]}</li>
+        `
+    }
+    return result;
+}
+
+function getSkills(skills) {
+    let result = '';
+    let skillsList = skills.split('; ');
+    for (let i = 0; i < skillsList.length; i++) {
+        result += `
+            <li><i class="uil uil-circle"></i> ${skillsList[i]}</li>
+        `
+    }
+    return result;
+}
+
+function getKeySkills(keySkills) {
+    let result = '';
+    let keySkillsList = keySkills.split(', ');
+    for (let i = 0; i < keySkillsList.length; i++) {
+        result += `
+            <span class="badge bg-primary">${keySkillsList[i]}</span>
+        `
+    }
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

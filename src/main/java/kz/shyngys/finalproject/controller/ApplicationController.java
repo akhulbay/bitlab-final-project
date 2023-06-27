@@ -51,4 +51,20 @@ public class ApplicationController {
         model.addAttribute("id", id);
         return "edit-job";
     }
+
+    @GetMapping("/job-details/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String jobDetailsPage(@PathVariable("id") Long id,
+                              Model model) {
+        model.addAttribute("id", id);
+        return "job-details";
+    }
+
+    @GetMapping("/company-details/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String companyDetailsPage(@PathVariable("id") Long id,
+                                 Model model) {
+        model.addAttribute("id", id);
+        return "company-details";
+    }
 }

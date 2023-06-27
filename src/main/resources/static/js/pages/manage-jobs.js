@@ -79,7 +79,7 @@ function setCompanyJobs(jobList) {
                                         <div class="col-lg-9">
                                             <div class="mt-3 mt-lg-0">
                                                 <h5 class="fs-17 mb-1"><a
-                                                        href="#"
+                                                        href="/job-details/${jobList[i].id}"
                                                         class="text-dark">${jobList[i].title}</a>
                                                     <small
                                                             class="text-muted fw-normal">(Experience: ${jobList[i].experience})</small></h5>
