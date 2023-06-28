@@ -28,6 +28,8 @@ public class UserProfileCreateEditDto {
     private String major;
     private Integer yearOfAdmission;
     private Integer yearOfGraduation;
+    private Double experienceYears;
+    private String aboutExperience;
     private MultipartFile image;
     private String userId;
 }

@@ -7,6 +7,7 @@ let overviewCategory = document.getElementById("overviewCategory");
 let contactEmail = document.getElementById("contactEmail");
 let contactPhone = document.getElementById("contactPhone");
 let contactLocation = document.getElementById("contactLocation");
+let contactExperienceYears = document.getElementById("contactExperienceYears");
 
 let telegramLink = document.getElementById("userTelegram");
 let linkedinLink = document.getElementById("userLinkedin");
@@ -19,6 +20,7 @@ let overviewMajor = document.getElementById("overviewUsersMajor");
 let overviewUniAndStudyYears = document.getElementById("overviewUsersUniAndStudyYears");
 let overviewSkills = document.getElementById("overviewSkills");
 let overviewLanguages = document.getElementById("overviewLanguages");
+let overviewAboutExperience = document.getElementById("overviewAboutExperience");
 
 let personalDataFirstName = document.getElementById("firstName");
 let personalDataLastName = document.getElementById("lastName");
@@ -42,6 +44,8 @@ let eduFaculty = document.getElementById("eduFaculty");
 let eduMajor = document.getElementById("eduMajor");
 let yearOfAdmission = document.getElementById("yearOfAdmission");
 let yearOfGraduation = document.getElementById("yearOfGraduation");
+let profileExperienceYears = document.getElementById("profileExperienceYears");
+let profileAboutExperience = document.getElementById("profileAboutExperience");
 
 const profileAlert = document.getElementById('profileAlert')
 const appendProfileAlert = (message, type) => {
@@ -177,7 +181,8 @@ function updateProfile() {
     if (profilePhoneNumber.value !== '' && profileAboutUser.value !== '' && profileLanguages.value !== ''
         && facebookLinkInput.value !== '' && telegramLinkInput.value !== '' && linkedinLinkInput.value !== '' && githubLinkInput.value !== ''
         && profileSkills.value !== '' && eduInstitution.value !== '' && eduFaculty.value !== '' && eduMajor.value !== ''
-        && yearOfAdmission.value !== '' && yearOfGraduation.value !== '' && profileImgInput.value !== '') {
+        && yearOfAdmission.value !== '' && yearOfGraduation.value !== '' && profileImgInput.value !== ''
+        && profileExperienceYears.value !== '' && profileAboutExperience.value !== '') {
 
         const profileImageFile = profileImgInput.files[0];
         const httpRequest = new XMLHttpRequest();
@@ -201,6 +206,8 @@ function updateProfile() {
         formData.append('yearOfAdmission', yearOfAdmission.value);
         formData.append('yearOfGraduation', yearOfGraduation.value);
         formData.append('userId', userId);
+        formData.append('experienceYears', profileExperienceYears.value);
+        formData.append('aboutExperience', profileAboutExperience.value);
 
         httpRequest.open("PUT", "/user-profiles/" + profileId, true);
         httpRequest.onreadystatechange = function () {
@@ -208,7 +215,8 @@ function updateProfile() {
                 if (httpRequest.status === 200) {
                     let newUserProfile = JSON.parse(httpRequest.responseText)
                     setProfileData(newUserProfile);
-                    appendProfileAlert('You successfully changed your profile data!', 'success')
+                    appendProfileAlert('You successfully changed your profile data!', 'success');
+                    topFunction();
                 } else {
                     let error = httpRequest.responseText;
                     console.log(error);
@@ -226,7 +234,8 @@ function createProfile() {
     if (profilePhoneNumber.value !== '' && profileAboutUser.value !== '' && profileLanguages.value !== ''
         && facebookLinkInput.value !== '' && telegramLinkInput.value !== '' && linkedinLinkInput.value !== '' && githubLinkInput.value !== ''
         && profileSkills.value !== '' && eduInstitution.value !== '' && eduFaculty.value !== '' && eduMajor.value !== ''
-        && yearOfAdmission.value !== '' && yearOfGraduation.value !== '' && profileImgInput.value !== '') {
+        && yearOfAdmission.value !== '' && yearOfGraduation.value !== '' && profileImgInput.value !== ''
+        && profileExperienceYears.value !== '' && profileAboutExperience.value !== '') {
 
         const profileImageFile = profileImgInput.files[0];
         const httpRequest = new XMLHttpRequest();
@@ -250,6 +259,8 @@ function createProfile() {
         formData.append('yearOfAdmission', yearOfAdmission.value);
         formData.append('yearOfGraduation', yearOfGraduation.value);
         formData.append('userId', userId);
+        formData.append('experienceYears', profileExperienceYears.value);
+        formData.append('aboutExperience', profileAboutExperience.value);
 
         httpRequest.open("POST", "/user-profiles", true);
         httpRequest.onreadystatechange = function () {
@@ -257,7 +268,8 @@ function createProfile() {
                 if (httpRequest.status === 201) {
                     let newUserProfile = JSON.parse(httpRequest.responseText)
                     setProfileData(newUserProfile);
-                    appendProfileAlert('You successfully changed your profile data!', 'success')
+                    appendProfileAlert('You successfully changed your profile data!', 'success');
+                    topFunction();
                 } else {
                     let error = httpRequest.responseText;
                     console.log(error);
@@ -286,7 +298,7 @@ function updatePassword() {
                 httpRequest.onreadystatechange = function () {
                     if (httpRequest.readyState === XMLHttpRequest.DONE) {
                         if (httpRequest.status === 200) {
-                            appendPasswordAlert('You successfully changed your password!', 'success')
+                            appendPasswordAlert('You successfully changed your password!', 'success');
                         } else {
                             let error = httpRequest.responseText;
                             console.log(error);
@@ -329,8 +341,11 @@ function setProfileData(newUserProfile) {
     eduMajor.value = newUserProfile.major
     yearOfAdmission.value = newUserProfile.yearOfAdmission
     yearOfGraduation.value = newUserProfile.yearOfGraduation
+    profileExperienceYears.value = newUserProfile.experienceYears
+    profileAboutExperience.value = newUserProfile.aboutExperience;
 
     overviewCategory.innerHTML = newUserProfile.accountType;
+    contactExperienceYears.innerHTML = newUserProfile.experienceYears + " years";
     contactPhone.innerHTML = newUserProfile.phoneNumber;
     contactLocation.innerHTML = newUserProfile.location;
     overviewAboutUser.innerHTML = newUserProfile.aboutUser;
@@ -341,6 +356,7 @@ function setProfileData(newUserProfile) {
 
     overviewSkills.innerHTML = getSkills(newUserProfile.skills);
     overviewLanguages.innerHTML = getLanguages(newUserProfile.languages);
+    overviewAboutExperience.innerHTML = newUserProfile.aboutExperience;
 
     facebookLink.href = newUserProfile.facebookLink;
     linkedinLink.href = newUserProfile.linkedinLink;
@@ -350,7 +366,6 @@ function setProfileData(newUserProfile) {
     profileId = newUserProfile.id;
     hasProfile = true;
 
-    topFunction();
     getProfileImage();
 }
 

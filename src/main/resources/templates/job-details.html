@@ -88,7 +88,7 @@
                                         <div class="col-lg-3">
                                             <div class="border p-3 text-center">
                                                 <p class="text-muted fs-13 mb-0">Position</p>
-                                                <p class="fw-medium mb-0" id="jobDetailsPosition" ></p>
+                                                <p class="fw-medium mb-0" id="jobDetailsPosition"></p>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
@@ -204,8 +204,9 @@
                                     </ul>
                                     <div class="mt-3">
                                         <a href="#applyNow" data-bs-toggle="modal"
-                                           class="btn btn-primary btn-hover w-100 mt-2">Apply Now <i
-                                                class="uil uil-arrow-right"></i></a>
+                                           class="btn btn-primary btn-hover w-100 mt-2" id="jobDetailsApplyButton">Apply
+                                            Now <i
+                                                    class="uil uil-arrow-right"></i></a>
                                         <a href="../../../../../../Desktop/Jobcy/HTML/dist/bookmark-jobs.html"
                                            class="btn btn-soft-warning btn-hover w-100 mt-2"><i
                                                 class="uil uil-bookmark"></i> Add Bookmark</a>
@@ -247,7 +248,8 @@
                                     </ul>
                                     <div class="mt-4">
                                         <a href="#"
-                                           class="btn btn-primary btn-hover w-100 rounded" id="jobDetailsCompanyDetailsLink"><i class="mdi mdi-eye"></i>
+                                           class="btn btn-primary btn-hover w-100 rounded"
+                                           id="jobDetailsCompanyDetailsLink"><i class="mdi mdi-eye"></i>
                                             View Profile</a>
                                     </div>
                                 </div>
@@ -268,12 +270,13 @@
                         <div class="text-center mb-4">
                             <h5 class="modal-title" id="staticBackdropLabel">Apply For This Job</h5>
                         </div>
+                        <div id="userDetailsApplyAlert"></div>
                         <div class="mb-3">
-                            <label for="messageControlTextarea" class="form-label">Cover Letter</label>
-                            <textarea class="form-control" id="messageControlTextarea" rows="4"
+                            <label for="jobDetailsCoverLetter" class="form-label">Cover Letter</label>
+                            <textarea class="form-control" id="jobDetailsCoverLetter" rows="4"
                                       placeholder="Enter your message"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Send Application</button>
+                        <button type="submit" class="btn btn-primary w-100" onclick="applyToJob()">Send Application</button>
                     </div>
                 </div>
             </div>

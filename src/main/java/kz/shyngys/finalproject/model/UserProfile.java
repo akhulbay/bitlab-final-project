@@ -59,6 +59,12 @@ public class UserProfile {
     @Column(name = "year_of_graduation")
     private Integer yearOfGraduation;
 
+    @Column(name = "experience_years")
+    private Double experienceYears;
+
+    @Column(name = "about_experience", columnDefinition = "text")
+    private String aboutExperience;
+
     private String image;
 
     @OneToOne

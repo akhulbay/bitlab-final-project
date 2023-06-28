@@ -99,6 +99,9 @@ function setCompanyJobs(jobList) {
                                                 <div class="mt-2">
                                                     <span class="badge bg-soft-success mt-1">${jobList[i].workSchedule}</span>
                                                 </div>
+                                                <div class="mt-2">
+                                                    <a href="/candidates/${jobList[i].id}" class="fs-15 fw-medium"><i class="mdi mdi-account"></i> See all cadidates</a>
+                                                </div>
                                             </div>
                                         </div><!--end col-->
                                         <div class="col-lg-3 align-self-center">

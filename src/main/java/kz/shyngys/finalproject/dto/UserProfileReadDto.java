@@ -28,5 +28,7 @@ public class UserProfileReadDto {
     private String major;
     private Integer yearOfAdmission;
     private Integer yearOfGraduation;
+    private Double experienceYears;
+    private String aboutExperience;
     private UserReadDto user;
 }

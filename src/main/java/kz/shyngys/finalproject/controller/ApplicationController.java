@@ -67,4 +67,12 @@ public class ApplicationController {
         model.addAttribute("id", id);
         return "company-details";
     }
+
+    @GetMapping("/candidates/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER')")
+    public String candidatesPage(@PathVariable("id") Long id,
+                              Model model) {
+        model.addAttribute("id", id);
+        return "candidates";
+    }
 }

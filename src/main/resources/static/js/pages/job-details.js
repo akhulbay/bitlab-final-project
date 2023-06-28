@@ -26,7 +26,27 @@ let companyWebsite = document.getElementById("jobDetailsCompanyWebsite");
 let companyLocation = document.getElementById("jobDetailsCompanyLocation");
 let companyDetailsLink = document.getElementById("jobDetailsCompanyDetailsLink");
 
+let jobDetailsApplyButton = document.getElementById("jobDetailsApplyButton");
+let jobDetailsCoverLetter = document.getElementById("jobDetailsCoverLetter");
+
+const applyAlert = document.getElementById('userDetailsApplyAlert')
+const appendApplyAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible text-center" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    applyAlert.append(wrapper)
+}
+
+let doesUserApplied = false;
+
 getJob();
+checkIfUserApplied();
+getApplicationsCount();
 
 function getJob() {
     const httpRequest = new XMLHttpRequest();
@@ -39,6 +59,26 @@ function getJob() {
                 setJobData(job);
                 setCompanyData(job.company);
                 getCompanyImage(job.company.id)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function checkIfUserApplied() {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("GET", `/user-job-applications?userId=${userId}&jobId=${jobId}`, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let resultList = JSON.parse(httpRequest.responseText);
+                if (resultList.length === 1) {
+                    doesUserApplied = true;
+                    setUserApplied();
+                    appendApplyAlert("You already applied for this job!", "warning")
+                    jobDetailsCoverLetter.value = resultList[0].coverLetter;
+                }
             }
         }
     }
@@ -60,6 +100,48 @@ function getCompanyImage(companyId) {
         }
     }
     httpRequest.send();
+}
+
+function getApplicationsCount() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/user-job-applications/count/" + jobId, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                setApplicationCount(httpRequest.response)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function applyToJob() {
+    if (!doesUserApplied) {
+        let coverLetter = jobDetailsCoverLetter.value;
+        const httpRequest = new XMLHttpRequest();
+        httpRequest.open("POST", "/user-job-applications", true);
+        httpRequest.setRequestHeader("Content-Type", "application/json");
+        httpRequest.onreadystatechange = () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 201) {
+                    setUserApplied();
+                    appendApplyAlert("You successfully applied for this job!", "success");
+                    getApplicationsCount();
+                } else {
+                    appendApplyAlert("Something went wrong, please try later!", "warning")
+                }
+            }
+        }
+        let body = {
+            "userId": userId,
+            "jobId": jobId,
+            "coverLetter": coverLetter
+        }
+        body = JSON.stringify(body);
+        httpRequest.send(body);
+    } else {
+        appendApplyAlert("You cannot apply 2nd time!", "danger")
+    }
 }
 
 function setJobData(job) {
@@ -87,6 +169,21 @@ function setCompanyData(company) {
     companyWebsite.innerHTML = company.website;
     companyLocation.innerHTML = company.location;
     companyDetailsLink.href = "/company-details/" + company.id;
+}
+
+function setApplicationCount(number) {
+    let result;
+    switch (number) {
+        case '0':
+            result = 'Be the first to respond'
+            break;
+        case '1':
+            result = '1 person already applied'
+            break;
+        default:
+            result = `${number} people already applied`
+    }
+    appliedUsersCount.innerHTML = result;
 }
 
 function getEmployeeType(employeeType) {
@@ -141,6 +238,12 @@ function getKeySkills(keySkills) {
         `
     }
     return result;
+}
+
+function setUserApplied() {
+    jobDetailsApplyButton.innerHTML = `
+                    You already applied <i class="uil uil-check"></i>
+                `;
 }
 
 
