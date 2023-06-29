@@ -1,15 +1,15 @@
 package kz.shyngys.finalproject.service.impl;
 
-import kz.shyngys.finalproject.dto.UserJobApplicationCreateEditDto;
-import kz.shyngys.finalproject.dto.UserJobApplicationFilter;
-import kz.shyngys.finalproject.dto.UserJobApplicationReadDto;
+import kz.shyngys.finalproject.dto.*;
 import kz.shyngys.finalproject.mapper.UserJobApplicationCreateEditMapper;
 import kz.shyngys.finalproject.mapper.UserJobApplicationReadMapper;
 import kz.shyngys.finalproject.model.Job;
 import kz.shyngys.finalproject.model.User;
 import kz.shyngys.finalproject.model.UserJobApplication;
+import kz.shyngys.finalproject.model.UserProfile;
 import kz.shyngys.finalproject.repository.JobRepository;
 import kz.shyngys.finalproject.repository.UserJobApplicationRepository;
+import kz.shyngys.finalproject.repository.UserProfileRepository;
 import kz.shyngys.finalproject.repository.UserRepository;
 import kz.shyngys.finalproject.service.UserJobApplicationService;
 import kz.shyngys.finalproject.specification.UserJobApplicationSpecification;
@@ -28,15 +28,18 @@ import java.util.Optional;
 public class UserJobApplicationServiceImpl implements UserJobApplicationService {
 
     private final UserJobApplicationRepository userJobAppRepository;
-    private final UserRepository userRepository;
+    private final UserProfileRepository userProfileRepository;
     private final JobRepository jobRepository;
 
     private final UserJobApplicationReadMapper userJobAppReadMapper;
     private final UserJobApplicationCreateEditMapper userJobAppCreateEditMapper;
 
     @Override
-    public List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter filter) {
-        Specification<UserJobApplication> spec = UserJobApplicationSpecification.withFilter(filter);
+    public List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
+                                                   UserFilter userFilter,
+                                                   UserProfileFilter userProfileFilter) {
+        Specification<UserJobApplication> spec = UserJobApplicationSpecification
+                .withFilter(userJobAppFilter, userFilter, userProfileFilter);
         return userJobAppRepository.findAll(spec).stream()
                 .map(userJobAppReadMapper::toDto)
                 .toList();
@@ -57,12 +60,12 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 .map(entity -> {
                     Job job = jobRepository.findById(userJobApp.getJobId())
                             .orElseThrow();
-                    User user = userRepository.findById(userJobApp.getUserId())
+                    UserProfile userProfile = userProfileRepository.findById(userJobApp.getUserProfileId())
                             .orElseThrow();
                     entity.setJob(job);
-                    entity.setUser(user);
+                    entity.setUserProfile(userProfile);
                     entity.setCreatedAt(LocalDate.now());
-                    return  entity;
+                    return entity;
                 })
                 .map(userJobAppRepository::save)
                 .map(userJobAppReadMapper::toDto)
@@ -77,13 +80,13 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 .map(entity -> {
                     Job job = jobRepository.findById(userJobApp.getJobId())
                             .orElseThrow();
-                    User user = userRepository.findById(userJobApp.getUserId())
+                    UserProfile userProfile = userProfileRepository.findById(userJobApp.getUserProfileId())
                             .orElseThrow();
                     entity.setId(id);
                     entity.setJob(job);
-                    entity.setUser(user);
+                    entity.setUserProfile(userProfile);
                     entity.setCreatedAt(LocalDate.now());
-                    return  entity;
+                    return entity;
                 })
                 .map(userJobAppRepository::saveAndFlush)
                 .map(userJobAppReadMapper::toDto)

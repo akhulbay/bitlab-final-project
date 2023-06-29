@@ -27,7 +27,7 @@ public class UserJobApplication {
     private LocalDate createdAt;
 
     @ManyToOne
-    private User user;
+    private UserProfile userProfile;
 
     @ManyToOne
     private Job job;

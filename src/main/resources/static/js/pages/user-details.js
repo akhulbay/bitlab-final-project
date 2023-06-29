@@ -80,10 +80,12 @@ function getProfileImage() {
 }
 
 function setProfileData(newUserProfile) {
+    overviewFullName.innerHTML = `${newUserProfile.user.firstName} ${newUserProfile.user.lastName}`
     overviewCategory.innerHTML = newUserProfile.accountType;
     contactExperienceYears.innerHTML = newUserProfile.experienceYears + " years";
     contactPhone.innerHTML = newUserProfile.phoneNumber;
     contactLocation.innerHTML = newUserProfile.location;
+    contactEmail.innerHTML = newUserProfile.user.username;
     overviewAboutUser.innerHTML = newUserProfile.aboutUser;
     overviewDegree.innerHTML = newUserProfile.degree[0];
     overviewMajor.innerHTML = newUserProfile.major;

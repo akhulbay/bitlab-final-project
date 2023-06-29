@@ -16,6 +16,6 @@ public class UserJobApplicationReadDto {
     private Long id;
     private String coverLetter;
     private LocalDate createdAt;
-    private UserReadDto user;
+    private UserProfileReadDto userProfile;
     private JobReadDto job;
 }

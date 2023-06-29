@@ -29,6 +29,8 @@ let companyDetailsLink = document.getElementById("jobDetailsCompanyDetailsLink")
 let jobDetailsApplyButton = document.getElementById("jobDetailsApplyButton");
 let jobDetailsCoverLetter = document.getElementById("jobDetailsCoverLetter");
 
+let userProfile = null;
+
 const applyAlert = document.getElementById('userDetailsApplyAlert')
 const appendApplyAlert = (message, type) => {
     const wrapper = document.createElement('div')
@@ -45,7 +47,7 @@ const appendApplyAlert = (message, type) => {
 let doesUserApplied = false;
 
 getJob();
-checkIfUserApplied();
+getUserProfile();
 getApplicationsCount();
 
 function getJob() {
@@ -65,10 +67,25 @@ function getJob() {
     httpRequest.send();
 }
 
+function getUserProfile() {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("GET", "/user-profiles/user/" + userId, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                userProfile = JSON.parse(httpRequest.responseText);
+                checkIfUserApplied();
+            }
+        }
+    }
+    httpRequest.send();
+}
+
 function checkIfUserApplied() {
     const httpRequest = new XMLHttpRequest();
 
-    httpRequest.open("GET", `/user-job-applications?userId=${userId}&jobId=${jobId}`, true);
+    httpRequest.open("GET", `/user-job-applications?userProfileId=${userProfile.id}&jobId=${jobId}`, true);
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
@@ -115,7 +132,7 @@ function getApplicationsCount() {
     httpRequest.send();
 }
 
-function applyToJob() {
+function applyForJob() {
     if (!doesUserApplied) {
         let coverLetter = jobDetailsCoverLetter.value;
         const httpRequest = new XMLHttpRequest();
@@ -133,7 +150,7 @@ function applyToJob() {
             }
         }
         let body = {
-            "userId": userId,
+            "userProfileId": userProfile.id,
             "jobId": jobId,
             "coverLetter": coverLetter
         }

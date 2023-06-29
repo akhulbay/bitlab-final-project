@@ -1,8 +1,6 @@
 package kz.shyngys.finalproject.controller;
 
-import kz.shyngys.finalproject.dto.UserJobApplicationCreateEditDto;
-import kz.shyngys.finalproject.dto.UserJobApplicationFilter;
-import kz.shyngys.finalproject.dto.UserJobApplicationReadDto;
+import kz.shyngys.finalproject.dto.*;
 import kz.shyngys.finalproject.service.UserJobApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +17,10 @@ public class UserJobApplicationController {
     private final UserJobApplicationService userJobAppService;
 
     @GetMapping
-    public List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter filter) {
-        return userJobAppService.findAll(filter);
+    public List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
+                                                   UserFilter userFilter,
+                                                   UserProfileFilter userProfileFilter) {
+        return userJobAppService.findAll(userJobAppFilter, userFilter, userProfileFilter);
     }
 
     @GetMapping("/{id}")

@@ -14,6 +14,6 @@ import java.time.LocalDate;
 public class UserJobApplicationCreateEditDto {
 
     private String coverLetter;
-    private Long userId;
+    private Long userProfileId;
     private Long jobId;
 }

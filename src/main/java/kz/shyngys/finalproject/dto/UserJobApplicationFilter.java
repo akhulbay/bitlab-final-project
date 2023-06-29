@@ -1,4 +1,4 @@
 package kz.shyngys.finalproject.dto;
 
-public record UserJobApplicationFilter(Long userId, Long jobId) {
+public record UserJobApplicationFilter(Long userProfileId, Long jobId) {
 }
