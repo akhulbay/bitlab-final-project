@@ -25,7 +25,7 @@ public class UserProfile {
     private String phoneNumber;
 
     @Column(name = "account_type")
-    private String accountType;
+    private Integer accountType;
 
     private String languages;
 

@@ -24,7 +24,7 @@ public class JobReadDto {
     private WorkSchedule workSchedule;
     private String keySkills;
     private String position;
-    private String category;
+    private Integer category;
     private String experience;
     private String qualification;
     private LocalDate createdAt;

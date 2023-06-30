@@ -20,7 +20,7 @@ public class JobCreateEditDto {
     private String workSchedule;
     private String keySkills;
     private String position;
-    private String category;
+    private Integer category;
     private String experience;
     private String qualification;
     private Long companyId;

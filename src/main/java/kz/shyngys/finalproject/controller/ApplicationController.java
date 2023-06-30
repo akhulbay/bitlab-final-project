@@ -84,4 +84,10 @@ public class ApplicationController {
         return "user-details";
     }
 
+    @GetMapping("/job-list")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String jobListPage() {
+        return "job-list";
+    }
+
 }

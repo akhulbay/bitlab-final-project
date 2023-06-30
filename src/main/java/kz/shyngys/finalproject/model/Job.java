@@ -46,7 +46,7 @@ public class Job {
 
     private String position;
 
-    private String category;
+    private Integer category;
 
     private String experience;
 

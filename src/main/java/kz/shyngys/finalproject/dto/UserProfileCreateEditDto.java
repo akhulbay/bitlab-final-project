@@ -14,7 +14,7 @@ public class UserProfileCreateEditDto {
 
     private String aboutUser;
     private String phoneNumber;
-    private String accountType;
+    private Integer accountType;
     private String languages;
     private String location;
     private String facebookLink;

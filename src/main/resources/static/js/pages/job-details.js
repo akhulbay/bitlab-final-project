@@ -163,7 +163,7 @@ function applyForJob() {
 
 function setJobData(job) {
     title.innerHTML = job.title;
-    experience.innerHTML = job.experience;
+    experience.innerHTML = getExperience(job.experience);
     employeeType.innerHTML = getEmployeeType(job.workSchedule);
     position.innerHTML = job.position;
     offeredSalary.innerHTML = " $" + job.offeredSalary + "/ month";
@@ -173,11 +173,11 @@ function setJobData(job) {
     keySkillsList.innerHTML = getKeySkills(job.keySkills)
 
     overviewTitle.innerHTML = job.title;
-    overviewExperience.innerHTML = job.experience;
+    overviewExperience.innerHTML = getExperience(job.experience);
     overviewCity.innerHTML = job.city;
     overviewOfferedSalary.innerHTML = " $" + job.offeredSalary;
     overviewQualification.innerHTML = job.qualification + " Degree";
-    overviewCategory.innerHTML = job.category;
+    overviewCategory.innerHTML = getCategory(job.category);
     overviewCreatedAt.innerHTML = job.createdAt;
 }
 
@@ -263,6 +263,52 @@ function setUserApplied() {
                 `;
 }
 
+function getExperience(experience) {
+    let result = '';
+    switch (experience) {
+        case "0":
+            result = 'No experience';
+            break;
+        case "1-3":
+            result = 'from 1 to 3 years';
+            break;
+        case "3-6":
+            result = 'from 3 to 6 years';
+            break;
+    }
+    return result;
+}
+
+function getCategory(category) {
+    let result = '';
+    switch (category) {
+        case 1:
+            result = 'Accounting';
+            break;
+        case 2:
+            result = 'IT & Software';
+            break;
+        case 3:
+            result = 'Marketing';
+            break;
+        case 4:
+            result = 'Banking';
+            break;
+        case 5:
+            result = 'Digital and Creative';
+            break;
+        case 6:
+            result = 'Retail';
+            break;
+        case 7:
+            result = 'Management';
+            break;
+        case 8:
+            result = 'Human Resources';
+            break;
+    }
+    return result;
+}
 
 
 

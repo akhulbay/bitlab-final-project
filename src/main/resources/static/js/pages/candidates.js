@@ -92,7 +92,7 @@ async function setAllCandidates(candidatesList) {
                                         <div class="ms-3">
                                             <a href="/candidate-details/${candidatesList[i].userProfile.user.id}"
                                                class="primary-link"><h5 class="fs-17">${candidatesList[i].userProfile.user.firstName} ${candidatesList[i].userProfile.user.lastName}</h5></a>
-                                            <span class="badge bg-soft-info fs-13">${candidatesList[i].userProfile.accountType}</span>
+                                            <span class="badge bg-soft-info fs-13">${getCategory(candidatesList[i].userProfile.accountType)}</span>
                                         </div>
                                     </div>
                                     <div class="border rounded mb-4">
@@ -129,4 +129,36 @@ async function setAllCandidates(candidatesList) {
     return new Promise((resolve, reject) => {
         resolve(result);
     });
+}
+
+function getCategory(category) {
+    console.log(category)
+    let result = '';
+    switch (category) {
+        case 1:
+            result = 'Accounting';
+            break;
+        case 2:
+            result = 'IT & Software';
+            break;
+        case 3:
+            result = 'Marketing';
+            break;
+        case 4:
+            result = 'Banking';
+            break;
+        case 5:
+            result = 'Digital and Creative';
+            break;
+        case 6:
+            result = 'Retail';
+            break;
+        case 7:
+            result = 'Management';
+            break;
+        case 8:
+            result = 'Human Resources';
+            break;
+    }
+    return result;
 }

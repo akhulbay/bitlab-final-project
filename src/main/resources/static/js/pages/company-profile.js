@@ -228,9 +228,9 @@ function setCompanyOpenJobs(jobList) {
                         <div class="col-lg-12">
                             <div class="mt-3 mt-lg-0">
                                 <h5 class="fs-16 fw-medium mb-1"><a
-                                        href="#"
+                                        href="/job-details/${jobList[i].id}"
                                         class="text-dark">${jobList[i].title}</a> <small
-                                        class="text-muted fw-normal">(Experience: ${jobList[i].experience})</small>
+                                        class="text-muted fw-normal">(Experience: ${getExperience(jobList[i].experience)})</small>
                                 </h5>
                                 <ul class="list-inline mb-0">
                                     <li class="list-inline-item">
@@ -291,4 +291,20 @@ function setCompanyOpenJobs(jobList) {
     } else {
         jobListDiv.innerHTML = result;
     }
+}
+
+function getExperience(experience) {
+    let result = '';
+    switch (experience) {
+        case "0":
+            result = 'No experience';
+            break;
+        case "1-3":
+            result = 'from 1 to 3 years';
+            break;
+        case "3-6":
+            result = 'from 3 to 6 years';
+            break;
+    }
+    return result;
 }

@@ -9,6 +9,7 @@ import kz.shyngys.finalproject.dto.UserProfileFilter;
 import kz.shyngys.finalproject.model.Job;
 import kz.shyngys.finalproject.model.UserJobApplication;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +32,11 @@ public class UserJobApplicationSpecification {
             }
             if (userFilter.firstName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("userProfile").get("user").get("firstName"),
-                        userFilter.firstName()));
+                        "%" + userFilter.firstName() + "%"));
             }
             if (userFilter.lastName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("userProfile").get("user").get("lastName"),
-                        userFilter.lastName()));
+                        "%" + userFilter.lastName() + "%"));
             }
             if (userProfileFilter.location() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("userProfile").get("location"),
