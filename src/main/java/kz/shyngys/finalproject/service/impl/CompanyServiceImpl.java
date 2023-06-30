@@ -1,25 +1,27 @@
 package kz.shyngys.finalproject.service.impl;
 
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
+import kz.shyngys.finalproject.dto.CompanyFilter;
 import kz.shyngys.finalproject.dto.CompanyReadDto;
 import kz.shyngys.finalproject.mapper.CompanyCreateEditMapper;
 import kz.shyngys.finalproject.mapper.CompanyReadMapper;
 import kz.shyngys.finalproject.model.Company;
 import kz.shyngys.finalproject.model.User;
-import kz.shyngys.finalproject.model.UserProfile;
 import kz.shyngys.finalproject.repository.CompanyRepository;
 import kz.shyngys.finalproject.repository.UserRepository;
 import kz.shyngys.finalproject.service.CompanyService;
 import kz.shyngys.finalproject.service.ImageService;
-import kz.shyngys.finalproject.service.UserService;
+import kz.shyngys.finalproject.specification.CompanySpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,8 +38,10 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyReadMapper companyReadMapper;
 
     @Override
-    public List<CompanyReadDto> findAll() {
-        return null;
+    public Page<CompanyReadDto> findAll(CompanyFilter companyFilter, Pageable pageable) {
+        Specification<Company> spec = CompanySpecification.withFilter(companyFilter);
+        return companyRepository.findAll(spec, pageable)
+                .map(companyReadMapper::toDto);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class UserController {
         if (userService.isUsernameExists(user.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
-        UserReadDto createdUser = userService.createUser(user);
+        UserReadDto createdUser = userService.createEmployer(user);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 

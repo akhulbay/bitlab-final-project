@@ -19,11 +19,15 @@ public class JobSpecification {
             if (jobFilter.companyId() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("company").get("id"), jobFilter.companyId()));
             }
-            if (jobFilter.sortOrder() != null && jobFilter.sortOrder().equals("ne")) {
-                query.orderBy(criteriaBuilder.desc(root.get("createdAt")));
-            }
-            if (jobFilter.sortOrder() != null && jobFilter.sortOrder().equals("od")) {
-                query.orderBy(criteriaBuilder.asc(root.get("createdAt")));
+            if (jobFilter.sortOrder() != null) {
+                switch (jobFilter.sortOrder()) {
+                    case "ne":
+                        query.orderBy(criteriaBuilder.desc(root.get("createdAt")));
+                        break;
+                    case "od":
+                        query.orderBy(criteriaBuilder.asc(root.get("createdAt")));
+                        break;
+                }
             }
             if (jobFilter.title() != null) {
                 predicates.add(criteriaBuilder.like(root.get("title"), "%" + jobFilter.title() + "%"));

@@ -1,15 +1,17 @@
 package kz.shyngys.finalproject.controller;
 
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
+import kz.shyngys.finalproject.dto.CompanyFilter;
 import kz.shyngys.finalproject.dto.CompanyReadDto;
+import kz.shyngys.finalproject.dto.PageResponse;
 import kz.shyngys.finalproject.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/companies")
@@ -19,8 +21,9 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @GetMapping
-    public List<CompanyReadDto> findAll() {
-        return companyService.findAll();
+    public PageResponse<CompanyReadDto> findAll(CompanyFilter companyFilter, Pageable pageable) {
+        Page<CompanyReadDto> companies = companyService.findAll(companyFilter, pageable);
+        return PageResponse.of(companies);
     }
 
     @GetMapping("/{id}")

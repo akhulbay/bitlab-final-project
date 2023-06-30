@@ -3,8 +3,11 @@ package kz.shyngys.finalproject.controller;
 import kz.shyngys.finalproject.dto.JobCreateEditDto;
 import kz.shyngys.finalproject.dto.JobFilter;
 import kz.shyngys.finalproject.dto.JobReadDto;
+import kz.shyngys.finalproject.dto.PageResponse;
 import kz.shyngys.finalproject.service.JobService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +22,9 @@ public class JobController {
     private final JobService jobService;
 
     @GetMapping
-    public List<JobReadDto> findAll(JobFilter filter) {
-        return jobService.findAll(filter);
+    public PageResponse<JobReadDto> findAll(JobFilter filter, Pageable pageable) {
+        Page<JobReadDto> jobs = jobService.findAll(filter, pageable);
+        return PageResponse.of(jobs);
     }
 
     @GetMapping("/company/{id}")
@@ -35,6 +39,11 @@ public class JobController {
             ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(job);
+    }
+
+    @GetMapping("/count/{id}")
+    public Integer countByCompanyId(@PathVariable("id") Long id) {
+        return jobService.countByCompanyId(id);
     }
 
     @PostMapping

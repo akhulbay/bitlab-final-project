@@ -89,8 +89,8 @@ function getCompanyOpenJobs() {
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                let jobList = JSON.parse(httpRequest.responseText);
-                setCompanyOpenJobs(jobList);
+                let response = JSON.parse(httpRequest.responseText);
+                setCompanyOpenJobs(response.data);
             }
         }
     }
@@ -188,7 +188,7 @@ function createCompany() {
 function setCompanyData(company) {
 
     overviewCompanyName.innerHTML = company.name
-    overviewCompanyEstablishedDate.innerHTML = company.establishDate
+    overviewCompanyEstablishedDate.innerHTML = getStyledEstablishedDate(company.establishDate)
     overviewCompanyLinkedinLink.href = company.linkedinLink
     overviewCompanyWhatsappLink.href = company.whatsappLink
     overviewCompanyOwnerName.innerHTML = company.ownerName
@@ -306,5 +306,52 @@ function getExperience(experience) {
             result = 'from 3 to 6 years';
             break;
     }
+    return result;
+}
+
+// to get established date in format like "Since July 2010"
+function getStyledEstablishedDate(date) {
+    let result = "since "
+    let month = date.substring(5, 7);
+    let year = date.substring(0, 4);
+    switch (month) {
+        case "01":
+            result += "January";
+            break;
+        case "02":
+            result += "February";
+            break;
+        case "03":
+            result += "March";
+            break;
+        case "04":
+            result += "April";
+            break;
+        case "05":
+            result += "May";
+            break
+        case "06":
+            result += "June";
+            break;
+        case "07":
+            result += "July";
+            break;
+        case "08":
+            result += "August";
+            break;
+        case "09":
+            result += "September";
+            break;
+        case "10":
+            result += "October";
+            break;
+        case "11":
+            result += "November";
+            break;
+        case "12":
+            result += "December";
+            break;
+    }
+    result += ` ${year}`;
     return result;
 }

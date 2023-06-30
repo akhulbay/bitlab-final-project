@@ -27,7 +27,7 @@ function registerEmployer() {
     httpRequest.onreadystatechange = function() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 201) {
-                location.href = "/auth/signin/employer"
+                location.href = "/auth/signin/user"
             } else if (httpRequest.status === 409) {
                 appendAlert('This email already exists!', 'danger')
             } else {

@@ -12,6 +12,8 @@ import kz.shyngys.finalproject.repository.JobRepository;
 import kz.shyngys.finalproject.service.JobService;
 import kz.shyngys.finalproject.specification.JobSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,11 +34,10 @@ public class JobServiceImpl implements JobService {
     private final JobCreateEditMapper jobCreateEditMapper;
 
     @Override
-    public List<JobReadDto> findAll(JobFilter filter) {
+    public Page<JobReadDto> findAll(JobFilter filter, Pageable pageable) {
         Specification<Job> spec = JobSpecification.withFilter(filter);
-        return jobRepository.findAll(spec).stream()
-                .map(jobReadMapper::toDto)
-                .toList();
+        return jobRepository.findAll(spec, pageable)
+                .map(jobReadMapper::toDto);
     }
 
     @Override
@@ -51,6 +52,11 @@ public class JobServiceImpl implements JobService {
         return jobRepository.findById(id)
                 .map(jobReadMapper::toDto)
                 .orElse(null);
+    }
+
+    @Override
+    public Integer countByCompanyId(Long id) {
+        return jobRepository.countByCompanyId(id);
     }
 
     @Transactional

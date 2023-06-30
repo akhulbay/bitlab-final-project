@@ -59,6 +59,7 @@ function updatePersonalData() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     let newUser = JSON.parse(httpRequest.responseText);
+                    getNavbarUserData();
                     setUserData(newUser);
                     appendEmployerDataAlert('You successfully changed your personal data!', 'success')
                 }

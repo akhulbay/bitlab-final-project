@@ -1,15 +1,11 @@
 package kz.shyngys.finalproject.specification;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.JobFilter;
 import kz.shyngys.finalproject.dto.UserFilter;
 import kz.shyngys.finalproject.dto.UserJobApplicationFilter;
 import kz.shyngys.finalproject.dto.UserProfileFilter;
-import kz.shyngys.finalproject.model.Job;
 import kz.shyngys.finalproject.model.UserJobApplication;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

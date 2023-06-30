@@ -55,7 +55,7 @@ public class ApplicationController {
     @GetMapping("/job-details/{id}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
     public String jobDetailsPage(@PathVariable("id") Long id,
-                              Model model) {
+                                 Model model) {
         model.addAttribute("id", id);
         return "job-details";
     }
@@ -63,7 +63,7 @@ public class ApplicationController {
     @GetMapping("/company-details/{id}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
     public String companyDetailsPage(@PathVariable("id") Long id,
-                                 Model model) {
+                                     Model model) {
         model.addAttribute("id", id);
         return "company-details";
     }
@@ -71,7 +71,7 @@ public class ApplicationController {
     @GetMapping("/candidates/{id}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYER')")
     public String candidatesPage(@PathVariable("id") Long id,
-                              Model model) {
+                                 Model model) {
         model.addAttribute("id", id);
         return "candidates";
     }
@@ -79,7 +79,7 @@ public class ApplicationController {
     @GetMapping("/candidate-details/{id}")
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_ADMIN')")
     public String candidateDetailsPage(@PathVariable("id") Long id,
-                                     Model model) {
+                                       Model model) {
         model.addAttribute("id", id);
         return "user-details";
     }
@@ -88,6 +88,12 @@ public class ApplicationController {
     @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
     public String jobListPage() {
         return "job-list";
+    }
+
+    @GetMapping("/company-list")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String companyListPage() {
+        return "company-list";
     }
 
 }

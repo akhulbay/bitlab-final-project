@@ -1,7 +1,6 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.*;
-import kz.shyngys.finalproject.model.UserJobApplication;
 
 import java.util.List;
 

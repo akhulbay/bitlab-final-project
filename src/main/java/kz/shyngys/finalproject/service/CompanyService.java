@@ -1,13 +1,14 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
+import kz.shyngys.finalproject.dto.CompanyFilter;
 import kz.shyngys.finalproject.dto.CompanyReadDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CompanyService {
 
-    List<CompanyReadDto> findAll();
+    Page<CompanyReadDto> findAll(CompanyFilter companyFilter, Pageable pageable);
 
     CompanyReadDto findById(Long id);
 

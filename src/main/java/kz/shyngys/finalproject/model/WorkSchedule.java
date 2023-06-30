@@ -4,5 +4,5 @@ public enum WorkSchedule {
     FREELANCE,
     INTERNSHIP,
     FULL_TIME,
-    PART_TIME;
+    PART_TIME
 }

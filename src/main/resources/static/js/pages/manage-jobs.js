@@ -40,8 +40,8 @@ function getJobs() {
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                let jobList = JSON.parse(httpRequest.responseText);
-                setCompanyJobs(jobList);
+                let response = JSON.parse(httpRequest.responseText);
+                setCompanyJobs(response.data);
             }
         }
     }

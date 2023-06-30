@@ -10,4 +10,6 @@ public interface JobRepository extends JpaRepository<Job, Long>,
         JpaSpecificationExecutor<Job> {
 
     List<Job> findAllByCompanyId(Long companyId);
+
+    Integer countByCompanyId(Long companyId);
 }

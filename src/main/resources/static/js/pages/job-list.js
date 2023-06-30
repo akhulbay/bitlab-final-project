@@ -8,30 +8,33 @@ let jobListExp = document.getElementsByName("jobListExpRadio");
 let jobListWorkSchedule = document.getElementsByName("jobListWorkSchedule");
 let jobListPostDate = document.getElementsByName("jobListPostDate");
 
+let jobListPagination = document.getElementById("jobListPagination");
 
-getJobs();
+filterJobs();
 
-function getJobs() {
-    const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", "/jobs", true);
-    httpRequest.onreadystatechange = () => {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                let jobList = JSON.parse(httpRequest.responseText);
-                setJobs(jobList);
-            }
-        }
+function filterJobs(page) {
+    if (page === null || page === '' || page === undefined) {
+        page = 0;
     }
-    httpRequest.send();
-}
+    let result = `?page=${page}&size=10`;
 
-function filterJobs() {
-    let result = `?city=${jobListLocation.value}&category=${jobListCategory.value}&experience=${getRadioExperience(jobListExp)}&workSchedule=${getWorkSchedule(jobListWorkSchedule)}`;
+    if (jobListLocation.value !== 'all') {
+        result += `&city=${jobListLocation.value}`;
+    }
+    if (jobListCategory.value !== 'all') {
+        result += `&category=${jobListCategory.value}`;
+    }
     if (jobListName.value !== '') {
         result += `&title=${jobListName.value}`;
     }
     if (getRadioPostDate(jobListPostDate) !== 'all') {
-        result += `&postDate=${getRadioPostDate(jobListPostDate)}`
+        result += `&postDate=${getRadioPostDate(jobListPostDate)}`;
+    }
+    if (getRadioExperience(jobListExp) !== 'all') {
+        result += `&experience=${getRadioExperience(jobListExp)}`;
+    }
+    if (getWorkSchedule(jobListWorkSchedule) !== 'all') {
+        result += `&workSchedule=${getWorkSchedule(jobListWorkSchedule)}`;
     }
     console.log(result)
     const httpRequest = new XMLHttpRequest();
@@ -39,9 +42,10 @@ function filterJobs() {
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                let jobList = JSON.parse(httpRequest.responseText);
-                setJobs(jobList);
-                console.log(jobList);
+                let response = JSON.parse(httpRequest.responseText);
+                setJobs(response.data);
+                setPagination(response.metadata)
+                console.log(response);
             } else {
                 let error = httpRequest.responseText;
                 console.log(error);
@@ -124,6 +128,28 @@ function setJobs(jobList) {
     } else {
         jobListDiv.innerHTML = "<h5 class='text-center mt-3'>No jobs found!</h5>"
     }
+}
+
+function setPagination(page) {
+    let result = `
+       <li class="page-item active" onclick="filterJobs(0)">
+            <a class="page-link" href="javascript:void(0)">${1}</a></li>
+    `;
+    for (let i = 1; i < page.totalPages; i++) {
+        result += `
+            <li class="page-item active" onclick="filterJobs(${i})">
+            <a class="page-link" href="javascript:void(0)">${i + 1}</a></li>
+        `;
+    }
+    jobListPagination.innerHTML = result;
+}
+
+function prevPage() {
+
+}
+
+function nextPage() {
+
 }
 
 function getExperience(experience) {
