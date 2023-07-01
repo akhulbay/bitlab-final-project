@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="main_layout.html">
+
+<div class="main-content" layout:fragment="siteContent">
+    <div class="page-content">
+        <!-- Start home -->
+        <section class="page-title-box">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="text-center text-white">
+                            <h3 class="mb-4">Bookmarks Jobs</h3>
+                            <div class="page-next">
+                                <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                    <ol class="breadcrumb justify-content-center">
+                                        <li class="breadcrumb-item"><a
+                                                href="../../../../../../Desktop/Jobcy/HTML/dist/index.html">Home</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page"> Bookmarks Jobs </li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!-- end home -->
+
+        <!-- START SHAPE -->
+        <div class="position-relative" style="z-index: 1">
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                    <path fill="#FFFFFF" fill-opacity="1"
+                          d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- END SHAPE -->
+
+
+        <!-- START MANAGE-JOBS -->
+        <section class="section">
+            <input type="hidden" th:value="${#authentication.principal.id}" id="favoritesUserId">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-10">
+                        <div class="mb-4 mb-lg-0">
+                            <h4 class="mb-0 ms-3"> Bookmarks Jobs </h4>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <div class="row mt-4">
+                    <div class="col-lg-12 d-grid" style="grid-template-columns: 1fr 1fr; gap: 24px" id="favoritesJobList">
+                    </div><!--end col-->
+                </div>
+            </div><!--end container-->
+        </section>
+        <!-- END MANAGE-JOBS -->
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+</html>
+<script src="/js/pages/favorites.js"></script>

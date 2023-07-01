@@ -27,9 +27,11 @@ let companyLocation = document.getElementById("jobDetailsCompanyLocation");
 let companyDetailsLink = document.getElementById("jobDetailsCompanyDetailsLink");
 
 let jobDetailsApplyButton = document.getElementById("jobDetailsApplyButton");
+let jobDetailsBookmarkButton = document.getElementById("jobDetailsBookmarkButton");
 let jobDetailsCoverLetter = document.getElementById("jobDetailsCoverLetter");
 
 let userProfile = null;
+let favoritesId = null;
 
 const applyAlert = document.getElementById('userDetailsApplyAlert')
 const appendApplyAlert = (message, type) => {
@@ -49,6 +51,7 @@ let doesUserApplied = false;
 getJob();
 getUserProfile();
 getApplicationsCount();
+checkForBookmark();
 
 function getJob() {
     const httpRequest = new XMLHttpRequest();
@@ -100,6 +103,43 @@ function checkIfUserApplied() {
         }
     }
     httpRequest.send();
+}
+
+function checkForBookmark() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}`, true);
+    httpRequest.send();
+
+        httpRequest.onreadystatechange = () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    let response = JSON.parse(httpRequest.responseText);
+                    if (response.length > 0) {
+                        jobDetailsBookmarkButton.innerHTML = `
+                            <button type="button"
+                                           class="btn btn-soft-warning btn-hover w-100 mt-2" 
+                                           onclick="deleteFromFavorites(${response[0].id})">
+                            <i class="uil uil-multiply"></i> Delete Bookmark
+                            </button>
+                        `;
+                        favoritesId = response[0].id;
+                    } else {
+                        jobDetailsBookmarkButton.innerHTML = `
+                            <button type="button"
+                                                    class="btn btn-soft-warning btn-hover w-100 mt-2"
+                                                    onclick="addToFavorites()">
+                                                <i class="uil uil-bookmark"></i> Add Bookmark
+                                            </button>
+                        `
+                    }
+                } else {
+                    let error = httpRequest.responseText;
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        }
+
 }
 
 function getCompanyImage(companyId) {
@@ -310,9 +350,45 @@ function getCategory(category) {
     return result;
 }
 
+function deleteFromFavorites(favoritesId) {
+    const httpRequest = new XMLHttpRequest();
 
+    httpRequest.open("DELETE", "/favorite-jobs/" + favoritesId, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 204) {
+                checkForBookmark();
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
 
+function addToFavorites() {
+    const httpRequest = new XMLHttpRequest();
 
+    httpRequest.open("POST", "/favorite-jobs", true);
+    httpRequest.setRequestHeader("Content-Type", "application/json");
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 201) {
+                checkForBookmark();
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    let body = {
+        "jobId": jobId,
+        "userId": userId
+    }
+    body = JSON.stringify(body)
+    httpRequest.send(body);
+}
 
 
 

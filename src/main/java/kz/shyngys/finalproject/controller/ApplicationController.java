@@ -102,4 +102,10 @@ public class ApplicationController {
         return "user-applications";
     }
 
+    @GetMapping("/favorites")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String favoritesPage() {
+        return "favorites";
+    }
+
 }

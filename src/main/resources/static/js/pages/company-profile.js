@@ -41,6 +41,7 @@ const appendCompanyAlert = (message, type) => {
 
 let hasCompanyProfile = false;
 let companyId = null;
+let favoritesId = null;
 
 getCompany();
 
@@ -217,12 +218,13 @@ function setCompanyData(company) {
     topFunction();
 }
 
-function setCompanyOpenJobs(jobList) {
+async function setCompanyOpenJobs(jobList) {
     let jobListDiv = document.getElementById("companyOpenJobList");
     let result = '';
     for (let i = 0; i < jobList.length; i++) {
+        let isBookmarked = await isJobBookmarked(jobList[i].id)
         result += `
-            <div class="job-box card">
+            <div class="job-box ${isBookmarked ? "bookmark-post" : ""} card">
                 <div class="p-3">
                     <div class="row">
                         <div class="col-lg-12">
@@ -253,7 +255,11 @@ function setCompanyOpenJobs(jobList) {
                         </div><!--end col-->
                     </div><!--end row-->
                     <div class="favorite-icon">
-                        <a href="javascript:void(0)"><i class="uil uil-heart-alt fs-18"></i></a>
+                        ${isBookmarked ? `
+                         <a href="javascript:void(0)" onclick="deleteFromFavorites(${favoritesId})"><i class="uil uil-heart-alt fs-18"></i></a>
+                         ` : `
+                         <a href="javascript:void(0)" onclick="addToFavorites(${jobList[i].id})"><i class="uil uil-heart-alt fs-18"></i></a>
+                         `}
                     </div>
                 </div>
                 <div class="p-3 bg-light">
@@ -291,6 +297,32 @@ function setCompanyOpenJobs(jobList) {
     } else {
         jobListDiv.innerHTML = result;
     }
+}
+
+function isJobBookmarked(jobId) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}`, true);
+    httpRequest.send();
+
+    return new Promise((resolve, reject) => {
+        httpRequest.onreadystatechange = () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    let response = JSON.parse(httpRequest.responseText);
+                    if (response.length > 0) {
+                        resolve(true);
+                        favoritesId = response[0].id;
+                    } else {
+                        resolve(false);
+                    }
+                } else {
+                    let error = httpRequest.responseText;
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        }
+    })
 }
 
 function getExperience(experience) {
@@ -354,4 +386,44 @@ function getStyledEstablishedDate(date) {
     }
     result += ` ${year}`;
     return result;
+}
+
+function deleteFromFavorites(favoritesId) {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("DELETE", "/favorite-jobs/" + favoritesId, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 204) {
+                getCompanyOpenJobs();
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function addToFavorites(jobId) {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("POST", "/favorite-jobs", true);
+    httpRequest.setRequestHeader("Content-Type", "application/json");
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 201) {
+                getCompanyOpenJobs();
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    let body = {
+        "jobId": jobId,
+        "userId": userId
+    }
+    body = JSON.stringify(body)
+    httpRequest.send(body);
 }

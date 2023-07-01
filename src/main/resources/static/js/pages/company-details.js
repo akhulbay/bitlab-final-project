@@ -14,6 +14,8 @@ let overviewCompanyEstablishedDate2 = document.getElementById("overviewCompanyDe
 let companyContactLink = document.getElementById("companyDetailsContactLink");
 let overviewAboutCompany = document.getElementById("overviewDetailsAboutCompany");
 
+let favoritesId = null;
+
 getCompany();
 
 function getCompany() {
@@ -87,12 +89,13 @@ function setCompanyData(company) {
     topFunction();
 }
 
-function setCompanyOpenJobs(jobList) {
+async function setCompanyOpenJobs(jobList) {
     let jobListDiv = document.getElementById("companyDetailsOpenJobList");
     let result = '';
     for (let i = 0; i < jobList.length; i++) {
+        let isBookmarked = await isJobBookmarked(jobList[i].id)
         result += `
-            <div class="job-box card">
+            <div class="job-box ${isBookmarked ? "bookmark-post" : ""} card">
                 <div class="p-3">
                     <div class="row">
                         <div class="col-lg-12">
@@ -100,7 +103,7 @@ function setCompanyOpenJobs(jobList) {
                                 <h5 class="fs-16 fw-medium mb-1"><a
                                         href="#"
                                         class="text-dark">${jobList[i].title}</a> <small
-                                        class="text-muted fw-normal">(Experience: ${jobList[i].experience})</small>
+                                        class="text-muted fw-normal">(Experience: ${getExperience(jobList[i].experience)})</small>
                                 </h5>
                                 <ul class="list-inline mb-0">
                                     <li class="list-inline-item">
@@ -123,7 +126,11 @@ function setCompanyOpenJobs(jobList) {
                         </div><!--end col-->
                     </div><!--end row-->
                     <div class="favorite-icon">
-                        <a href="javascript:void(0)"><i class="uil uil-heart-alt fs-18"></i></a>
+                        ${isBookmarked ? `
+                         <a href="javascript:void(0)" onclick="deleteFromFavorites(${favoritesId})"><i class="uil uil-heart-alt fs-18"></i></a>
+                         ` : `
+                         <a href="javascript:void(0)" onclick="addToFavorites(${jobList[i].id})"><i class="uil uil-heart-alt fs-18"></i></a>
+                         `}
                     </div>
                 </div>
                 <div class="p-3 bg-light">
@@ -161,6 +168,48 @@ function setCompanyOpenJobs(jobList) {
     } else {
         jobListDiv.innerHTML = result;
     }
+}
+
+function isJobBookmarked(jobId) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}`, true);
+    httpRequest.send();
+
+    return new Promise((resolve, reject) => {
+        httpRequest.onreadystatechange = () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    let response = JSON.parse(httpRequest.responseText);
+                    if (response.length > 0) {
+                        resolve(true);
+                        favoritesId = response[0].id;
+                    } else {
+                        resolve(false);
+                    }
+                } else {
+                    let error = httpRequest.responseText;
+                    console.log(error)
+                    reject(error)
+                }
+            }
+        }
+    })
+}
+
+function getExperience(experience) {
+    let result = '';
+    switch (experience) {
+        case "0":
+            result = 'No experience';
+            break;
+        case "1-3":
+            result = 'from 1 to 3 years';
+            break;
+        case "3-6":
+            result = 'from 3 to 6 years';
+            break;
+    }
+    return result;
 }
 
 // to get established date in format like "Since July 2010"
@@ -208,4 +257,44 @@ function getStyledEstablishedDate(date) {
     }
     result += ` ${year}`;
     return result;
+}
+
+function deleteFromFavorites(favoritesId) {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("DELETE", "/favorite-jobs/" + favoritesId, true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 204) {
+                getCompanyOpenJobs();
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function addToFavorites(jobId) {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("POST", "/favorite-jobs", true);
+    httpRequest.setRequestHeader("Content-Type", "application/json");
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 201) {
+                getCompanyOpenJobs();
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    let body = {
+        "jobId": jobId,
+        "userId": userId
+    }
+    body = JSON.stringify(body)
+    httpRequest.send(body);
 }

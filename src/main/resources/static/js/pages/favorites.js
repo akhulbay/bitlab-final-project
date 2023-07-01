@@ -1,104 +1,69 @@
-let userId = document.getElementById("jobListUserId").value;
-let jobListDiv = document.getElementById("jobList");
+let userId = document.getElementById("favoritesUserId").value;
+let jobListDiv = document.getElementById("favoritesJobList");
 
-let jobListName = document.getElementById("jobListName");
-let jobListLocation = document.getElementById("jobListLocation");
-let jobListCategory = document.getElementById("jobListCategory");
+let profileId = null;
 
-let jobListExp = document.getElementsByName("jobListExpRadio");
-let jobListWorkSchedule = document.getElementsByName("jobListWorkSchedule");
-let jobListPostDate = document.getElementsByName("jobListPostDate");
+getFavorites()
 
-let jobListPagination = document.getElementById("jobListPagination");
 
-let favoritesId = null;
 
-filterJobs();
-
-function filterJobs(page) {
-    if (page === null || page === '' || page === undefined) {
-        page = 0;
-    }
-    let result = `?page=${page}&size=10`;
-
-    if (jobListLocation.value !== 'all') {
-        result += `&city=${jobListLocation.value}`;
-    }
-    if (jobListCategory.value !== 'all') {
-        result += `&category=${jobListCategory.value}`;
-    }
-    if (jobListName.value !== '') {
-        result += `&title=${jobListName.value}`;
-    }
-    if (getRadioPostDate(jobListPostDate) !== 'all') {
-        result += `&postDate=${getRadioPostDate(jobListPostDate)}`;
-    }
-    if (getRadioExperience(jobListExp) !== 'all') {
-        result += `&experience=${getRadioExperience(jobListExp)}`;
-    }
-    if (getWorkSchedule(jobListWorkSchedule) !== 'all') {
-        result += `&workSchedule=${getWorkSchedule(jobListWorkSchedule)}`;
-    }
-    console.log(result)
+function getFavorites() {
     const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", "/jobs" + result, true);
+
+    httpRequest.open("GET", "/favorite-jobs?userId=" + userId, true);
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                let response = JSON.parse(httpRequest.responseText);
-                setJobs(response.data);
-                setPagination(response.metadata)
-                console.log(response);
-            } else {
-                let error = httpRequest.responseText;
-                console.log(error);
+                let favorites = JSON.parse(httpRequest.responseText);
+                setFavoriteJobs(favorites);
             }
         }
     }
     httpRequest.send();
 }
 
-async function setJobs(jobList) {
+async function setFavoriteJobs(favorites) {
     let result = '';
-    for (let i = 0; i < jobList.length; i++) {
-        let isBookmarked = await isJobBookmarked(jobList[i].id)
+    for (let i = 0; i < favorites.length; i++) {
+        let isBookmarked = await isJobBookmarked(favorites[i].job.id)
         result += `
-            <div class="job-box ${isBookmarked ? "bookmark-post" : ""} card mt-3">
+                <div class="job-box ${isBookmarked ? "bookmark-post" : ""} card mt-3">
                 <div class="p-3">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="mt-3 mt-lg-0">
                                 <h5 class="fs-16 fw-medium mb-1"><a
-                                        href="/job-details/${jobList[i].id}"
-                                        class="text-dark">${jobList[i].title}</a> <small
-                                        class="text-muted fw-normal">(Experience: ${getExperience(jobList[i].experience)})</small>
+                                        href="/job-details/${favorites[i].job.id}"
+                                        class="text-dark">${favorites[i].job.title}</a> <small
+                                        class="text-muted fw-normal">(Experience: ${getExperience(favorites[i].job.experience)})</small>
                                 </h5>
                                 <ul class="list-inline mb-0">
                                     <li class="list-inline-item">
-                                        <p class="fs-14 mb-0">${jobList[i].company.name}</p>
+                                        <p class="fs-14 mb-0">${favorites[i].job.company.name}</p>
                                     </li>
                                     <li class="list-inline-item">
                                         <p class="fs-14 mb-0"><i
-                                                class="mdi mdi-map-marker" style="color: #d73645"></i> ${jobList[i].city} </p>
+                                                class="mdi mdi-map-marker" style="color: #d73645"></i> ${favorites[i].job.city} </p>
                                     </li>
                                     <li class="list-inline-item">
                                         <p class="fs-14 mb-0"><i
-                                                class="uil uil-wallet" style="color: #3b8c70"></i> $${jobList[i].offeredSalary} /
+                                                class="uil uil-wallet" style="color: #3b8c70"></i> $${favorites[i].job.offeredSalary} /
                                             month</p>
                                     </li>
                                 </ul>
                                 <div class="mt-2">
-                                    <span class="badge bg-soft-success mt-1">${jobList[i].workSchedule}</span>
+                                    <span class="badge bg-soft-success mt-1">${favorites[i].job.workSchedule}</span>
                                 </div>
                             </div>
                         </div><!--end col-->
                     </div><!--end row-->
                     <div class="favorite-icon">
                         ${isBookmarked ? `
-                         <a href="javascript:void(0)" onclick="deleteFromFavorites(${favoritesId})"><i class="uil uil-heart-alt fs-18"></i></a>
+                         <a href="javascript:void(0)" onclick="deleteFromFavorites(${favorites[i].id})"><i class="uil uil-heart-alt fs-18"></i></a>
                          ` : `
-                         <a href="javascript:void(0)" onclick="addToFavorites(${jobList[i].id})"><i class="uil uil-heart-alt fs-18"></i></a>
+                         <a href="javascript:void(0)" onclick="addToFavorites(${favorites[i].job.id})"><i class="uil uil-heart-alt fs-18"></i></a>
                          `}
+                  
                     </div>
                 </div>
                 <div class="p-3 bg-light">
@@ -109,7 +74,7 @@ async function setJobs(jobList) {
                                     <li class="list-inline-item fw-medium"><i
                                             class="uil uil-tag"></i> Keyskills :
                                     </li>
-                                    <li class="list-inline-item fs-13"> ${jobList[i].keySkills}
+                                    <li class="list-inline-item fs-13"> ${favorites[i].job.keySkills}
                                     </li>
    
                                 </ul>
@@ -119,7 +84,7 @@ async function setJobs(jobList) {
                         <!--end col-->
                         <div class="col-md-4">
                             <div class="text-md-end">
-                                <a href="/job-details/${jobList[i].id}"
+                                <a href="/job-details/${favorites[i].job.id}"
                                    class="primary-link">Apply Now <i
                                         class="mdi mdi-chevron-double-right"></i></a>
                             </div>
@@ -131,10 +96,10 @@ async function setJobs(jobList) {
             </div><!--end job-box-->
         `
     }
-    if (result.length > 1) {
-        jobListDiv.innerHTML = result;
+    if (result === '') {
+        jobListDiv.innerHTML = `<h6>No jobs found! :(</h6>`
     } else {
-        jobListDiv.innerHTML = "<h5 class='text-center mt-3'>No jobs found!</h5>"
+        jobListDiv.innerHTML = result;
     }
 }
 
@@ -150,10 +115,10 @@ function isJobBookmarked(jobId) {
                     let response = JSON.parse(httpRequest.responseText);
                     if (response.length > 0) {
                         resolve(true);
-                        favoritesId = response[0].id;
                     } else {
                         resolve(false);
                     }
+
                 } else {
                     let error = httpRequest.responseText;
                     console.log(error)
@@ -162,20 +127,6 @@ function isJobBookmarked(jobId) {
             }
         }
     })
-}
-
-function setPagination(page) {
-    let result = `
-       <li class="page-item active" onclick="filterJobs(0)">
-            <a class="page-link" href="javascript:void(0)">${1}</a></li>
-    `;
-    for (let i = 1; i < page.totalPages; i++) {
-        result += `
-            <li class="page-item active" onclick="filterJobs(${i})">
-            <a class="page-link" href="javascript:void(0)">${i + 1}</a></li>
-        `;
-    }
-    jobListPagination.innerHTML = result;
 }
 
 function getExperience(experience) {
@@ -194,39 +145,6 @@ function getExperience(experience) {
     return result;
 }
 
-function getRadioExperience(expRadioButtons) {
-    let result = '';
-    for (let i = 0; i < expRadioButtons.length; i++) {
-        if (expRadioButtons[i].checked) {
-            result = expRadioButtons[i].value;
-            break;
-        }
-    }
-    return result;
-}
-
-function getWorkSchedule(workScheduleRadioButtons) {
-    let result = '';
-    for (let i = 0; i < workScheduleRadioButtons.length; i++) {
-        if (workScheduleRadioButtons[i].checked) {
-            result = workScheduleRadioButtons[i].value;
-            break;
-        }
-    }
-    return result;
-}
-
-function getRadioPostDate(postDateRadioButtons) {
-    let result = '';
-    for (let i = 0; i < postDateRadioButtons.length; i++) {
-        if (postDateRadioButtons[i].checked) {
-            result = postDateRadioButtons[i].value;
-            break;
-        }
-    }
-    return result;
-}
-
 function deleteFromFavorites(favoritesId) {
     const httpRequest = new XMLHttpRequest();
 
@@ -234,7 +152,7 @@ function deleteFromFavorites(favoritesId) {
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 204) {
-                filterJobs();
+                getFavorites();
             } else {
                 let error = httpRequest.responseText;
                 console.log(error);
@@ -248,11 +166,10 @@ function addToFavorites(jobId) {
     const httpRequest = new XMLHttpRequest();
 
     httpRequest.open("POST", "/favorite-jobs", true);
-    httpRequest.setRequestHeader("Content-Type", "application/json");
     httpRequest.onreadystatechange = () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 201) {
-                filterJobs();
+                getFavorites();
             } else {
                 let error = httpRequest.responseText;
                 console.log(error);
