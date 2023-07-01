@@ -96,4 +96,10 @@ public class ApplicationController {
         return "company-list";
     }
 
+    @GetMapping("/user-applications")
+    @PreAuthorize("hasAnyRole('ROLE_USER')")
+    public String userApplicationsPage() {
+        return "user-applications";
+    }
+
 }

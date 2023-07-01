@@ -279,6 +279,8 @@
                         </li>
                         <li><a class="dropdown-item" th:href="@{/profile}" sec:authorize="hasAnyRole('ROLE_USER')">My
                             Profile</a></li>
+                        <li><a class="dropdown-item" th:href="@{/user-applications}" sec:authorize="hasAnyRole('ROLE_USER')">My
+                            Applications</a></li>
                         <li><a class="dropdown-item" th:href="@{/employer-profile}"
                                sec:authorize="hasAnyRole('ROLE_EMPLOYER')">Employer
                             Profile</a></li>
