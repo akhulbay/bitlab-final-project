@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -56,10 +57,8 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
         return Optional.of(userJobApp)
                 .map(userJobAppCreateEditMapper::toEntity)
                 .map(entity -> {
-                    Job job = jobRepository.findById(userJobApp.getJobId())
-                            .orElseThrow();
-                    UserProfile userProfile = userProfileRepository.findById(userJobApp.getUserProfileId())
-                            .orElseThrow();
+                    Job job = getJobById(userJobApp.getJobId());
+                    UserProfile userProfile = getUserProfileById(userJobApp.getUserProfileId());
                     entity.setJob(job);
                     entity.setUserProfile(userProfile);
                     entity.setCreatedAt(LocalDate.now());
@@ -76,10 +75,8 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
         return Optional.of(userJobApp)
                 .map(userJobAppCreateEditMapper::toEntity)
                 .map(entity -> {
-                    Job job = jobRepository.findById(userJobApp.getJobId())
-                            .orElseThrow();
-                    UserProfile userProfile = userProfileRepository.findById(userJobApp.getUserProfileId())
-                            .orElseThrow();
+                    Job job = getJobById(userJobApp.getJobId());
+                    UserProfile userProfile = getUserProfileById(userJobApp.getUserProfileId());
                     entity.setId(id);
                     entity.setJob(job);
                     entity.setUserProfile(userProfile);
@@ -101,5 +98,15 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
     @Override
     public Integer countByJobId(Long jobId) {
         return userJobAppRepository.countAllByJobId(jobId);
+    }
+
+    private Job getJobById(Long jobId) {
+        return jobRepository.findById(jobId)
+                .orElseThrow(() -> new NoSuchElementException("Job not found with ID: " + jobId));
+    }
+
+    private UserProfile getUserProfileById(Long userProfileId) {
+        return userProfileRepository.findById(userProfileId)
+                .orElseThrow(() -> new NoSuchElementException("User profile not found with ID: " + userProfileId));
     }
 }

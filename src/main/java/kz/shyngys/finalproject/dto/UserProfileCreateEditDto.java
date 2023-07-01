@@ -31,5 +31,5 @@ public class UserProfileCreateEditDto {
     private Double experienceYears;
     private String aboutExperience;
     private MultipartFile image;
-    private String userId;
+    private Long userId;
 }

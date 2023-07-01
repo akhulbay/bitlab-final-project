@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -68,8 +69,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                     return userProfileCreateEditMapper.toEntity(dto);
                 })
                 .map(entity -> {
-                    User newUser = userRepository.findById(entity.getUser().getId())
-                            .orElseThrow();
+                    User newUser = getUserById(userProfile.getUserId());
                     entity.setUser(newUser);
                     return entity;
                 })
@@ -80,15 +80,14 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Transactional
     @Override
-    public UserProfileReadDto update(Long id, UserProfileCreateEditDto user) {
-        return Optional.of(user)
+    public UserProfileReadDto update(Long id, UserProfileCreateEditDto userProfile) {
+        return Optional.of(userProfile)
                 .map(dto -> {
                     uploadImage(dto.getImage());
                     return userProfileCreateEditMapper.toEntity(dto);
                 })
                 .map(entity -> {
-                    User newUser = userRepository.findById(entity.getUser().getId())
-                            .orElseThrow();
+                    User newUser = getUserById(userProfile.getUserId());
                     entity.setUser(newUser);
                     entity.setId(id);
                     return entity;
@@ -108,5 +107,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         if (!image.isEmpty()) {
             imageService.upload(image.getOriginalFilename(), image.getInputStream());
         }
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 }

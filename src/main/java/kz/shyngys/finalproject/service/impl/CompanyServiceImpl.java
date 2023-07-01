@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -76,8 +77,7 @@ public class CompanyServiceImpl implements CompanyService {
                     return companyCreateEditMapper.toEntity(dto);
                 })
                 .map(entity -> {
-                    User user = userRepository.findById(company.getUserId())
-                            .orElseThrow();
+                    User user = getUserById(company.getUserId());
                     entity.setUser(user);
                     return entity;
                 })
@@ -95,8 +95,7 @@ public class CompanyServiceImpl implements CompanyService {
                     return companyCreateEditMapper.toEntity(dto);
                 })
                 .map(entity -> {
-                    User user = userRepository.findById(company.getUserId())
-                            .orElseThrow();
+                    User user = getUserById(company.getUserId());
                     entity.setUser(user);
                     entity.setId(id);
                     return entity;
@@ -111,6 +110,11 @@ public class CompanyServiceImpl implements CompanyService {
         if (!image.isEmpty()) {
             imageService.upload(image.getOriginalFilename(), image.getInputStream());
         }
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
     }
 
 

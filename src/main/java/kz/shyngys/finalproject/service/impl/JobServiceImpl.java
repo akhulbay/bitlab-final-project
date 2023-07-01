@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -65,8 +66,7 @@ public class JobServiceImpl implements JobService {
         return Optional.of(job)
                 .map(jobCreateEditMapper::toEntity)
                 .map(entity -> {
-                    Company company = companyRepository.findById(job.getCompanyId())
-                            .orElseThrow();
+                    Company company = getCompanyById(job.getCompanyId());
                     entity.setCompany(company);
                     entity.setCreatedAt(LocalDate.now());
                     return entity;
@@ -82,8 +82,7 @@ public class JobServiceImpl implements JobService {
         return Optional.of(job)
                 .map(jobCreateEditMapper::toEntity)
                 .map(entity -> {
-                    Company company = companyRepository.findById(job.getCompanyId())
-                            .orElseThrow();
+                    Company company = getCompanyById(job.getCompanyId());
                     entity.setCompany(company);
                     entity.setId(id);
                     entity.setCreatedAt(LocalDate.now());
@@ -99,6 +98,11 @@ public class JobServiceImpl implements JobService {
     public void delete(Long id) {
         jobRepository.findById(id)
                 .ifPresent(job -> jobRepository.deleteById(id));
+    }
+
+    private Company getCompanyById(Long companyId) {
+        return companyRepository.findById(companyId)
+                .orElseThrow(() -> new NoSuchElementException("Company not found with ID: " + companyId));
     }
 }
 
