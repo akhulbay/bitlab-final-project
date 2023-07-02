@@ -26,6 +26,9 @@ public class UserJobApplicationSpecification {
                 predicates.add(criteriaBuilder.equal(root.get("job").get("id"),
                         userJobAppFilter.jobId()));
             }
+            if (userJobAppFilter.status() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), userJobAppFilter.status()));
+            }
             if (userFilter.firstName() != null) {
                 predicates.add(criteriaBuilder.like(root.get("userProfile").get("user").get("firstName"),
                         "%" + userFilter.firstName() + "%"));

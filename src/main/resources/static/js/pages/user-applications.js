@@ -1,5 +1,6 @@
 let userId = document.getElementById("applicationsUserId").value;
 let jobListDiv = document.getElementById("applicationsJobList");
+let userApplicationStatus = document.getElementById("userApplicationStatus");
 
 let profileId = null;
 
@@ -39,9 +40,30 @@ function getJobs() {
     httpRequest.send();
 }
 
-function setAppliedJobs(userJobApplications) {
+function getApplicationStatus(applicationId) {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/user-job-applications/${applicationId}/status`, true);
+    httpRequest.send();
+
+    return new Promise((resolve, reject) => {
+        httpRequest.onreadystatechange = async () => {
+            if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                if (httpRequest.status === 200) {
+                    let status = JSON.parse(httpRequest.responseText);
+                    resolve(getStatus(status));
+                } else {
+                    let error = httpRequest.responseText;
+                    reject(error);
+                }
+            }
+        }
+    });
+}
+
+async function setAppliedJobs(userJobApplications) {
     let result = '';
     for (let i = 0; i < userJobApplications.length; i++) {
+        let status = await getApplicationStatus(userJobApplications[i].id);
         result += `
                 <div class="job-box card">
                                 <div class="card-body p-4">
@@ -71,7 +93,12 @@ function setAppliedJobs(userJobApplications) {
                                                 </div>
                                       
                                             </div>
+                                                
+                                        
                                         </div><!--end col-->
+                                        <div class="col-lg-3">
+                                            ${status}
+                                        </div>
                                    
                                     </div><!--end row-->
                                 </div>
@@ -83,6 +110,7 @@ function setAppliedJobs(userJobApplications) {
     } else {
         jobListDiv.innerHTML = result;
     }
+
 }
 
 function getExperience(experience) {
@@ -96,6 +124,33 @@ function getExperience(experience) {
             break;
         case "3-6":
             result = 'from 3 to 6 years';
+            break;
+    }
+    return result;
+}
+
+function getStatus(status) {
+    let result = '';
+    switch (status) {
+        case 0:
+            result = `
+                <span class="badge bg-soft-dark mt-1">Not viewed</span>
+            `;
+            break;
+        case 1:
+            result = `
+                <span class="badge bg-soft-secondary mt-1">Processing</span>
+            `;
+            break;
+        case 2:
+            result = `
+                <span class="badge bg-soft-danger mt-1">Denied</span>
+            `;
+            break;
+        case 3:
+            result = `
+                <span class="badge bg-soft-success mt-1">Accepted</span>
+            `;
             break;
     }
     return result;

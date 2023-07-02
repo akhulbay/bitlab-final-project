@@ -23,6 +23,8 @@ public class UserJobApplication {
     @Column(name = "cover_letter", columnDefinition = "text")
     private String coverLetter;
 
+    private Integer status;
+
     @Column(name = "created_at")
     private LocalDate createdAt;
 

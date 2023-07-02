@@ -12,9 +12,13 @@ public interface UserJobApplicationService {
 
     UserJobApplicationReadDto findById(Long id);
 
+    Integer findStatus(Long id);
+
     UserJobApplicationReadDto create(UserJobApplicationCreateEditDto userJobApp);
 
     UserJobApplicationReadDto update(Long id, UserJobApplicationCreateEditDto userJobApp);
+
+    UserJobApplicationReadDto updateStatus(Long id, UserJobApplicationEditStatusDto userJobAppStatus);
 
     void delete(Long id);
 

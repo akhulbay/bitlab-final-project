@@ -26,6 +26,8 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserJobApplicationServiceImpl implements UserJobApplicationService {
 
+    private static final Integer STATUS_NOT_VIEWED = 0;
+
     private final UserJobApplicationRepository userJobAppRepository;
     private final UserProfileRepository userProfileRepository;
     private final JobRepository jobRepository;
@@ -51,6 +53,12 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 .orElse(null);
     }
 
+    @Override
+    public Integer findStatus(Long id) {
+        return userJobAppRepository.findStatusById(id)
+                .orElse(null);
+    }
+
     @Transactional
     @Override
     public UserJobApplicationReadDto create(UserJobApplicationCreateEditDto userJobApp) {
@@ -59,6 +67,7 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 .map(entity -> {
                     Job job = getJobById(userJobApp.getJobId());
                     UserProfile userProfile = getUserProfileById(userJobApp.getUserProfileId());
+                    entity.setStatus(STATUS_NOT_VIEWED);
                     entity.setJob(job);
                     entity.setUserProfile(userProfile);
                     entity.setCreatedAt(LocalDate.now());
@@ -87,6 +96,20 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 .map(userJobAppReadMapper::toDto)
                 .orElse(null);
     }
+
+    @Transactional
+    @Override
+    public UserJobApplicationReadDto updateStatus(Long id, UserJobApplicationEditStatusDto userJobAppStatus) {
+        return userJobAppRepository.findById(id)
+                .map(entity -> {
+                    entity.setStatus(userJobAppStatus.getStatus());
+                    return entity;
+                })
+                .map(userJobAppRepository::saveAndFlush)
+                .map(userJobAppReadMapper::toDto)
+                .orElse(null);
+    }
+
 
     @Transactional
     @Override

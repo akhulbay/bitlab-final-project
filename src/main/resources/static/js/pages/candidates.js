@@ -6,6 +6,7 @@ let candidatesLastName = document.getElementById("candidatesLastName");
 let candidatesLocation = document.getElementById("candidatesLocation");
 let candidatesExperience = document.getElementById("candidatesExperience");
 let candidatesDegree = document.getElementById("candidatesDegree");
+let candidatesStatus = document.getElementById("candidatesStatus");
 
 getAllCandidates();
 
@@ -59,7 +60,18 @@ function filterCandidates() {
     if (candidatesLastName.value !== '') {
         result += `&lastName=${candidatesLastName.value}`
     }
-    result += `&location=${candidatesLocation.value}&experience=${candidatesExperience.value}&degree=${candidatesDegree.value}`
+    if (candidatesStatus.value !== 'all') {
+        result += `&status=${candidatesStatus.value}`
+    }
+    if (candidatesDegree.value !== 'all') {
+        result += `&degree=${candidatesDegree.value}`
+    }
+    if (candidatesLocation.value !== 'all') {
+        result += `&location=${candidatesLocation.value}`
+    }
+    if (candidatesExperience.value !== 'all') {
+        result += `&experience=${candidatesExperience.value}`
+    }
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", `/user-job-applications?userProfileId=&jobId=${jobId}` + result, true);
     httpRequest.onreadystatechange = async () => {
@@ -94,6 +106,17 @@ async function setAllCandidates(candidatesList) {
                                                class="primary-link"><h5 class="fs-17">${candidatesList[i].userProfile.user.firstName} ${candidatesList[i].userProfile.user.lastName}</h5></a>
                                             <span class="badge bg-soft-info fs-13">${getCategory(candidatesList[i].userProfile.accountType)}</span>
                                         </div>
+                                        <div class="" style="margin-left: 70px">
+                                                <select  class="form-select" data-trigger name="choices-single-location"
+                                                        id="candidateStatus${candidatesList[i].id}" style="width: 150px;"
+                                                        aria-label="Default select example" onchange="changeStatus(${candidatesList[i].id})">
+                                                    <option value="0" ${candidatesList[i].status === 0 ? "selected" : ""}>Not Viewed</option>
+                                                    <option value="1" ${candidatesList[i].status === 1 ? "selected" : ""}>Processing</option>
+                                                    <option value="2" ${candidatesList[i].status === 2 ? "selected" : ""}>Denied</option>
+                                                    <option value="3" ${candidatesList[i].status === 3 ? "selected" : ""}>Accepted</option>
+                        
+                                                </select>
+                                            </div>
                                     </div>
                                     <div class="border rounded mb-4">
                                         <div class="row g-0">
@@ -129,6 +152,30 @@ async function setAllCandidates(candidatesList) {
     return new Promise((resolve, reject) => {
         resolve(result);
     });
+}
+
+function changeStatus(applicationId) {
+    let status = document.getElementById(`candidateStatus${applicationId}`);
+
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("PUT", `/user-job-applications/${applicationId}/status`, true);
+    httpRequest.setRequestHeader("Content-Type", "application/json");
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let candidate = JSON.parse(httpRequest.responseText);
+                status.value = candidate.status;
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    let body = {
+        "status": status.value
+    }
+    body = JSON.stringify(body)
+    httpRequest.send(body);
 }
 
 function getCategory(category) {

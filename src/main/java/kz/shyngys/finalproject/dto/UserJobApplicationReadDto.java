@@ -15,6 +15,7 @@ public class UserJobApplicationReadDto {
 
     private Long id;
     private String coverLetter;
+    private Integer status;
     private LocalDate createdAt;
     private UserProfileReadDto userProfile;
     private JobReadDto job;
