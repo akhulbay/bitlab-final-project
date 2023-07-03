@@ -39,7 +39,6 @@ function filterJobs(page) {
     if (getWorkSchedule(jobListWorkSchedule) !== 'all') {
         result += `&workSchedule=${getWorkSchedule(jobListWorkSchedule)}`;
     }
-    console.log(result)
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", "/jobs" + result, true);
     httpRequest.onreadystatechange = () => {
@@ -48,7 +47,6 @@ function filterJobs(page) {
                 let response = JSON.parse(httpRequest.responseText);
                 setJobs(response.data);
                 setPagination(response.metadata)
-                console.log(response);
             } else {
                 let error = httpRequest.responseText;
                 console.log(error);
@@ -140,7 +138,7 @@ async function setJobs(jobList) {
 
 function isJobBookmarked(jobId) {
     const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}`, true);
+    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}&userId=${userId}`, true);
     httpRequest.send();
 
     return new Promise((resolve, reject) => {

@@ -30,6 +30,5 @@ public class UserProfileCreateEditDto {
     private Integer yearOfGraduation;
     private Double experienceYears;
     private String aboutExperience;
-    private MultipartFile image;
     private Long userId;
 }

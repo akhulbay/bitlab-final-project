@@ -1,8 +1,6 @@
 package kz.shyngys.finalproject.service;
 
-import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
-import kz.shyngys.finalproject.dto.CompanyFilter;
-import kz.shyngys.finalproject.dto.CompanyReadDto;
+import kz.shyngys.finalproject.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +17,6 @@ public interface CompanyService {
     CompanyReadDto create(CompanyCreateEditDto company);
 
     CompanyReadDto update(Long id, CompanyCreateEditDto company);
+
+    byte[] updateAvatar(Long id, CompanyCreateEditAvatarDto companyAvatar);
 }

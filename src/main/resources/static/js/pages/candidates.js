@@ -8,25 +8,9 @@ let candidatesExperience = document.getElementById("candidatesExperience");
 let candidatesDegree = document.getElementById("candidatesDegree");
 let candidatesStatus = document.getElementById("candidatesStatus");
 
-getAllCandidates();
+let candidatesPagination = document.getElementById("candidatesPagination");
 
-function getAllCandidates() {
-    const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", `/user-job-applications?userProfileId=&jobId=${jobId}`, true);
-    httpRequest.onreadystatechange = async () => {
-        if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (httpRequest.status === 200) {
-                let candidatesList = JSON.parse(httpRequest.responseText);
-                console.log(candidatesList)
-                candidatesListDiv.innerHTML = await setAllCandidates(candidatesList)
-            } else {
-                let error = httpRequest.responseText;
-                console.log(error)
-            }
-        }
-    }
-    httpRequest.send();
-}
+filterCandidates()
 
 async function getProfileImage(candidateProfileId) {
     const httpRequest = new XMLHttpRequest();
@@ -52,7 +36,11 @@ async function getProfileImage(candidateProfileId) {
     })
 }
 
-function filterCandidates() {
+function filterCandidates(page) {
+    if (page === undefined || page === '') {
+        page = 0;
+    }
+
     let result = "";
     if (candidatesFirstName.value !== '') {
         result += `&firstName=${candidatesFirstName.value}`
@@ -73,13 +61,15 @@ function filterCandidates() {
         result += `&experience=${candidatesExperience.value}`
     }
     const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", `/user-job-applications?userProfileId=&jobId=${jobId}` + result, true);
+    httpRequest.open("GET", `/user-job-applications?userProfileId=&jobId=${jobId}&page=${page}&size=10` + result,
+        true);
     httpRequest.onreadystatechange = async () => {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
-                let candidatesList = JSON.parse(httpRequest.responseText);
-                console.log(candidatesList)
-                candidatesListDiv.innerHTML = await setAllCandidates(candidatesList)
+                let candidates = JSON.parse(httpRequest.responseText);
+                console.log(candidates.data)
+                candidatesListDiv.innerHTML = await setAllCandidates(candidates.data)
+                setPagination(candidates.metadata)
             } else {
                 let error = httpRequest.responseText;
                 console.log(error)
@@ -176,6 +166,20 @@ function changeStatus(applicationId) {
     }
     body = JSON.stringify(body)
     httpRequest.send(body);
+}
+
+function setPagination(page) {
+    let result = `
+       <li class="page-item active" onclick="filterCandidates(0)">
+            <a class="page-link" href="javascript:void(0)">${1}</a></li>
+    `;
+    for (let i = 1; i < page.totalPages; i++) {
+        result += `
+            <li class="page-item active" onclick="filterCandidates(${i})">
+            <a class="page-link" href="javascript:void(0)">${i + 1}</a></li>
+        `;
+    }
+    candidatesPagination.innerHTML = result;
 }
 
 function getCategory(category) {

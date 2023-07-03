@@ -73,6 +73,19 @@ const appendUserDataAlert = (message, type) => {
     userDataAlert.append(wrapper)
 }
 
+const avatarAlert = document.getElementById('avatarAlert')
+const appendAvatarAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible text-center" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    avatarAlert.append(wrapper)
+}
+
 const passwordAlert = document.getElementById('passwordAlert')
 const appendPasswordAlert = (message, type) => {
     const wrapper = document.createElement('div')
@@ -174,43 +187,81 @@ function updatePersonalData() {
     }
 }
 
+function saveAvatar() {
+    if (hasProfile) {
+        if (profileImgInput.value !== '') {
+            const profileImageFile = profileImgInput.files[0];
+            const httpRequest = new XMLHttpRequest();
+            const formData = new FormData();
+
+            formData.append('image', profileImageFile);
+
+            httpRequest.open("PUT", `/user-profiles/${profileId}/avatar`, true);
+            httpRequest.responseType = "arraybuffer";
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        const imageBytes = new Uint8Array(httpRequest.response);
+                        const blob = new Blob([imageBytes], {type: "image/jpeg"});
+
+                        const imageUrl = URL.createObjectURL(blob);
+                        overviewImage.src = imageUrl;
+                        profileImg.src = imageUrl;
+                        getNavbarProfile();
+                    } else {
+                        let error = httpRequest.responseText;
+                        console.log(error);
+                    }
+                }
+            }
+
+            httpRequest.send(formData);
+        } else {
+            appendAvatarAlert("Please, upload an image", "warning");
+        }
+    } else {
+        appendAvatarAlert("You should fill your profile data first!", "warning");
+    }
+}
+
 function saveProfile() {
     hasProfile ? updateProfile() : createProfile();
 }
 
 function updateProfile() {
     if (profilePhoneNumber.value !== '' && profileAboutUser.value !== '' && profileLanguages.value !== ''
-        && facebookLinkInput.value !== '' && telegramLinkInput.value !== '' && linkedinLinkInput.value !== '' && githubLinkInput.value !== ''
+        && facebookLinkInput.value !== '' && telegramLinkInput.value !== '' && linkedinLinkInput.value !== ''
+        && githubLinkInput.value !== ''
         && profileSkills.value !== '' && eduInstitution.value !== '' && eduFaculty.value !== '' && eduMajor.value !== ''
-        && yearOfAdmission.value !== '' && yearOfGraduation.value !== '' && profileImgInput.value !== ''
+        && yearOfAdmission.value !== '' && yearOfGraduation.value !== ''
         && profileExperienceYears.value !== '' && profileAboutExperience.value !== '') {
-
-        const profileImageFile = profileImgInput.files[0];
         const httpRequest = new XMLHttpRequest();
-        const formData = new FormData();
 
-        formData.append('image', profileImageFile);
-        formData.append('aboutUser', profileAboutUser.value);
-        formData.append('phoneNumber', profilePhoneNumber.value);
-        formData.append('accountType', profileCategory.value);
-        formData.append('languages', profileLanguages.value);
-        formData.append('location', profileLocation.value);
-        formData.append('facebookLink', facebookLinkInput.value);
-        formData.append('telegramLink', telegramLinkInput.value);
-        formData.append('linkedinLink', linkedinLinkInput.value);
-        formData.append('githubLink', githubLinkInput.value);
-        formData.append('skills', profileSkills.value);
-        formData.append('degree', eduDegree.value);
-        formData.append('university', eduInstitution.value);
-        formData.append('faculty', eduFaculty.value);
-        formData.append('major', eduMajor.value);
-        formData.append('yearOfAdmission', yearOfAdmission.value);
-        formData.append('yearOfGraduation', yearOfGraduation.value);
-        formData.append('userId', userId);
-        formData.append('experienceYears', profileExperienceYears.value);
-        formData.append('aboutExperience', profileAboutExperience.value);
+        const requestData = {
+            "aboutUser": profileAboutUser.value,
+            "phoneNumber": profilePhoneNumber.value,
+            "accountType": profileCategory.value,
+            "languages": profileLanguages.value,
+            "location": profileLocation.value,
+            "facebookLink": facebookLinkInput.value,
+            "telegramLink": telegramLinkInput.value,
+            "linkedinLink": linkedinLinkInput.value,
+            "githubLink": githubLinkInput.value,
+            "skills": profileSkills.value,
+            "degree": eduDegree.value,
+            "university": eduInstitution.value,
+            "faculty": eduFaculty.value,
+            "major": eduMajor.value,
+            "yearOfAdmission": yearOfAdmission.value,
+            "yearOfGraduation": yearOfGraduation.value,
+            "userId": userId,
+            "experienceYears": profileExperienceYears.value,
+            "aboutExperience": profileAboutExperience.value,
+        };
 
         httpRequest.open("PUT", "/user-profiles/" + profileId, true);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
@@ -225,7 +276,7 @@ function updateProfile() {
             }
         }
 
-        httpRequest.send(formData);
+        httpRequest.send(JSON.stringify(requestData));
     } else {
         appendProfileAlert('Please, fill all the fields!', 'warning')
     }
@@ -233,37 +284,39 @@ function updateProfile() {
 
 function createProfile() {
     if (profilePhoneNumber.value !== '' && profileAboutUser.value !== '' && profileLanguages.value !== ''
-        && facebookLinkInput.value !== '' && telegramLinkInput.value !== '' && linkedinLinkInput.value !== '' && githubLinkInput.value !== ''
+        && facebookLinkInput.value !== '' && telegramLinkInput.value !== '' && linkedinLinkInput.value !== ''
+        && githubLinkInput.value !== ''
         && profileSkills.value !== '' && eduInstitution.value !== '' && eduFaculty.value !== '' && eduMajor.value !== ''
-        && yearOfAdmission.value !== '' && yearOfGraduation.value !== '' && profileImgInput.value !== ''
+        && yearOfAdmission.value !== '' && yearOfGraduation.value !== ''
         && profileExperienceYears.value !== '' && profileAboutExperience.value !== '') {
 
-        const profileImageFile = profileImgInput.files[0];
         const httpRequest = new XMLHttpRequest();
-        const formData = new FormData();
 
-        formData.append('image', profileImageFile);
-        formData.append('aboutUser', profileAboutUser.value);
-        formData.append('phoneNumber', profilePhoneNumber.value);
-        formData.append('accountType', profileCategory.value);
-        formData.append('languages', profileLanguages.value);
-        formData.append('location', profileLocation.value);
-        formData.append('facebookLink', facebookLinkInput.value);
-        formData.append('telegramLink', telegramLinkInput.value);
-        formData.append('linkedinLink', linkedinLinkInput.value);
-        formData.append('githubLink', githubLinkInput.value);
-        formData.append('skills', profileSkills.value);
-        formData.append('degree', eduDegree.value);
-        formData.append('university', eduInstitution.value);
-        formData.append('faculty', eduFaculty.value);
-        formData.append('major', eduMajor.value);
-        formData.append('yearOfAdmission', yearOfAdmission.value);
-        formData.append('yearOfGraduation', yearOfGraduation.value);
-        formData.append('userId', userId);
-        formData.append('experienceYears', profileExperienceYears.value);
-        formData.append('aboutExperience', profileAboutExperience.value);
+        const requestData = {
+            "aboutUser": profileAboutUser.value,
+            "phoneNumber": profilePhoneNumber.value,
+            "accountType": profileCategory.value,
+            "languages": profileLanguages.value,
+            "location": profileLocation.value,
+            "facebookLink": facebookLinkInput.value,
+            "telegramLink": telegramLinkInput.value,
+            "linkedinLink": linkedinLinkInput.value,
+            "githubLink": githubLinkInput.value,
+            "skills": profileSkills.value,
+            "degree": eduDegree.value,
+            "university": eduInstitution.value,
+            "faculty": eduFaculty.value,
+            "major": eduMajor.value,
+            "yearOfAdmission": yearOfAdmission.value,
+            "yearOfGraduation": yearOfGraduation.value,
+            "userId": userId,
+            "experienceYears": profileExperienceYears.value,
+            "aboutExperience": profileAboutExperience.value,
+        };
 
         httpRequest.open("POST", "/user-profiles", true);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 201) {
@@ -278,7 +331,7 @@ function createProfile() {
             }
         }
 
-        httpRequest.send(formData);
+        httpRequest.send(JSON.stringify(requestData));
     } else {
         appendProfileAlert('Please, fill all the fields!', 'warning')
     }

@@ -33,7 +33,7 @@ function getJobs() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 let userJobApplications = JSON.parse(httpRequest.responseText);
-                setAppliedJobs(userJobApplications);
+                setAppliedJobs(userJobApplications.data);
             }
         }
     }

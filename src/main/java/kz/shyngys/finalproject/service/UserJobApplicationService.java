@@ -1,14 +1,17 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface UserJobApplicationService {
 
-    List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
+    Page<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
                                             UserFilter userFilter,
-                                            UserProfileFilter userProfileFilter);
+                                            UserProfileFilter userProfileFilter,
+                                            Pageable pageable);
 
     UserJobApplicationReadDto findById(Long id);
 
@@ -19,6 +22,8 @@ public interface UserJobApplicationService {
     UserJobApplicationReadDto update(Long id, UserJobApplicationCreateEditDto userJobApp);
 
     UserJobApplicationReadDto updateStatus(Long id, UserJobApplicationEditStatusDto userJobAppStatus);
+
+
 
     void delete(Long id);
 

@@ -1,9 +1,6 @@
 package kz.shyngys.finalproject.controller;
 
-import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
-import kz.shyngys.finalproject.dto.CompanyFilter;
-import kz.shyngys.finalproject.dto.CompanyReadDto;
-import kz.shyngys.finalproject.dto.PageResponse;
+import kz.shyngys.finalproject.dto.*;
 import kz.shyngys.finalproject.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -56,7 +53,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<CompanyReadDto> create(CompanyCreateEditDto company) {
+    public ResponseEntity<CompanyReadDto> create(@RequestBody CompanyCreateEditDto company) {
         CompanyReadDto newCompany = companyService.create(company);
 
         if (newCompany == null) {
@@ -67,12 +64,22 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CompanyReadDto> update(@PathVariable("id") Long id,
-                                                 CompanyCreateEditDto company) {
+                                                 @RequestBody CompanyCreateEditDto company) {
         CompanyReadDto newCompany = companyService.update(id, company);
 
         if (newCompany == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(newCompany);
+    }
+
+    @PutMapping("/{id}/avatar")
+    public ResponseEntity<byte[]> updateAvatar(@PathVariable("id") Long id,
+                                               CompanyCreateEditAvatarDto companyAvatar) {
+        byte[] image = companyService.updateAvatar(id, companyAvatar);
+        if (image == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(image);
     }
 }

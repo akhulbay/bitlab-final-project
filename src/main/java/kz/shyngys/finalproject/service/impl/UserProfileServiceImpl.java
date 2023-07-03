@@ -1,5 +1,6 @@
 package kz.shyngys.finalproject.service.impl;
 
+import kz.shyngys.finalproject.dto.UserProfileCreateEditAvatarDto;
 import kz.shyngys.finalproject.dto.UserProfileCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileReadDto;
 import kz.shyngys.finalproject.mapper.UserProfileCreateEditMapper;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static java.util.function.Predicate.not;
 
 @Service
 @RequiredArgsConstructor
@@ -64,10 +67,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public UserProfileReadDto save(UserProfileCreateEditDto userProfile) {
         return Optional.of(userProfile)
-                .map(dto -> {
-                    uploadImage(dto.getImage());
-                    return userProfileCreateEditMapper.toEntity(dto);
-                })
+                .map(userProfileCreateEditMapper::toEntity)
                 .map(entity -> {
                     User newUser = getUserById(userProfile.getUserId());
                     entity.setUser(newUser);
@@ -81,19 +81,29 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     @Override
     public UserProfileReadDto update(Long id, UserProfileCreateEditDto userProfile) {
-        return Optional.of(userProfile)
-                .map(dto -> {
-                    uploadImage(dto.getImage());
-                    return userProfileCreateEditMapper.toEntity(dto);
-                })
+        return userProfileRepository.findById(id)
                 .map(entity -> {
-                    User newUser = getUserById(userProfile.getUserId());
-                    entity.setUser(newUser);
-                    entity.setId(id);
+                    mapUpdatedData(userProfile, entity);
                     return entity;
                 })
                 .map(userProfileRepository::saveAndFlush)
                 .map(userProfileReadMapper::toDto)
+                .orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public byte[] updateAvatar(Long id, UserProfileCreateEditAvatarDto userProfileAvatar) {
+        return userProfileRepository.findById(id)
+                .map(entity -> {
+                    uploadImage(userProfileAvatar.getImage());
+                    entity.setImage(getImage(userProfileAvatar.getImage()));
+                    return entity;
+                })
+                .map(userProfileRepository::saveAndFlush)
+                .map(UserProfile::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get)
                 .orElse(null);
     }
 
@@ -112,5 +122,34 @@ public class UserProfileServiceImpl implements UserProfileService {
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
+    }
+
+    private String getImage(MultipartFile image) {
+        return Optional.ofNullable(image)
+                .filter(not(MultipartFile::isEmpty))
+                .map(MultipartFile::getOriginalFilename)
+                .orElse(null);
+    }
+
+    private void mapUpdatedData(UserProfileCreateEditDto fromObject, UserProfile toObject) {
+        toObject.setAboutUser(fromObject.getAboutUser());
+        toObject.setPhoneNumber(fromObject.getPhoneNumber());
+        toObject.setAccountType(fromObject.getAccountType());
+        toObject.setLanguages(fromObject.getLanguages());
+        toObject.setLocation(fromObject.getLocation());
+        toObject.setFacebookLink(fromObject.getFacebookLink());
+        toObject.setTelegramLink(fromObject.getTelegramLink());
+        toObject.setLinkedinLink(fromObject.getLinkedinLink());
+        toObject.setGithubLink(fromObject.getGithubLink());
+        toObject.setSkills(fromObject.getSkills());
+        toObject.setDegree(fromObject.getDegree());
+        toObject.setUniversity(fromObject.getUniversity());
+        toObject.setFaculty(fromObject.getFaculty());
+        toObject.setMajor(fromObject.getMajor());
+        toObject.setYearOfAdmission(fromObject.getYearOfAdmission());
+        toObject.setYearOfGraduation(fromObject.getYearOfGraduation());
+        toObject.setExperienceYears(fromObject.getExperienceYears());
+        toObject.setAboutExperience(fromObject.getAboutExperience());
+        toObject.setUser(getUserById(fromObject.getUserId()));
     }
 }

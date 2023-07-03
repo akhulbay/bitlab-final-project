@@ -1,5 +1,6 @@
 package kz.shyngys.finalproject.service.impl;
 
+import kz.shyngys.finalproject.dto.CompanyCreateEditAvatarDto;
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
 import kz.shyngys.finalproject.dto.CompanyFilter;
 import kz.shyngys.finalproject.dto.CompanyReadDto;
@@ -22,8 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static java.util.function.Predicate.not;
 
 @Service
 @RequiredArgsConstructor
@@ -89,19 +93,29 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     @Override
     public CompanyReadDto update(Long id, CompanyCreateEditDto company) {
-        return Optional.of(company)
-                .map(dto -> {
-                    uploadImage(dto.getImage());
-                    return companyCreateEditMapper.toEntity(dto);
-                })
+        return companyRepository.findById(id)
                 .map(entity -> {
-                    User user = getUserById(company.getUserId());
-                    entity.setUser(user);
-                    entity.setId(id);
+                    mapUpdatedData(company, entity);
                     return entity;
                 })
-                .map(companyRepository::save)
+                .map(companyRepository::saveAndFlush)
                 .map(companyReadMapper::toDto)
+                .orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public byte[] updateAvatar(Long id, CompanyCreateEditAvatarDto companyAvatar) {
+        return companyRepository.findById(id)
+                .map(entity -> {
+                    uploadImage(companyAvatar.getImage());
+                    entity.setImage(getImage(companyAvatar.getImage()));
+                    return entity;
+                })
+                .map(companyRepository::saveAndFlush)
+                .map(Company::getImage)
+                .filter(StringUtils::hasText)
+                .flatMap(imageService::get)
                 .orElse(null);
     }
 
@@ -115,6 +129,26 @@ public class CompanyServiceImpl implements CompanyService {
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
+    }
+
+    private String getImage(MultipartFile image) {
+        return Optional.ofNullable(image)
+                .filter(not(MultipartFile::isEmpty))
+                .map(MultipartFile::getOriginalFilename)
+                .orElse(null);
+    }
+
+    private void mapUpdatedData(CompanyCreateEditDto fromObject, Company toObject) {
+        toObject.setName(fromObject.getName());
+        toObject.setAboutCompany(fromObject.getAboutCompany());
+        toObject.setLocation(fromObject.getLocation());
+        toObject.setWebsite(fromObject.getWebsite());
+        toObject.setEstablishDate(LocalDate.parse(fromObject.getEstablishDate()));
+        toObject.setEmployeesNumber(fromObject.getEmployeesNumber());
+        toObject.setWhatsappLink(fromObject.getWhatsappLink());
+        toObject.setLinkedinLink(fromObject.getLinkedinLink());
+        toObject.setOwnerName(fromObject.getOwnerName());
+        toObject.setUser(getUserById(fromObject.getUserId()));
     }
 
 

@@ -31,7 +31,6 @@ function getNavbarProfile() {
                 getNavbarProfileImage(profile.id)
             } else {
                 let error = httpRequest.responseText;
-                console.log(error);
             }
         }
     }

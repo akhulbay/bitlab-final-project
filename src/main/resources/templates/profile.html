@@ -165,6 +165,14 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="avatar-tab" data-bs-toggle="pill"
+                                            data-bs-target="#avatar" type="button" role="tab"
+                                            aria-controls="avatar"
+                                            aria-selected="false">
+                                        Avatar
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="password-tab" data-bs-toggle="pill"
                                             data-bs-target="#change-password" type="button" role="tab"
                                             aria-controls="change-password"
@@ -265,21 +273,6 @@
                                             <div>
                                                 <h5 class="fs-17 fw-semibold mb-3 mb-0">My Profile</h5>
                                                 <div id="profileAlert"></div>
-                                                <div class="text-center">
-                                                    <div class="mb-4 profile-user">
-                                                        <img src="/images/user/img-02.jpg"
-                                                             class="rounded-circle img-thumbnail profile-img"
-                                                             id="profileImg" alt="">
-                                                        <div class="p-0 rounded-circle profile-photo-edit">
-                                                            <input id="profileImgFile" type="file"
-                                                                   class="profile-img-file-input">
-                                                            <label for="profileImgFile"
-                                                                   class="profile-photo-edit avatar-xs">
-                                                                <i class="uil uil-edit"></i>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
@@ -523,6 +516,35 @@
                                             </div>
                                         </form>
                                         <!--end form-->
+                                    </div>
+                                    <div class="tab-pane fade" id="avatar" role="tabpanel"
+                                         aria-labelledby="avatar-tab-tab">
+                                        <form action="#">
+                                            <div>
+                                                <h5 class="fs-17 fw-semibold mb-3 mb-0">My Avatar</h5>
+                                                <div id="avatarAlert"></div>
+                                                <div class="text-center">
+                                                    <div class="mb-4 profile-user">
+                                                        <img src="/images/user/img-02.jpg"
+                                                             class="rounded-circle img-thumbnail profile-img"
+                                                             id="profileImg" alt="">
+                                                        <div class="p-0 rounded-circle profile-photo-edit">
+                                                            <input id="profileImgFile" type="file"
+                                                                   class="profile-img-file-input">
+                                                            <label for="profileImgFile"
+                                                                   class="profile-photo-edit avatar-xs">
+                                                                <i class="uil uil-edit"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 text-end">
+                                                <button type="button" class="btn btn-primary" onclick="saveAvatar()">
+                                                    Update
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="tab-pane fade" id="change-password" role="tabpanel"
                                          aria-labelledby="password-tab">

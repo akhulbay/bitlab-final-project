@@ -115,7 +115,7 @@
                                     </div><!--end col-->
                                     <div class="col-lg-3">
                                         <div class="filler-job-form">
-                                            <i class="uil uil-award"></i>
+                                            <i class="uil uil-comment-info"></i>
                                             <select class="form-select " data-trigger name="choices-single-categories"
                                                     id="candidatesStatus" aria-label="Default select example"
                                                     style="padding-left: 40px">
@@ -146,24 +146,6 @@
                         </div>
                     </div><!--end col-->
 
-                    <div class="col-lg-2 col-md-5">
-                        <input type="hidden" th:value="${id}" id="candidatesJobId">
-                        <div class="candidate-list-widgets">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="selection-widget mt-3 mt-md-0">
-                                        <select class="form-select" data-trigger name="choices-single-filter-orderby"
-                                                id="choices-single-filter-orderby" aria-label="Default select example">
-                                            <option value="df">Default</option>
-                                            <option value="ne">Newest</option>
-                                            <option value="od">Oldest</option>
-                                            <option value="rd">Random</option>
-                                        </select>
-                                    </div>
-                                </div><!--end col-->
-                            </div><!--end row-->
-                        </div><!--end candidate-list-widgets-->
-                    </div><!--end col-->
                 </div><!--end row-->
 
                 <div class="candidate-list">
@@ -173,23 +155,10 @@
                 </div><!--end candidate-list-->
 
                 <div class="row mt-5 pt-2">
+                    <input type="hidden" th:value="${id}" id="candidatesJobId">
                     <div class="col-lg-12">
                         <nav aria-label="Page navigation example">
-                            <ul class="pagination job-pagination mb-0 justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="javascript:void(0)" tabindex="-1">
-                                        <i class="mdi mdi-chevron-double-left fs-15"></i>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="javascript:void(0)">1</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript:void(0)">4</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript:void(0)">
-                                        <i class="mdi mdi-chevron-double-right fs-15"></i>
-                                    </a>
-                                </li>
+                            <ul class="pagination job-pagination mb-0 justify-content-center" id="candidatesPagination">
                             </ul>
                         </nav>
                     </div><!--end col-->

@@ -38,6 +38,19 @@ const appendCompanyAlert = (message, type) => {
     companyAlert.append(wrapper)
 }
 
+const avatarAlert = document.getElementById('companyAvatarAlert')
+const appendCompanyAvatarAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible text-center" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    avatarAlert.append(wrapper)
+}
+
 
 let hasCompanyProfile = false;
 let companyId = null;
@@ -98,33 +111,69 @@ function getCompanyOpenJobs() {
     httpRequest.send();
 }
 
+function saveCompanyAvatar() {
+    if (hasCompanyProfile) {
+        if (companyImgInput.value !== '') {
+            const companyImageFile = companyImgInput.files[0];
+            const httpRequest = new XMLHttpRequest();
+            const formData = new FormData();
+
+            formData.append('image', companyImageFile);
+
+            httpRequest.open("PUT", `/companies/${companyId}/avatar`, true);
+            httpRequest.responseType = "arraybuffer";
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState === XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        const imageBytes = new Uint8Array(httpRequest.response);
+                        const blob = new Blob([imageBytes], {type: "image/jpeg"});
+
+                        const imageUrl = URL.createObjectURL(blob);
+                        overviewCompanyImg.src = imageUrl;
+                        companyImg.src = imageUrl;
+                    } else {
+                        let error = httpRequest.responseText;
+                        console.log(error);
+                    }
+                }
+            }
+
+            httpRequest.send(formData);
+        } else {
+            appendCompanyAvatarAlert("Please, upload an image", "warning");
+        }
+    } else {
+        appendCompanyAvatarAlert("You should fill your profile data first!", "warning");
+    }
+}
+
 function saveCompany() {
     hasCompanyProfile ? updateCompany() : createCompany();
 }
 
 function updateCompany() {
-    if (companyImgInput.value !== '' && companyNameInput.value !== '' && ownerNameInput.value !== ''
+    if (companyNameInput.value !== '' && ownerNameInput.value !== ''
         && establishedDateInput.value !== '' && companyDescriptionInput.value !== '' && employeesNumberInput.value !== ''
         && companyLocationInput.value !== '' && companyWebsiteInput.value !== '' && companyLinkedinInput.value !== ''
         && companyWhatsappInput.value !== '') {
-
-        const companyImageFile = companyImgInput.files[0];
         const httpRequest = new XMLHttpRequest();
-        const formData = new FormData();
 
-        formData.append('image', companyImageFile);
-        formData.append('name', companyNameInput.value)
-        formData.append('aboutCompany', companyDescriptionInput.value)
-        formData.append('location', companyLocationInput.value)
-        formData.append('website', companyWebsiteInput.value)
-        formData.append('establishDate', establishedDateInput.value)
-        formData.append('employeesNumber', employeesNumberInput.value)
-        formData.append('whatsappLink', companyWebsiteInput.value)
-        formData.append('linkedinLink', companyLinkedinInput.value)
-        formData.append('ownerName', ownerNameInput.value)
-        formData.append('userId', userId)
+        const requestData = {
+            "name": companyNameInput.value,
+            "aboutCompany": companyDescriptionInput.value,
+            "location": companyLocationInput.value,
+            "website": companyWebsiteInput.value,
+            "establishDate": establishedDateInput.value,
+            "employeesNumber": employeesNumberInput.value,
+            "whatsappLink": companyWebsiteInput.value,
+            "linkedinLink": companyLinkedinInput.value,
+            "ownerName": ownerNameInput.value,
+            "userId": userId,
+        };
 
         httpRequest.open("PUT", "/companies/" + companyId, true);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
@@ -138,35 +187,35 @@ function updateCompany() {
             }
         }
 
-        httpRequest.send(formData);
+        httpRequest.send(JSON.stringify(requestData));
     } else {
         appendCompanyAlert("Please, fill all the fields!", "warning");
     }
 }
 
 function createCompany() {
-    if (companyImgInput.value !== '' && companyNameInput.value !== '' && ownerNameInput.value !== ''
+    if (companyNameInput.value !== '' && ownerNameInput.value !== ''
         && establishedDateInput.value !== '' && companyDescriptionInput.value !== '' && employeesNumberInput.value !== ''
         && companyLocationInput.value !== '' && companyWebsiteInput.value !== '' && companyLinkedinInput.value !== ''
         && companyWhatsappInput.value !== '') {
-
-        const companyImageFile = companyImgInput.files[0];
         const httpRequest = new XMLHttpRequest();
-        const formData = new FormData();
 
-        formData.append('image', companyImageFile);
-        formData.append('name', companyNameInput.value)
-        formData.append('aboutCompany', companyDescriptionInput.value)
-        formData.append('location', companyLocationInput.value)
-        formData.append('website', companyWebsiteInput.value)
-        formData.append('establishDate', establishedDateInput.value)
-        formData.append('employeesNumber', employeesNumberInput.value)
-        formData.append('whatsappLink', companyWebsiteInput.value)
-        formData.append('linkedinLink', companyLinkedinInput.value)
-        formData.append('ownerName', ownerNameInput.value)
-        formData.append('userId', userId)
+        const requestData = {
+            "name": companyNameInput.value,
+            "aboutCompany": companyDescriptionInput.value,
+            "location": companyLocationInput.value,
+            "website": companyWebsiteInput.value,
+            "establishDate": establishedDateInput.value,
+            "employeesNumber": employeesNumberInput.value,
+            "whatsappLink": companyWebsiteInput.value,
+            "linkedinLink": companyLinkedinInput.value,
+            "ownerName": ownerNameInput.value,
+            "userId": userId,
+        };
 
         httpRequest.open("POST", "/companies", true);
+        httpRequest.setRequestHeader('Content-Type', 'application/json');
+
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 201) {
@@ -180,7 +229,7 @@ function createCompany() {
             }
         }
 
-        httpRequest.send(formData);
+        httpRequest.send(JSON.stringify(requestData));
     } else {
         appendCompanyAlert("Please, fill all the fields!", "warning");
     }

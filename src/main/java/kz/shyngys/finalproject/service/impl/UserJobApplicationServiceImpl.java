@@ -12,6 +12,8 @@ import kz.shyngys.finalproject.repository.UserProfileRepository;
 import kz.shyngys.finalproject.service.UserJobApplicationService;
 import kz.shyngys.finalproject.specification.UserJobApplicationSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,14 +38,15 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
     private final UserJobApplicationCreateEditMapper userJobAppCreateEditMapper;
 
     @Override
-    public List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
+    public Page<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
                                                    UserFilter userFilter,
-                                                   UserProfileFilter userProfileFilter) {
+                                                   UserProfileFilter userProfileFilter,
+                                                   Pageable pageable) {
+
         Specification<UserJobApplication> spec = UserJobApplicationSpecification
                 .withFilter(userJobAppFilter, userFilter, userProfileFilter);
-        return userJobAppRepository.findAll(spec).stream()
-                .map(userJobAppReadMapper::toDto)
-                .toList();
+        return userJobAppRepository.findAll(spec, pageable)
+                .map(userJobAppReadMapper::toDto);
     }
 
     @Override

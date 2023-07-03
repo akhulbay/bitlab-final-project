@@ -1,5 +1,6 @@
 package kz.shyngys.finalproject.controller;
 
+import kz.shyngys.finalproject.dto.UserProfileCreateEditAvatarDto;
 import kz.shyngys.finalproject.dto.UserProfileCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileReadDto;
 import kz.shyngys.finalproject.service.UserProfileService;
@@ -50,7 +51,7 @@ public class UserProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<UserProfileReadDto> create(UserProfileCreateEditDto user) {
+    public ResponseEntity<UserProfileReadDto> create(@RequestBody UserProfileCreateEditDto user) {
         UserProfileReadDto newUser = userProfileService.save(user);
         if (newUser == null) {
             return ResponseEntity.badRequest().build();
@@ -60,11 +61,21 @@ public class UserProfileController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserProfileReadDto> update(@PathVariable("id") Long id,
-                                                     UserProfileCreateEditDto user) {
+                                                     @RequestBody UserProfileCreateEditDto user) {
         UserProfileReadDto newUser = userProfileService.update(id, user);
         if (newUser == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(newUser);
+    }
+
+    @PutMapping("/{id}/avatar")
+    public ResponseEntity<byte[]> updateAvatar(@PathVariable("id") Long id,
+                               UserProfileCreateEditAvatarDto userProfileAvatar) {
+        byte[] image = userProfileService.updateAvatar(id, userProfileAvatar);
+        if (image == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(image);
     }
 }

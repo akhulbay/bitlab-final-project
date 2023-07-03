@@ -101,7 +101,7 @@ async function setCompanyOpenJobs(jobList) {
                         <div class="col-lg-12">
                             <div class="mt-3 mt-lg-0">
                                 <h5 class="fs-16 fw-medium mb-1"><a
-                                        href="#"
+                                        href="/job-details/${jobList[i].id}"
                                         class="text-dark">${jobList[i].title}</a> <small
                                         class="text-muted fw-normal">(Experience: ${getExperience(jobList[i].experience)})</small>
                                 </h5>

@@ -150,6 +150,14 @@
                                         Company Profile
                                     </button>
                                 </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="avatar-tab" data-bs-toggle="pill"
+                                            data-bs-target="#avatar" type="button" role="tab"
+                                            aria-controls="avatar"
+                                            aria-selected="false">
+                                        Company Avatar
+                                    </button>
+                                </li>
                             </ul>
                             <!--end profile-content-nav-->
                             <div class="card-body p-4">
@@ -167,21 +175,6 @@
                                         <form action="#">
                                             <div>
                                                 <div id="companyAlert"></div>
-                                                <div class="text-center">
-                                                    <div class="mb-4 profile-user">
-                                                        <img src="/images/user/img-02.jpg"
-                                                             class="rounded-circle img-thumbnail profile-img"
-                                                             id="companyImg" alt="">
-                                                        <div class="p-0 rounded-circle profile-photo-edit">
-                                                            <input id="companyImgInput" type="file"
-                                                                   class="profile-img-file-input">
-                                                            <label for="companyImgInput"
-                                                                   class="profile-photo-edit avatar-xs">
-                                                                <i class="uil uil-edit"></i>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
@@ -306,6 +299,35 @@
                                             </div>
                                         </form>
                                         <!--end form-->
+                                    </div>
+                                    <div class="tab-pane fade" id="avatar" role="tabpanel"
+                                         aria-labelledby="avatar-tab-tab">
+                                        <form action="#">
+                                            <div>
+                                                <div id="companyAvatarAlert"></div>
+                                                <div class="text-center">
+                                                    <div class="mb-4 profile-user">
+                                                        <img src="/images/user/img-02.jpg"
+                                                             class="rounded-circle img-thumbnail profile-img"
+                                                             id="companyImg" alt="">
+                                                        <div class="p-0 rounded-circle profile-photo-edit">
+                                                            <input id="companyImgInput" type="file"
+                                                                   class="profile-img-file-input">
+                                                            <label for="companyImgInput"
+                                                                   class="profile-photo-edit avatar-xs">
+                                                                <i class="uil uil-edit"></i>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 text-end">
+                                                <button type="button" class="btn btn-primary"
+                                                        onclick="saveCompanyAvatar()">
+                                                    Update
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <!--end tab-content-->

@@ -3,11 +3,11 @@ package kz.shyngys.finalproject.controller;
 import kz.shyngys.finalproject.dto.*;
 import kz.shyngys.finalproject.service.UserJobApplicationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user-job-applications")
@@ -17,10 +17,13 @@ public class UserJobApplicationController {
     private final UserJobApplicationService userJobAppService;
 
     @GetMapping
-    public List<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
+    public PageResponse<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
                                                    UserFilter userFilter,
-                                                   UserProfileFilter userProfileFilter) {
-        return userJobAppService.findAll(userJobAppFilter, userFilter, userProfileFilter);
+                                                   UserProfileFilter userProfileFilter,
+                                                   Pageable pageable) {
+        Page<UserJobApplicationReadDto> userJobApps = userJobAppService.findAll(userJobAppFilter,
+                userFilter, userProfileFilter, pageable);
+        return PageResponse.of(userJobApps);
     }
 
     @GetMapping("/{id}")

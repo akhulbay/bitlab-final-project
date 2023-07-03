@@ -93,11 +93,11 @@ function checkIfUserApplied() {
         if (httpRequest.readyState === XMLHttpRequest.DONE) {
             if (httpRequest.status === 200) {
                 let resultList = JSON.parse(httpRequest.responseText);
-                if (resultList.length === 1) {
+                if (resultList.data.length === 1) {
                     doesUserApplied = true;
                     setUserApplied();
                     appendApplyAlert("You already applied for this job!", "warning")
-                    jobDetailsCoverLetter.value = resultList[0].coverLetter;
+                    jobDetailsCoverLetter.value = resultList.data[0].coverLetter;
                 }
             }
         }
