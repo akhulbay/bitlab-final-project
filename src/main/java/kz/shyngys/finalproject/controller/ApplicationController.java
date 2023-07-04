@@ -108,4 +108,10 @@ public class ApplicationController {
         return "favorites";
     }
 
+    @GetMapping("/admin-panel")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String adminPanelPage() {
+        return "admin-panel";
+    }
+
 }

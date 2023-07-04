@@ -1,9 +1,6 @@
 package kz.shyngys.finalproject.service.impl;
 
-import kz.shyngys.finalproject.dto.UserCreateDto;
-import kz.shyngys.finalproject.dto.UserEditDto;
-import kz.shyngys.finalproject.dto.UserEditPasswordDto;
-import kz.shyngys.finalproject.dto.UserReadDto;
+import kz.shyngys.finalproject.dto.*;
 import kz.shyngys.finalproject.mapper.UserCreateMapper;
 import kz.shyngys.finalproject.mapper.UserEditMapper;
 import kz.shyngys.finalproject.mapper.UserReadMapper;
@@ -11,7 +8,12 @@ import kz.shyngys.finalproject.model.Role;
 import kz.shyngys.finalproject.model.User;
 import kz.shyngys.finalproject.repository.UserRepository;
 import kz.shyngys.finalproject.service.UserService;
+import kz.shyngys.finalproject.specification.UserSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,12 +21,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
+
+    private static final boolean USER_IS_NOT_BLOCKED = false;
+    private static final boolean USER_IS_BLOCKED = true;
 
     private final UserRepository userRepository;
     private final UserCreateMapper userCreateMapper;
@@ -34,10 +40,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<UserReadDto> findAll() {
-        return userRepository.findAll().stream()
-                .map(userReadMapper::toDto)
-                .toList();
+    public Page<UserReadDto> findAll(UserFilter userFilter, Pageable pageable) {
+        Specification<User> spec = UserSpecification.withFilter(userFilter);
+        return userRepository.findAll(spec, pageable)
+                .map(userReadMapper::toDto);
     }
 
     @Override
@@ -75,6 +81,7 @@ public class UserServiceImpl implements UserService {
         return Optional.of(user)
                 .map(userCreateMapper::toEntity)
                 .map(entity -> {
+                    entity.setBlocked(USER_IS_NOT_BLOCKED);
                     entity.setRole(Role.ROLE_EMPLOYER);
                     entity.setPassword(passwordEncoder.encode(entity.getPassword()));
                     return entity;
@@ -113,6 +120,43 @@ public class UserServiceImpl implements UserService {
                 .map(userRepository::saveAndFlush)
                 .map(userReadMapper::toDto)
                 .orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public String updateRole(Long id, String role) {
+        return userRepository.findById(id)
+                .map(entity -> {
+                    entity.setRole(Enum.valueOf(Role.class, role));
+                    return entity;
+                })
+                .map(userRepository::saveAndFlush)
+                .map(entity -> entity.getRole().name())
+                .orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public void block(Long id) {
+        userRepository.findById(id)
+                .map(entity -> {
+                    entity.setBlocked(USER_IS_BLOCKED);
+                    return entity;
+                })
+                .map(userRepository::saveAndFlush)
+                .orElseThrow(() -> new NoSuchElementException("User is not found!"));
+    }
+
+    @Transactional
+    @Override
+    public void unblock(Long id) {
+        userRepository.findById(id)
+                .map(entity -> {
+                    entity.setBlocked(USER_IS_NOT_BLOCKED);
+                    return entity;
+                })
+                .map(userRepository::saveAndFlush)
+                .orElseThrow(() -> new NoSuchElementException("User is not found!"));
     }
 
     @Transactional

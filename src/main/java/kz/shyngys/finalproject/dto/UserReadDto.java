@@ -13,5 +13,6 @@ public class UserReadDto {
     private String firstName;
     private String lastName;
     private String username;
+    private Boolean blocked;
     private Role role;
 }
