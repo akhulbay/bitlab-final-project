@@ -52,6 +52,15 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody UserCreateDto user) {
+        if (userService.isUsernameExists(user.getUsername())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
+        }
+        UserReadDto newUser = userService.create(user);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
     @PutMapping("/data/{id}")
     public ResponseEntity<UserReadDto> updateData(@PathVariable("id") Long id,
                               @RequestBody UserEditDto user) {

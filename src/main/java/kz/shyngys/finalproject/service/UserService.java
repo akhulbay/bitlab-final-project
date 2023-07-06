@@ -15,6 +15,8 @@ public interface UserService extends UserDetailsService {
 
     UserReadDto findByUsername(String username);
 
+    UserReadDto create(UserCreateDto user);
+
     UserReadDto createUser(UserCreateDto user);
 
     UserReadDto createEmployer(UserCreateDto user);

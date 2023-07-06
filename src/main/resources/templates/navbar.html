@@ -269,7 +269,12 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown">
                         <li><a class="dropdown-item"
-                               th:href="@{/admin-panel}">Admin Panel</a>
+                               th:href="@{/admin-panel}"
+                               sec:authorize="hasAnyRole('ROLE_ADMIN')">Admin Panel</a>
+                        </li>
+                        <li><a class="dropdown-item"
+                               th:href="@{/add-user}"
+                               sec:authorize="hasAnyRole('ROLE_ADMIN')">Add User</a>
                         </li>
                         <li><a class="dropdown-item"
                                th:href="@{/favorites}">Bookmarks Jobs</a>

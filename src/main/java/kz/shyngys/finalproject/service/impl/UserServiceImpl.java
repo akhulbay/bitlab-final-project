@@ -67,6 +67,21 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public UserReadDto create(UserCreateDto user) {
+        return Optional.of(user)
+                .map(userCreateMapper::toEntity)
+                .map(entity -> {
+                    entity.setBlocked(USER_IS_NOT_BLOCKED);
+                    entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+                    return entity;
+                })
+                .map(userRepository::save)
+                .map(userReadMapper::toDto)
+                .orElseThrow();
+    }
+
+    @Transactional
+    @Override
     public UserReadDto createUser(UserCreateDto user) {
         return Optional.of(user)
                 .map(userCreateMapper::toEntity)

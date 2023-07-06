@@ -109,9 +109,15 @@ public class ApplicationController {
     }
 
     @GetMapping("/admin-panel")
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String adminPanelPage() {
         return "admin-panel";
+    }
+
+    @GetMapping("/add-user")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String addUserPage() {
+        return "add-user";
     }
 
 }
