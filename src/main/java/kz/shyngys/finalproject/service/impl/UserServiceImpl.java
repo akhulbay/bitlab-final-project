@@ -13,16 +13,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +71,7 @@ public class UserServiceImpl implements UserService {
         return Optional.of(user)
                 .map(userCreateMapper::toEntity)
                 .map(entity -> {
+                    entity.setBlocked(USER_IS_NOT_BLOCKED);
                     entity.setRole(Role.ROLE_USER);
                     entity.setPassword(passwordEncoder.encode(entity.getPassword()));
                     return entity;
@@ -88,7 +94,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::save)
                 .map(userReadMapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(CREATED));
     }
 
     @Transactional

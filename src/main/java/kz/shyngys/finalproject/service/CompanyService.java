@@ -19,4 +19,6 @@ public interface CompanyService {
     CompanyReadDto update(Long id, CompanyCreateEditDto company);
 
     byte[] updateAvatar(Long id, CompanyCreateEditAvatarDto companyAvatar);
+
+    void delete(Long id);
 }

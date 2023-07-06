@@ -15,15 +15,6 @@ import static java.util.function.Predicate.not;
 public interface CompanyCreateEditMapper {
 
     @Mapping(source = "userId", target = "user.id")
-    @Mapping(source = "image", target = "image", qualifiedByName = "getImage")
     @Mapping(target = "id", ignore = true)
     Company toEntity(CompanyCreateEditDto dto);
-
-    @Named("getImage")
-    default String getImage(MultipartFile image) {
-        return Optional.ofNullable(image)
-                .filter(not(MultipartFile::isEmpty))
-                .map(MultipartFile::getOriginalFilename)
-                .orElse(null);
-    }
 }

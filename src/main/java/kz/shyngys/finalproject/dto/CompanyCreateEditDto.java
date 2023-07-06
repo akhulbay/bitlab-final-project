@@ -18,7 +18,6 @@ public class CompanyCreateEditDto {
     private String website;
     private String establishDate;
     private Integer employeesNumber;
-    private MultipartFile image;
     private String whatsappLink;
     private String linkedinLink;
     private String ownerName;

@@ -6,6 +6,23 @@ let userRoleFilter = document.getElementById("adminPanelUserRole");
 let userListTable = document.getElementById("adminPanelUserList");
 let usersPagination = document.getElementById("adminPanelUsersPagination");
 
+// job filters
+let jobTitleFilter = document.getElementById("adminPanelJobTitle");
+let jobLocationFilter = document.getElementById("adminPanelJobLocation");
+let jobCategoryFilter = document.getElementById("adminPanelJobCategory");
+
+let jobListTable = document.getElementById("adminPanelJobList");
+let jobsPagination = document.getElementById("adminPanelJobsPagination");
+
+// company filters
+let companyNameFilter = document.getElementById("adminPanelCompanyName");
+let companyLocationFilter = document.getElementById("adminPanelCompanyLocation");
+
+let companyListTable = document.getElementById("adminPanelCompanyList");
+let companyPagination = document.getElementById("adminPanelCompaniesPagination");
+
+let companyId = null;
+let jobId = null;
 let userId = null;
 
 const usersAlert = document.getElementById('adminPanelUsersAlert')
@@ -21,7 +38,35 @@ const appendUsersAlert = (message, type) => {
     usersAlert.append(wrapper)
 }
 
+const jobsAlert = document.getElementById('adminPanelJobsAlert')
+const appendJobsAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible text-center" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    jobsAlert.append(wrapper)
+}
+
+const companiesAlert = document.getElementById('adminPanelCompaniesAlert')
+const appendCompaniesAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible text-center" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    companiesAlert.append(wrapper)
+}
+
 filterUsers(0);
+filterJobs(0);
+filterCompanies(0);
 
 function filterUsers(page) {
     if (page === undefined || page === '') {
@@ -59,7 +104,6 @@ function filterUsers(page) {
 function setUsers(userList) {
     let result = ``;
     for (let i = 0; i < userList.length; i++) {
-        console.log(userList[i].blocked)
         result += `
             <tr>
                 <td>${userList[i].id}</td>
@@ -214,3 +258,222 @@ function unblockUser(id) {
     }
     httpRequest.send();
 }
+
+function filterJobs(page) {
+    if (page === undefined || page === '') {
+        page = 0;
+    }
+
+    let result = '';
+    if (jobTitleFilter.value !== '') {
+        result += `&title=${jobTitleFilter.value}`;
+    }
+    if (jobLocationFilter.value !== 'all') {
+        result += `&city=${jobLocationFilter.value}`
+    }
+    if (jobCategoryFilter.value !== 'all') {
+        result += `&category=${jobCategoryFilter.value}`
+    }
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/jobs?page=${page}&size=10` + result,
+        true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setJobs(response.data)
+                setJobsPagination(response.metadata)
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setJobs(jobsList) {
+    let result = '';
+    for (let i = 0; i < jobsList.length; i++) {
+        result += `
+            <tr>
+                <td>${jobsList[i].id}</td>
+                <td>${jobsList[i].title}</td>
+                <td>${jobsList[i].city}</td>
+                <td>${getCategory(jobsList[i].category)}</td>
+                <td>${jobsList[i].createdAt}</td>
+                <td>${jobsList[i].company.name}</td>
+                <td>
+                    <a href="/job-details/${jobsList[i].id}" class="btn btn-sm btn-primary">Details</a>
+                </td>
+                <td>
+                    <a href='javascript:void(0)' data-bs-toggle='modal'
+                                                       data-bs-target='#deleteJobModal'
+                                                        class='btn btn-sm btn-danger' 
+                                                        onclick="preDeleteJob(${jobsList[i].id})">Delete
+                    </a>
+                </td>
+            </tr>
+        `;
+    }
+    jobListTable.innerHTML = result;
+}
+
+function setJobsPagination(page) {
+    let result = `
+       <li class="page-item active" onclick="filterJobs(0)">
+            <a class="page-link" href="javascript:void(0)">${1}</a></li>
+    `;
+    for (let i = 1; i < page.totalPages; i++) {
+        result += `
+            <li class="page-item active" onclick="filterJobs(${i})">
+            <a class="page-link" href="javascript:void(0)">${i + 1}</a></li>
+        `;
+    }
+    jobsPagination.innerHTML = result;
+}
+
+function preDeleteJob(id) {
+    jobId = id;
+}
+
+function deleteJob() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("DELETE", `/jobs/${jobId}`,
+        true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 204) {
+                filterJobs(0);
+                appendJobsAlert("You successfully deleted job", "warning");
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function getCategory(category) {
+    let result = '';
+    switch (category) {
+        case 1:
+            result = 'Accounting';
+            break;
+        case 2:
+            result = 'IT & Software';
+            break;
+        case 3:
+            result = 'Marketing';
+            break;
+        case 4:
+            result = 'Banking';
+            break;
+        case 5:
+            result = 'Digital and Creative';
+            break;
+        case 6:
+            result = 'Retail';
+            break;
+        case 7:
+            result = 'Management';
+            break;
+        case 8:
+            result = 'Human Resources';
+            break;
+    }
+    return result;
+}
+
+function filterCompanies(page) {
+    if (page === undefined || page === '') {
+        page = 0;
+    }
+
+    let result = ``;
+    if (companyNameFilter.value !== '') {
+        result += `&name=${companyNameFilter.value}`;
+    }
+    if (companyLocationFilter.value !== 'all') {
+        result += `&location=${companyLocationFilter.value}`;
+    }
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/companies?page=${page}&size=10` + result,
+        true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setCompanies(response.data)
+                setCompanyPagination(response.metadata)
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setCompanies(companyList) {
+    let result = '';
+    for (let i = 0; i < companyList.length; i++) {
+        result += `
+            <tr>
+                <td>${companyList[i].id}</td>
+                <td>${companyList[i].name}</td>
+                <td>${companyList[i].location}</td>
+                <td>
+                    <a href="/company-details/${companyList[i].id}" class="btn btn-sm btn-primary">Details</a>
+                </td>
+                <td>
+                    <a href='javascript:void(0)' data-bs-toggle='modal'
+                                                       data-bs-target='#deleteCompanyModal'
+                                                        class='btn btn-sm btn-danger' 
+                                                        onclick="preDeleteCompany(${companyList[i].id})">Delete
+                    </a>
+                </td>
+            </tr>
+        `;
+    }
+    companyListTable.innerHTML = result;
+}
+
+function setCompanyPagination(page) {
+    let result = `
+       <li class="page-item active" onclick="filterCompanies(0)">
+            <a class="page-link" href="javascript:void(0)">${1}</a></li>
+    `;
+    for (let i = 1; i < page.totalPages; i++) {
+        result += `
+            <li class="page-item active" onclick="filterCompanies(${i})">
+            <a class="page-link" href="javascript:void(0)">${i + 1}</a></li>
+        `;
+    }
+    companyPagination.innerHTML = result;
+}
+
+function preDeleteCompany(id) {
+    companyId = id;
+}
+
+function deleteCompany() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("DELETE", `/companies/${companyId}`,
+        true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 204) {
+                filterCompanies(0);
+                appendCompaniesAlert("You successfully deleted job", "warning");
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+

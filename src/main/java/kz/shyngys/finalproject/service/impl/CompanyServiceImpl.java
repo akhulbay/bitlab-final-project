@@ -76,10 +76,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanyReadDto create(CompanyCreateEditDto company) {
         return Optional.of(company)
-                .map(dto -> {
-                    uploadImage(dto.getImage());
-                    return companyCreateEditMapper.toEntity(dto);
-                })
+                .map(companyCreateEditMapper::toEntity)
                 .map(entity -> {
                     User user = getUserById(company.getUserId());
                     entity.setUser(user);
@@ -117,6 +114,13 @@ public class CompanyServiceImpl implements CompanyService {
                 .filter(StringUtils::hasText)
                 .flatMap(imageService::get)
                 .orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        companyRepository.findById(id)
+                .ifPresent(company -> companyRepository.deleteById(id));
     }
 
     @SneakyThrows
