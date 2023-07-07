@@ -35,9 +35,6 @@ public class JobController {
     @GetMapping("/{id}")
     public ResponseEntity<JobReadDto> findById(@PathVariable("id") Long id) {
         JobReadDto job = jobService.findById(id);
-        if (job == null) {
-            ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(job);
     }
 
@@ -49,9 +46,6 @@ public class JobController {
     @PostMapping
     public ResponseEntity<JobReadDto> create(@RequestBody JobCreateEditDto job) {
         JobReadDto newJob = jobService.create(job);
-        if (newJob == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return new ResponseEntity<>(newJob, HttpStatus.CREATED);
     }
 
@@ -59,9 +53,6 @@ public class JobController {
     public ResponseEntity<JobReadDto> update(@PathVariable("id") Long id,
                                              @RequestBody JobCreateEditDto job) {
         JobReadDto newJob = jobService.update(id, job);
-        if (newJob == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newJob);
     }
 

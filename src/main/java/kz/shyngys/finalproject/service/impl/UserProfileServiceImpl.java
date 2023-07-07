@@ -5,8 +5,10 @@ import kz.shyngys.finalproject.dto.UserProfileCreateEditDto;
 import kz.shyngys.finalproject.dto.UserProfileReadDto;
 import kz.shyngys.finalproject.mapper.UserProfileCreateEditMapper;
 import kz.shyngys.finalproject.mapper.UserProfileReadMapper;
+import kz.shyngys.finalproject.model.GeneralCategory;
 import kz.shyngys.finalproject.model.User;
 import kz.shyngys.finalproject.model.UserProfile;
+import kz.shyngys.finalproject.repository.GeneralCategoryRepository;
 import kz.shyngys.finalproject.repository.UserProfileRepository;
 import kz.shyngys.finalproject.repository.UserRepository;
 import kz.shyngys.finalproject.service.ImageService;
@@ -17,12 +19,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.util.function.Predicate.not;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
     private final UserRepository userRepository;
+    private final GeneralCategoryRepository generalCategoryRepository;
 
     private final UserProfileCreateEditMapper userProfileCreateEditMapper;
     private final UserProfileReadMapper userProfileReadMapper;
@@ -51,7 +56,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfileReadDto findByUserId(Long userId) {
         return userProfileRepository.findByUserId(userId)
                 .map(userProfileReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
@@ -60,7 +65,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .map(UserProfile::getImage)
                 .filter(StringUtils::hasText)
                 .flatMap(imageService::get)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -70,12 +75,14 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .map(userProfileCreateEditMapper::toEntity)
                 .map(entity -> {
                     User newUser = getUserById(userProfile.getUserId());
+                    GeneralCategory newAccountType = getGeneralCategoryById(userProfile.getAccountType());
+                    entity.setAccountType(newAccountType);
                     entity.setUser(newUser);
                     return entity;
                 })
                 .map(userProfileRepository::saveAndFlush)
                 .map(userProfileReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -88,7 +95,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                 })
                 .map(userProfileRepository::saveAndFlush)
                 .map(userProfileReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -104,12 +111,14 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .map(UserProfile::getImage)
                 .filter(StringUtils::hasText)
                 .flatMap(imageService::get)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
-
+        userProfileRepository.findById(id)
+                .ifPresent(userProfile -> userProfileRepository.deleteById(id));
     }
 
     @SneakyThrows
@@ -121,7 +130,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     private String getImage(MultipartFile image) {
@@ -134,7 +143,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     private void mapUpdatedData(UserProfileCreateEditDto fromObject, UserProfile toObject) {
         toObject.setAboutUser(fromObject.getAboutUser());
         toObject.setPhoneNumber(fromObject.getPhoneNumber());
-        toObject.setAccountType(fromObject.getAccountType());
+        toObject.setAccountType(getGeneralCategoryById(fromObject.getAccountType()));
         toObject.setLanguages(fromObject.getLanguages());
         toObject.setLocation(fromObject.getLocation());
         toObject.setFacebookLink(fromObject.getFacebookLink());
@@ -151,5 +160,10 @@ public class UserProfileServiceImpl implements UserProfileService {
         toObject.setExperienceYears(fromObject.getExperienceYears());
         toObject.setAboutExperience(fromObject.getAboutExperience());
         toObject.setUser(getUserById(fromObject.getUserId()));
+    }
+
+    private GeneralCategory getGeneralCategoryById(Long generalCategoryId) {
+        return generalCategoryRepository.findById(generalCategoryId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }

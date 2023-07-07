@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="main_layout.html">
+
+<div class="main-content" layout:fragment="siteContent">
+    <div class="page-content">
+        <!-- Start home -->
+        <section class="page-title-box">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="text-center text-white">
+                            <h3 class="mb-4">Blog Details</h3>
+                            <div class="page-next">
+                                <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                    <ol class="breadcrumb justify-content-center">
+                                        <li class="breadcrumb-item"><a
+                                                href="../../../../../../Desktop/Jobcy/HTML/dist/index.html">Home</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0)">Blog</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page"> Blog Details</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!-- end home -->
+
+        <!-- START SHAPE -->
+        <div class="position-relative" style="z-index: 1">
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                    <path fill="#FFFFFF" fill-opacity="1"
+                          d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- END SHAPE -->
+
+
+        <!-- START BLOG-DETAILS -->
+        <section class="section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="text-center mb-5">
+                            <p class="text-danger fw-semibold mb-0" id="blogDetailsCategory"></p>
+                            <h3 id="blogDetailsTitle"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="blog-post">
+                            <input type="hidden" th:value="${id}" id="blogDetailsId">
+                            <div class="swiper blogDetailSlider">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <img src="/images/blog/img-11.jpg" alt="" class="img-fluid rounded-3"
+                                             id="blogDetailsImg">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul class="list-inline mb-0 mt-3 text-muted">
+                                <li class="list-inline-item">
+                                    <div class="d-flex align-items-center">
+                                        <div class="ms-3">
+                                            <a href="javascript:void(0)"
+                                               class="primary-link"><h6 class="mb-0" id="blogDetailsAuthor"></h6></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-inline-item">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-shrink-0">
+                                            <i class="uil uil-calendar-alt"></i>
+                                        </div>
+                                        <div class="ms-2">
+                                            <p class="mb-0" id="blogDetailsCreatedDate"></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="mt-4" id="blogDetailsContent">
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div><!--end container-->
+        </section>
+        <!-- START BLOG-DETAILS -->
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+</html>
+<script src="/js/pages/blog-details.js"></script>

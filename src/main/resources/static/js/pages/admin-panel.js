@@ -21,9 +21,17 @@ let companyLocationFilter = document.getElementById("adminPanelCompanyLocation")
 let companyListTable = document.getElementById("adminPanelCompanyList");
 let companyPagination = document.getElementById("adminPanelCompaniesPagination");
 
+// blog filters
+let blogTitleFilter = document.getElementById("adminPanelBlogTitle");
+let blogCategoryFilter = document.getElementById("adminPanelBlogCategory");
+
+let blogListTable = document.getElementById("adminPanelBlogList");
+let blogPagination = document.getElementById("adminPanelBlogsPagination");
+
 let companyId = null;
 let jobId = null;
 let userId = null;
+let blogId = null;
 
 const usersAlert = document.getElementById('adminPanelUsersAlert')
 const appendUsersAlert = (message, type) => {
@@ -64,9 +72,25 @@ const appendCompaniesAlert = (message, type) => {
     companiesAlert.append(wrapper)
 }
 
+const blogAlert = document.getElementById('adminPanelBlogAlert')
+const appendBlogAlert = (message, type) => {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = [
+        `<div class="alert alert-${type} alert-dismissible text-center" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        '</div>'
+    ].join('')
+
+    blogAlert.append(wrapper)
+}
+
+getGeneralCategories();
 filterUsers(0);
 filterJobs(0);
 filterCompanies(0);
+filterBlogs(0);
+getBlogCategories();
 
 function filterUsers(page) {
     if (page === undefined || page === '') {
@@ -117,17 +141,29 @@ function setUsers(userList) {
                                                             id="userRole${userList[i].id}"
                                                             onchange="updateRole(${userList[i].id})">
                       
-                       <option value="ROLE_USER" ${userList[i].role === 'ROLE_USER' ? 'selected' : ''}>User</option>
-                       <option value="ROLE_EMPLOYER" ${userList[i].role === 'ROLE_EMPLOYER' ? 'selected' : ''}>Employer</option>
-                       <option value="ROLE_ADMIN" ${userList[i].role === 'ROLE_ADMIN' ? 'selected' : ''}>Admin</option>
+                       <option value="ROLE_USER" 
+                            ${userList[i].role === 'ROLE_USER' ? 'selected' : ''}>User</option>
+                       <option value="ROLE_EMPLOYER" 
+                            ${userList[i].role === 'ROLE_EMPLOYER' ? 'selected' : ''}>Employer</option>
+                       <option value="ROLE_ADMIN" 
+                            ${userList[i].role === 'ROLE_ADMIN' ? 'selected' : ''}>Admin</option>
                     </select>
 
 
                 </td>
-                <td><a href="/candidate-details/${userList[i].id}" class="btn btn-sm btn-primary">Details</a></td>
-                <td id="isUserBlocked${userList[i].id}"> ${!userList[i].blocked ? `<a href='javascript:void(0)' data-bs-toggle='modal'
+                <td>
+                    ${userList[i].role === 'ROLE_USER' ? `
+                        <a href="/candidate-details/${userList[i].id}" class="btn btn-sm btn-primary">Details</a>
+                    ` : `
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info">No Profile!</a>
+                    `}
+            
+                </td>
+                <td id="isUserBlocked${userList[i].id}"> ${!userList[i].blocked ? `
+                        <a href='javascript:void(0)' data-bs-toggle='modal'
                                                        data-bs-target='#blockUserModal'
-                                                        class='btn btn-sm btn-danger' onclick="preBlockUser(${userList[i].id})">Block</a>` 
+                                                        class='btn btn-sm btn-danger' 
+                                                        onclick="preBlockUser(${userList[i].id})">Block</a>` 
                     : `
                         <button class="btn btn-sm btn-success" type="button" onclick="unblockUser(${userList[i].id})">
                             Unblock
@@ -137,7 +173,8 @@ function setUsers(userList) {
                 <td>
                     <a href='javascript:void(0)' data-bs-toggle='modal'
                                                        data-bs-target='#deleteUserModal'
-                                                        class='btn btn-sm btn-danger' onclick="preDeleteUser(${userList[i].id})">Delete</a>
+                                                        class='btn btn-sm btn-danger' 
+                                                        onclick="preDeleteUser(${userList[i].id})">Delete</a>
                 </td>
             </tr>
         `;
@@ -272,7 +309,7 @@ function filterJobs(page) {
         result += `&city=${jobLocationFilter.value}`
     }
     if (jobCategoryFilter.value !== 'all') {
-        result += `&category=${jobCategoryFilter.value}`
+        result += `&categoryId=${jobCategoryFilter.value}`
     }
     const httpRequest = new XMLHttpRequest();
     httpRequest.open("GET", `/jobs?page=${page}&size=10` + result,
@@ -300,7 +337,7 @@ function setJobs(jobsList) {
                 <td>${jobsList[i].id}</td>
                 <td>${jobsList[i].title}</td>
                 <td>${jobsList[i].city}</td>
-                <td>${getCategory(jobsList[i].category)}</td>
+                <td>${jobsList[i].category.name}</td>
                 <td>${jobsList[i].createdAt}</td>
                 <td>${jobsList[i].company.name}</td>
                 <td>
@@ -353,37 +390,6 @@ function deleteJob() {
         }
     }
     httpRequest.send();
-}
-
-function getCategory(category) {
-    let result = '';
-    switch (category) {
-        case 1:
-            result = 'Accounting';
-            break;
-        case 2:
-            result = 'IT & Software';
-            break;
-        case 3:
-            result = 'Marketing';
-            break;
-        case 4:
-            result = 'Banking';
-            break;
-        case 5:
-            result = 'Digital and Creative';
-            break;
-        case 6:
-            result = 'Retail';
-            break;
-        case 7:
-            result = 'Management';
-            break;
-        case 8:
-            result = 'Human Resources';
-            break;
-    }
-    return result;
 }
 
 function filterCompanies(page) {
@@ -476,4 +482,151 @@ function deleteCompany() {
     httpRequest.send();
 }
 
+function filterBlogs(page) {
+    if (page === undefined || page === '') {
+        page = 0;
+    }
 
+    let result = ``;
+    if (blogTitleFilter.value !== '') {
+        result += `&title=${blogTitleFilter.value}`;
+    }
+    if (blogCategoryFilter.value !== 'all') {
+        result += `&blogCategoryId=${blogCategoryFilter.value}`;
+    }
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", `/blogs?page=${page}&size=10` + result,
+        true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setBlogs(response.data)
+                setBlogsPagination(response.metadata)
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function getBlogCategories() {
+    const httpRequest = new XMLHttpRequest();
+
+    httpRequest.open("GET", "/blog-categories", true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setCategories(response);
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setCategories(categoryList) {
+    let result = `
+        <option value="all">Categories</option>
+    `;
+    for (let i = 0; i < categoryList.length; i++) {
+        result += `
+            <option value="${categoryList[i].id}">${categoryList[i].name}</option>
+        `;
+    }
+    blogCategoryFilter.innerHTML = result;
+}
+
+function setBlogs(blogList) {
+    let result = '';
+    for (let i = 0; i < blogList.length; i++) {
+        result += `
+            <tr>
+                <td>${blogList[i].id}</td>
+                <td>${blogList[i].title}</td>
+                <td>${blogList[i].blogCategory.name}</td>
+                <td>${blogList[i].user.firstName} ${blogList[i].user.lastName}</td>
+                <td><a href="/blog-details/${blogList[i].id}" class="btn btn-sm btn-primary">Details</a></td>
+                <td><a href="/edit-blog/${blogList[i].id}" class="btn btn-sm btn-warning">Edit</a></td>
+                <td>
+                    <a href='javascript:void(0)' data-bs-toggle='modal'
+                                                       data-bs-target='#deleteBlogModal'
+                                                        class='btn btn-sm btn-danger' 
+                                                        onclick="preDeleteBlog(${blogList[i].id})">Delete
+                    </a>
+                </td>
+            </tr>
+        `;
+    }
+    blogListTable.innerHTML = result;
+}
+
+function setBlogsPagination(page) {
+    let result = `
+       <li class="page-item active" onclick="filterBlogs(0)">
+            <a class="page-link" href="javascript:void(0)">${1}</a></li>
+    `;
+    for (let i = 1; i < page.totalPages; i++) {
+        result += `
+            <li class="page-item active" onclick="filterBlogs(${i})">
+            <a class="page-link" href="javascript:void(0)">${i + 1}</a></li>
+        `;
+    }
+    blogPagination.innerHTML = result;
+}
+
+function preDeleteBlog(id) {
+    blogId = id;
+}
+
+function deleteBlog() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("DELETE", `/blogs/${blogId}`,
+        true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 204) {
+                filterBlogs(0);
+                appendBlogAlert("You successfully deleted blog", "warning");
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error)
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function getGeneralCategories() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/general-categories", true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setGeneralCategories(response);
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setGeneralCategories(categoryList) {
+    let result = `
+        <option value="all">Category</option>
+    `;
+    for (let i = 0; i < categoryList.length; i++) {
+        result += `
+            <option value="${categoryList[i].id}">${categoryList[i].name}</option>
+        `;
+    }
+    jobCategoryFilter.innerHTML = result;
+}

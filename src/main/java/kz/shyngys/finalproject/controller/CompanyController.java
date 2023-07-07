@@ -26,39 +26,24 @@ public class CompanyController {
     @GetMapping("/{id}")
     public ResponseEntity<CompanyReadDto> findById(@PathVariable("id") Long id) {
         CompanyReadDto company = companyService.findById(id);
-
-        if (company == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(company);
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<CompanyReadDto> findByUserId(@PathVariable("id") Long id) {
         CompanyReadDto company = companyService.findByUserId(id);
-
-        if (company == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(company);
     }
 
     @GetMapping("/{id}/avatar")
     public ResponseEntity<byte[]> findAvatar(@PathVariable Long id) {
         byte[] image = companyService.findAvatar(id);
-        if (image == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(image);
     }
 
     @PostMapping
     public ResponseEntity<CompanyReadDto> create(@RequestBody CompanyCreateEditDto company) {
         CompanyReadDto newCompany = companyService.create(company);
-
-        if (newCompany == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return new ResponseEntity<>(newCompany, HttpStatus.CREATED);
     }
 
@@ -66,10 +51,6 @@ public class CompanyController {
     public ResponseEntity<CompanyReadDto> update(@PathVariable("id") Long id,
                                                  @RequestBody CompanyCreateEditDto company) {
         CompanyReadDto newCompany = companyService.update(id, company);
-
-        if (newCompany == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newCompany);
     }
 
@@ -77,9 +58,6 @@ public class CompanyController {
     public ResponseEntity<byte[]> updateAvatar(@PathVariable("id") Long id,
                                                CompanyCreateEditAvatarDto companyAvatar) {
         byte[] image = companyService.updateAvatar(id, companyAvatar);
-        if (image == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(image);
     }
 

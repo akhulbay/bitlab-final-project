@@ -6,8 +6,10 @@ import kz.shyngys.finalproject.dto.JobReadDto;
 import kz.shyngys.finalproject.mapper.JobCreateEditMapper;
 import kz.shyngys.finalproject.mapper.JobReadMapper;
 import kz.shyngys.finalproject.model.Company;
+import kz.shyngys.finalproject.model.GeneralCategory;
 import kz.shyngys.finalproject.model.Job;
 import kz.shyngys.finalproject.repository.CompanyRepository;
+import kz.shyngys.finalproject.repository.GeneralCategoryRepository;
 import kz.shyngys.finalproject.repository.JobRepository;
 import kz.shyngys.finalproject.service.JobService;
 import kz.shyngys.finalproject.specification.JobSpecification;
@@ -17,11 +19,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +35,7 @@ public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
     private final CompanyRepository companyRepository;
+    private final GeneralCategoryRepository generalCategoryRepository;
 
     private final JobReadMapper jobReadMapper;
     private final JobCreateEditMapper jobCreateEditMapper;
@@ -52,7 +58,7 @@ public class JobServiceImpl implements JobService {
     public JobReadDto findById(Long id) {
         return jobRepository.findById(id)
                 .map(jobReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
@@ -67,13 +73,15 @@ public class JobServiceImpl implements JobService {
                 .map(jobCreateEditMapper::toEntity)
                 .map(entity -> {
                     Company company = getCompanyById(job.getCompanyId());
+                    GeneralCategory category = getGeneralCategoryById(job.getCategoryId());
+                    entity.setCategory(category);
                     entity.setCompany(company);
                     entity.setCreatedAt(LocalDate.now());
                     return entity;
                 })
                 .map(jobRepository::save)
                 .map(jobReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -83,6 +91,7 @@ public class JobServiceImpl implements JobService {
                 .map(jobCreateEditMapper::toEntity)
                 .map(entity -> {
                     Company company = getCompanyById(job.getCompanyId());
+                    entity.setCategory(getGeneralCategoryById(job.getCategoryId()));
                     entity.setCompany(company);
                     entity.setId(id);
                     entity.setCreatedAt(LocalDate.now());
@@ -90,7 +99,7 @@ public class JobServiceImpl implements JobService {
                 })
                 .map(jobRepository::save)
                 .map(jobReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -102,7 +111,12 @@ public class JobServiceImpl implements JobService {
 
     private Company getCompanyById(Long companyId) {
         return companyRepository.findById(companyId)
-                .orElseThrow(() -> new NoSuchElementException("Company not found with ID: " + companyId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
+    }
+
+    private GeneralCategory getGeneralCategoryById(Long generalCategoryId) {
+        return generalCategoryRepository.findById(generalCategoryId)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }
 

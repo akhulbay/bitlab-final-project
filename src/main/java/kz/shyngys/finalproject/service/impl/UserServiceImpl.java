@@ -13,9 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,11 +20,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -55,14 +51,7 @@ public class UserServiceImpl implements UserService {
     public UserReadDto findById(Long id) {
         return userRepository.findById(id)
                 .map(userReadMapper::toDto)
-                .orElse(null);
-    }
-
-    @Override
-    public UserReadDto findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .map(userReadMapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -77,7 +66,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::save)
                 .map(userReadMapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -93,7 +82,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::save)
                 .map(userReadMapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -109,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::save)
                 .map(userReadMapper::toDto)
-                .orElseThrow(() -> new ResponseStatusException(CREATED));
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -126,7 +115,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::saveAndFlush)
                 .map(userReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -140,7 +129,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::saveAndFlush)
                 .map(userReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -153,7 +142,7 @@ public class UserServiceImpl implements UserService {
                 })
                 .map(userRepository::saveAndFlush)
                 .map(entity -> entity.getRole().name())
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -165,7 +154,7 @@ public class UserServiceImpl implements UserService {
                     return entity;
                 })
                 .map(userRepository::saveAndFlush)
-                .orElseThrow(() -> new NoSuchElementException("User is not found!"));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -177,7 +166,7 @@ public class UserServiceImpl implements UserService {
                     return entity;
                 })
                 .map(userRepository::saveAndFlush)
-                .orElseThrow(() -> new NoSuchElementException("User is not found!"));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional

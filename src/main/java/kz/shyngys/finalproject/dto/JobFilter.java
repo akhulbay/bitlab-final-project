@@ -6,6 +6,6 @@ public record JobFilter(String sortOrder,
                         String city,
                         String experience,
                         String workSchedule,
-                        Integer category,
+                        Long categoryId,
                         String postDate) {
 }

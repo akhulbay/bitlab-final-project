@@ -5,15 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
-
 public interface UserService extends UserDetailsService {
 
     Page<UserReadDto> findAll(UserFilter userFilter, Pageable pageable);
 
     UserReadDto findById(Long id);
-
-    UserReadDto findByUsername(String username);
 
     UserReadDto create(UserCreateDto user);
 

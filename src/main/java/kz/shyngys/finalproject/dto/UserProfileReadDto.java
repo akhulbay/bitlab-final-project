@@ -1,5 +1,6 @@
 package kz.shyngys.finalproject.dto;
 
+import kz.shyngys.finalproject.model.GeneralCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,6 @@ public class UserProfileReadDto {
     private Long id;
     private String aboutUser;
     private String phoneNumber;
-    private Integer accountType;
     private String languages;
     private String location;
     private String facebookLink;
@@ -30,5 +30,6 @@ public class UserProfileReadDto {
     private Integer yearOfGraduation;
     private Double experienceYears;
     private String aboutExperience;
+    private GeneralCategory accountType;
     private UserReadDto user;
 }

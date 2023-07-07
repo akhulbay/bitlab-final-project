@@ -26,36 +26,24 @@ public class UserProfileController {
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileReadDto> findById(@PathVariable("id") Long id) {
         UserProfileReadDto user = userProfileService.findById(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserProfileReadDto> findByUserId(@PathVariable("id") Long userId) {
         UserProfileReadDto user = userProfileService.findByUserId(userId);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}/avatar")
     public ResponseEntity<byte[]> findAvatar(@PathVariable Long id) {
         byte[] image = userProfileService.findAvatar(id);
-        if (image == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(image);
     }
 
     @PostMapping
     public ResponseEntity<UserProfileReadDto> create(@RequestBody UserProfileCreateEditDto user) {
         UserProfileReadDto newUser = userProfileService.save(user);
-        if (newUser == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
@@ -63,9 +51,6 @@ public class UserProfileController {
     public ResponseEntity<UserProfileReadDto> update(@PathVariable("id") Long id,
                                                      @RequestBody UserProfileCreateEditDto user) {
         UserProfileReadDto newUser = userProfileService.update(id, user);
-        if (newUser == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newUser);
     }
 
@@ -73,9 +58,6 @@ public class UserProfileController {
     public ResponseEntity<byte[]> updateAvatar(@PathVariable("id") Long id,
                                UserProfileCreateEditAvatarDto userProfileAvatar) {
         byte[] image = userProfileService.updateAvatar(id, userProfileAvatar);
-        if (image == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(image);
     }
 }

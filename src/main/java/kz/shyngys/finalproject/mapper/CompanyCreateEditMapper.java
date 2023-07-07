@@ -4,12 +4,6 @@ import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
 import kz.shyngys.finalproject.model.Company;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
-
-import static java.util.function.Predicate.not;
 
 @Mapper(componentModel = "spring")
 public interface CompanyCreateEditMapper {

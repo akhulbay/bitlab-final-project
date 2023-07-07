@@ -17,10 +17,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +49,7 @@ public class FavoriteJobServiceImpl implements FavoriteJobService {
     public FavoriteJobReadDto findById(Long id) {
         return favoriteJobRepository.findById(id)
                 .map(favoriteJobReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -63,7 +66,7 @@ public class FavoriteJobServiceImpl implements FavoriteJobService {
                 })
                 .map(favoriteJobRepository::save)
                 .map(favoriteJobReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -81,7 +84,7 @@ public class FavoriteJobServiceImpl implements FavoriteJobService {
                 })
                 .map(favoriteJobRepository::saveAndFlush)
                 .map(favoriteJobReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -93,11 +96,11 @@ public class FavoriteJobServiceImpl implements FavoriteJobService {
 
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     private Job getJobById(Long jobId) {
         return jobRepository.findById(jobId)
-                .orElseThrow(() -> new NoSuchElementException("Job not found with ID: " + jobId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }

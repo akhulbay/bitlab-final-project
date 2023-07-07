@@ -22,12 +22,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static java.util.function.Predicate.not;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -53,14 +55,14 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyReadDto findById(Long id) {
         return companyRepository.findById(id)
                 .map(companyReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
     public CompanyReadDto findByUserId(Long id) {
         return companyRepository.findByUserId(id)
                 .map(companyReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
@@ -69,7 +71,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .map(Company::getImage)
                 .filter(StringUtils::hasText)
                 .flatMap(imageService::get)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -84,7 +86,7 @@ public class CompanyServiceImpl implements CompanyService {
                 })
                 .map(companyRepository::save)
                 .map(companyReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -97,7 +99,7 @@ public class CompanyServiceImpl implements CompanyService {
                 })
                 .map(companyRepository::saveAndFlush)
                 .map(companyReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -113,7 +115,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .map(Company::getImage)
                 .filter(StringUtils::hasText)
                 .flatMap(imageService::get)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -132,7 +134,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     private String getImage(MultipartFile image) {
@@ -154,6 +156,4 @@ public class CompanyServiceImpl implements CompanyService {
         toObject.setOwnerName(fromObject.getOwnerName());
         toObject.setUser(getUserById(fromObject.getUserId()));
     }
-
-
 }

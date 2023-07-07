@@ -29,6 +29,34 @@ let jobKeySkills = document.getElementById("postJobKeySkills");
 let companyId = null;
 
 getCompany();
+getGeneralCategories();
+
+function getGeneralCategories() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/general-categories", true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setCategories(response);
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setCategories(categoryList) {
+    let result = '';
+    for (let i = 0; i < categoryList.length; i++) {
+        result += `
+            <option value="${categoryList[i].id}">${categoryList[i].name}</option>
+        `;
+    }
+    jobCategory.innerHTML = result;
+}
 
 function createJob() {
     if (jobTitle.value !== '' && jobDesc.value !== '' && jobCategory.value !== ''
@@ -62,7 +90,7 @@ function createJob() {
             "workSchedule": jobType.value,
             "keySkills": jobKeySkills.value,
             "position": jobPosition.value,
-            "category": jobCategory.value,
+            "categoryId": jobCategory.value,
             "experience": jobExperience.value,
             "qualification": jobQualification.value,
             "companyId": companyId

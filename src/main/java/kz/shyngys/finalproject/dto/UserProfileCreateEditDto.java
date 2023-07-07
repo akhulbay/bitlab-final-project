@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -14,7 +13,6 @@ public class UserProfileCreateEditDto {
 
     private String aboutUser;
     private String phoneNumber;
-    private Integer accountType;
     private String languages;
     private String location;
     private String facebookLink;
@@ -30,5 +28,6 @@ public class UserProfileCreateEditDto {
     private Integer yearOfGraduation;
     private Double experienceYears;
     private String aboutExperience;
+    private Long accountType;
     private Long userId;
 }

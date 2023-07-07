@@ -13,7 +13,37 @@ let jobListPagination = document.getElementById("jobListPagination");
 
 let favoritesId = null;
 
+getGeneralCategories();
 filterJobs();
+
+function getGeneralCategories() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/general-categories", true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setCategories(response);
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setCategories(categoryList) {
+    let result = `
+        <option value="all">Category</option>
+    `;
+    for (let i = 0; i < categoryList.length; i++) {
+        result += `
+            <option value="${categoryList[i].id}">${categoryList[i].name}</option>
+        `;
+    }
+    jobListCategory.innerHTML = result;
+}
 
 function filterJobs(page) {
     if (page === null || page === '' || page === undefined) {
@@ -25,7 +55,7 @@ function filterJobs(page) {
         result += `&city=${jobListLocation.value}`;
     }
     if (jobListCategory.value !== 'all') {
-        result += `&category=${jobListCategory.value}`;
+        result += `&categoryId=${jobListCategory.value}`;
     }
     if (jobListName.value !== '') {
         result += `&title=${jobListName.value}`;

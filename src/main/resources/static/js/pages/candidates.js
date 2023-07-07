@@ -94,7 +94,7 @@ async function setAllCandidates(candidatesList) {
                                         <div class="ms-3">
                                             <a href="/candidate-details/${candidatesList[i].userProfile.user.id}"
                                                class="primary-link"><h5 class="fs-17">${candidatesList[i].userProfile.user.firstName} ${candidatesList[i].userProfile.user.lastName}</h5></a>
-                                            <span class="badge bg-soft-info fs-13">${getCategory(candidatesList[i].userProfile.accountType)}</span>
+                                            <span class="badge bg-soft-info fs-13">${candidatesList[i].userProfile.accountType.name}</span>
                                         </div>
                                         <div class="" style="margin-left: 70px">
                                                 <select  class="form-select" data-trigger name="choices-single-location"

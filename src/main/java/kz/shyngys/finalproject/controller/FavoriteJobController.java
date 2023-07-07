@@ -26,20 +26,12 @@ public class FavoriteJobController {
     @GetMapping("/{id}")
     public ResponseEntity<FavoriteJobReadDto> findById(@PathVariable("id") Long id) {
         FavoriteJobReadDto favoriteJob = favoriteJobService.findById(id);
-
-        if (favoriteJob == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(favoriteJob);
     }
 
     @PostMapping
     public ResponseEntity<FavoriteJobReadDto> create(@RequestBody FavoriteJobCreateEditDto favoriteJob) {
         FavoriteJobReadDto newFavoriteJob = favoriteJobService.create(favoriteJob);
-
-        if (newFavoriteJob == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return new ResponseEntity<>(newFavoriteJob, HttpStatus.CREATED);
     }
 
@@ -47,10 +39,6 @@ public class FavoriteJobController {
     public ResponseEntity<FavoriteJobReadDto> update(@PathVariable("id") Long id,
                                                      @RequestBody FavoriteJobCreateEditDto favoriteJob) {
         FavoriteJobReadDto newFavoriteJob = favoriteJobService.update(id, favoriteJob);
-
-        if (newFavoriteJob == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newFavoriteJob);
     }
 

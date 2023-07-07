@@ -350,7 +350,7 @@ async function setCompanyOpenJobs(jobList) {
 
 function isJobBookmarked(jobId) {
     const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}`, true);
+    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}&userId=${userId}`, true);
     httpRequest.send();
 
     return new Promise((resolve, reject) => {

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface JobCreateEditMapper {
 
     @Mapping(source = "companyId", target = "company.id")
+    @Mapping(source = "categoryId", target = "category.id")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     Job toEntity(JobCreateEditDto dto);

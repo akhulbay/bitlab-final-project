@@ -14,6 +14,7 @@ const appendEditJobAlert = (message, type) => {
     editJobAlert.append(wrapper)
 }
 
+getGeneralCategories();
 getJob();
 
 let jobTitle = document.getElementById("editJobTitle");
@@ -28,6 +29,35 @@ let jobExperience = document.getElementById("editJobExperience");
 let jobResponsibilities = document.getElementById("editJobResponsibilities");
 let jobRequiredSkills = document.getElementById("editJobRequiredSkills");
 let jobKeySkills = document.getElementById("editJobKeySkills");
+
+
+function getGeneralCategories() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/general-categories", true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setCategories(response);
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setCategories(categoryList) {
+    let result = '';
+    for (let i = 0; i < categoryList.length; i++) {
+        result += `
+            <option value="${categoryList[i].id}">${categoryList[i].name}</option>
+        `;
+    }
+    jobCategory.innerHTML = result;
+}
+
 
 function getJob() {
     const httpRequest = new XMLHttpRequest();
@@ -80,7 +110,7 @@ function updateJob() {
             "workSchedule": jobType.value,
             "keySkills": jobKeySkills.value,
             "position": jobPosition.value,
-            "category": jobCategory.value,
+            "categoryId": jobCategory.value,
             "experience": jobExperience.value,
             "qualification": jobQualification.value,
             "companyId": companyId
@@ -94,9 +124,10 @@ function updateJob() {
 }
 
 function setInputs(job) {
+    console.log(job)
     jobTitle.value = job.title
     jobDesc.value = job.description
-    jobCategory.value = job.category
+    jobCategory.value = job.category.id
     jobType.value = job.workSchedule
     jobPosition.value = job.position
     jobOfferedSalary.value = job.offeredSalary

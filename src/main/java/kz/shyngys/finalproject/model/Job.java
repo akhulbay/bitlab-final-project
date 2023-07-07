@@ -1,6 +1,5 @@
 package kz.shyngys.finalproject.model;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "t_vacancy")
+@Table(name = "t_job")
 public class Job {
 
     @Id
@@ -46,8 +45,6 @@ public class Job {
 
     private String position;
 
-    private Integer category;
-
     private String experience;
 
     private String qualification;
@@ -56,10 +53,8 @@ public class Job {
     private LocalDate createdAt;
 
     @ManyToOne
-    private Company company;
+    private GeneralCategory category;
 
-    @PostConstruct
-    public void init() {
-        createdAt = LocalDate.now();
-    }
+    @ManyToOne
+    private Company company;
 }

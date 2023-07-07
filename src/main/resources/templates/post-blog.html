@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="main_layout.html">
+
+<div class="main-content" layout:fragment="siteContent">
+    <div class="page-content">
+
+        <!-- Start home -->
+        <section class="page-title-box">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="text-center text-white">
+                            <h3 class="mb-4">Post Blog</h3>
+                            <div class="page-next">
+                                <nav class="d-inline-block" aria-label="breadcrumb text-center">
+                                    <ol class="breadcrumb justify-content-center">
+                                        <li class="breadcrumb-item"><a
+                                                href="../../../../../../Desktop/Jobcy/HTML/dist/index.html">Home</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="javascript:void(0)">Post Blog</a>
+                                        </li>
+                                        <li class="breadcrumb-item active" aria-current="page">Post Blog</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end container-->
+        </section>
+        <!-- end home -->
+
+        <!-- START SHAPE -->
+        <div class="position-relative" style="z-index: 1">
+            <div class="shape">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
+                    <path fill="#FFFFFF" fill-opacity="1"
+                          d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
+                </svg>
+            </div>
+        </div>
+        <!-- END SHAPE -->
+
+
+        <!-- START JOBS-POST-EDIT -->
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="bg-soft-primary p-3">
+                            <h5 class="mb-0 fs-17 text-center">Post a New Blog!</h5>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+                <form action="#" class="job-post-form shadow mt-4">
+                    <input type="hidden" th:value="${#authentication.principal.id}" id="postBlogUserId">
+                    <div class="job-post-content box-shadow-md rounded-3 p-4">
+                        <div class="row">
+                            <div id="postBlogAlert"></div>
+                            <div class="col-lg-12">
+                                <div class="mb-4">
+                                    <label for="postBlogTitle" class="form-label">Blog Title</label>
+                                    <input type="text" class="form-control" id="postBlogTitle" placeholder="Title">
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-12">
+                                <div class="mb-4">
+                                    <label for="postBlogContent" class="form-label">Blog Content</label>
+                                    <textarea class="form-control" id="postBlogContent" rows="3"
+                                              placeholder="Enter Job Description"></textarea>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="postBlogCategories" class="form-label">Category</label>
+                                    <select class="form-select" data-trigger="" name="choices-single-categories"
+                                            id="postBlogCategories" aria-label="Default select example">
+                                    </select>
+                                </div>
+                            </div><!--end col-->
+                            <div class="col-lg-6">
+                                <div class="">
+                                    <label for="postBlogImgInput" class="form-label">Blog Image</label> <br>
+                                    <input id="postBlogImgInput" type="file">
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="text-end">
+                                    <button type="button" class="btn btn-primary" onclick="postBlog()">Post Now <i
+                                            class="mdi mdi-send"></i></button>
+                                </div>
+                            </div><!--end col-->
+                        </div><!--end row-->
+                    </div><!--end job-post-content-->
+                </form>
+            </div><!--end container-->
+        </section>
+        <!-- END JOBS-POST-EDIT -->
+
+    </div>
+    <!-- End Page-content -->
+</div>
+<!-- end main content-->
+</html>
+<script src="/js/pages/post-blog.js"></script>

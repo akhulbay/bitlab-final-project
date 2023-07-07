@@ -111,19 +111,8 @@
             </div>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mx-auto navbar-center">
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link" href="javascript:void(0)" id="homedrop" role="button"
-                           data-bs-toggle="dropdown">
-                            Home
-                            <div class="arrow-down"></div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="homedrop">
-                            <li><a class="dropdown-item" href="../../../../../../Desktop/Jobcy/HTML/dist/index.html">Home
-                                1</a></li>
-                            <li><a class="dropdown-item" href="index.html">Home 2</a></li>
-                            <li><a class="dropdown-item" href="../../../../../../Desktop/Jobcy/HTML/dist/index-3.html">Home
-                                3</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a th:href="@{/}" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
                         <a th:href="@{/job-list}" class="nav-link">Jobs</a>
@@ -131,125 +120,8 @@
                     <li class="nav-item">
                         <a th:href="@{/company-list}" class="nav-link">Companies</a>
                     </li>
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link" href="javascript:void(0)" id="jobsdropdown" role="button"
-                           data-bs-toggle="dropdown">
-                            Company
-                            <div class="arrow-down"></div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="jobsdropdown">
-                            <li><a class="dropdown-item" href="../../../../../../Desktop/Jobcy/HTML/dist/about.html">About
-                                Us</a></li>
-                            <li><a class="dropdown-item" href="../../../../../../Desktop/Jobcy/HTML/dist/services.html">Services</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/team.html">Team</a></li>
-                            <li><a class="dropdown-item" href="../../../../../../Desktop/Jobcy/HTML/dist/pricing.html">Pricing</a>
-                            </li>
-                            <a class="dropdown-item"
-                               href="../../../../../../Desktop/Jobcy/HTML/dist/privacy-policy.html">Priacy & Policy</a>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/faqs.html">Faqs</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link" href="javascript:void(0)" id="pagesdoropdown" role="button"
-                           data-bs-toggle="dropdown">
-                            Pages
-                            <div class="arrow-down"></div>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-center"
-                             aria-labelledby="pagesdoropdown">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <span class="dropdown-header">Jobs</span>
-                                    <div>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/job-list.html">Job List</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/job-list-2.html">Job
-                                            List-2</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/job-grid.html">Job Grid</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/job-grid-2.html">Job
-                                            Grid-2</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/job-details.html">Job
-                                            Details</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/job-categories.html">Jobs
-                                            Categories</a>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-4">
-                                    <span class="dropdown-header">Candidates / Companys</span>
-                                    <div>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/candidate-list.html">Candidate
-                                            List</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/candidate-grid.html">Candidate
-                                            Grid</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/candidate-details.html">Candidate
-                                            Details</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/company-list.html">Company
-                                            List</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/company-details.html">Company
-                                            Details</a>
-                                    </div>
-                                </div><!--end col-->
-                                <div class="col-lg-4">
-                                    <span class="dropdown-header">Extra Pages</span>
-                                    <div>
-                                        <a class="dropdown-item" th:href="@{/auth/signup/user}">Sign Up</a>
-                                        <a class="dropdown-item" th:href="@{/auth/signin/user}">Sign In</a>
-                                        <a class="dropdown-item" th:href="@{/auth/signout}">Sign Out</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/reset-password.html">Reset
-                                            Password</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/coming-soon.html">Coming
-                                            Soon</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/404-error.html">404 Error</a>
-                                        <a class="dropdown-item"
-                                           href="../../../../../../Desktop/Jobcy/HTML/dist/components.html">Components</a>
-                                    </div>
-                                </div><!--end col-->
-                            </div>
-                        </div>
-                    </li><!--end dropdown-->
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link" href="javascript:void(0)" id="productdropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Blog
-                            <div class="arrow-down"></div>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-center" aria-labelledby="productdropdown">
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/blog.html">Blog</a></li>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/blog-grid.html">Blog Grid</a></li>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/blog-modern.html">Blog Modern</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/blog-masonry.html">Blog Masonry</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/blog-details.html">Blog details</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   href="../../../../../../Desktop/Jobcy/HTML/dist/blog-author.html">Blog Author</a>
-                            </li>
-                        </ul>
-                    </li><!--end dropdown-->
                     <li class="nav-item">
-                        <a href="../../../../../../Desktop/Jobcy/HTML/dist/contact.html" class="nav-link">Contact</a>
+                        <a th:href="@{/blog-list}" class="nav-link">Blog</a>
                     </li>
                 </ul><!--end navbar-nav-->
             </div>
@@ -277,6 +149,10 @@
                                sec:authorize="hasAnyRole('ROLE_ADMIN')">Add User</a>
                         </li>
                         <li><a class="dropdown-item"
+                               th:href="@{/post-blog}"
+                               sec:authorize="hasAnyRole('ROLE_ADMIN')">Post Blog</a>
+                        </li>
+                        <li><a class="dropdown-item"
                                th:href="@{/favorites}">Bookmarks Jobs</a>
                         </li>
                         <li>
@@ -287,7 +163,8 @@
                         </li>
                         <li><a class="dropdown-item" th:href="@{/profile}" sec:authorize="hasAnyRole('ROLE_USER')">My
                             Profile</a></li>
-                        <li><a class="dropdown-item" th:href="@{/user-applications}" sec:authorize="hasAnyRole('ROLE_USER')">My
+                        <li><a class="dropdown-item" th:href="@{/user-applications}"
+                               sec:authorize="hasAnyRole('ROLE_USER')">My
                             Applications</a></li>
                         <li><a class="dropdown-item" th:href="@{/employer-profile}"
                                sec:authorize="hasAnyRole('ROLE_EMPLOYER')">Employer
@@ -309,61 +186,4 @@
         <!--end container-->
     </nav>
     <!-- Navbar End -->
-
-
-    <!-- START SIGN-UP MODAL -->
-    <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body p-5">
-                    <div class="position-absolute end-0 top-0 p-3">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="auth-content">
-                        <div class="w-100">
-                            <div class="text-center mb-4">
-                                <h5>Sign Up</h5>
-                                <p class="text-muted">Sign Up and get access to all the features of Jobcy</p>
-                            </div>
-                            <form action="#" class="auth-form">
-                                <div class="mb-3">
-                                    <label for="usernameInput" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="usernameInput"
-                                           placeholder="Enter your username">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="passwordInput" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="emailInput"
-                                           placeholder="Enter your email">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="emailInput" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="passwordInput"
-                                           placeholder="Password">
-                                </div>
-                                <div class="mb-4">
-                                    <div class="form-check"><input class="form-check-input" type="checkbox"
-                                                                   id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">I agree to the <a
-                                                href="javascript:void(0)"
-                                                class="text-primary form-text text-decoration-underline">Terms and
-                                            conditions</a></label>
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-                                </div>
-                            </form>
-                            <div class="mt-3 text-center">
-                                <p class="mb-0">Already a member ? <a href="sign-in.html"
-                                                                      class="form-text text-primary text-decoration-underline">
-                                    Sign-in </a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div><!--end modal-body-->
-            </div><!--end modal-content-->
-        </div><!--end modal-dialog-->
-    </div>
-    <!-- END SIGN-UP MODAL -->
 </div>

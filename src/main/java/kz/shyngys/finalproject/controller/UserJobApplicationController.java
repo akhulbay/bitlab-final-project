@@ -29,9 +29,6 @@ public class UserJobApplicationController {
     @GetMapping("/{id}")
     public ResponseEntity<UserJobApplicationReadDto> findById(@PathVariable("id") Long id) {
         UserJobApplicationReadDto userJobApp = userJobAppService.findById(id);
-        if (userJobApp == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(userJobApp);
     }
 
@@ -43,18 +40,12 @@ public class UserJobApplicationController {
     @GetMapping("/{id}/status")
     public ResponseEntity<Integer> findStatus(@PathVariable("id") Long id) {
         Integer status = userJobAppService.findStatus(id);
-        if (status == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(status);
     }
 
     @PostMapping
     public ResponseEntity<UserJobApplicationReadDto> create(@RequestBody UserJobApplicationCreateEditDto userJobApp) {
         UserJobApplicationReadDto newUserJobApp = userJobAppService.create(userJobApp);
-        if (newUserJobApp == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return new ResponseEntity<>(newUserJobApp, HttpStatus.CREATED);
     }
 
@@ -63,9 +54,6 @@ public class UserJobApplicationController {
     public ResponseEntity<UserJobApplicationReadDto> update(@PathVariable("id") Long id,
                                                             @RequestBody UserJobApplicationCreateEditDto userJobApp) {
         UserJobApplicationReadDto newUserJobApp = userJobAppService.update(id, userJobApp);
-        if (newUserJobApp == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newUserJobApp);
     }
 
@@ -73,9 +61,6 @@ public class UserJobApplicationController {
     public ResponseEntity<UserJobApplicationReadDto> updateStatus(@PathVariable("id") Long id,
                                                                   @RequestBody UserJobApplicationEditStatusDto userJobAppStatus) {
         UserJobApplicationReadDto newUserJobApp = userJobAppService.updateStatus(id, userJobAppStatus);
-        if (newUserJobApp == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newUserJobApp);
     }
 

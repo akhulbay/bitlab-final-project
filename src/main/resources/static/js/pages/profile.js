@@ -103,7 +103,35 @@ const appendPasswordAlert = (message, type) => {
 let hasProfile = false;
 let profileId = null;
 
+getGeneralCategories();
 getProfileData();
+
+function getGeneralCategories() {
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.open("GET", "/general-categories", true);
+    httpRequest.onreadystatechange = () => {
+        if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (httpRequest.status === 200) {
+                let response = JSON.parse(httpRequest.responseText);
+                setCategories(response);
+            } else {
+                let error = httpRequest.responseText;
+                console.log(error);
+            }
+        }
+    }
+    httpRequest.send();
+}
+
+function setCategories(categoryList) {
+    let result = '';
+    for (let i = 0; i < categoryList.length; i++) {
+        result += `
+            <option value="${categoryList[i].id}">${categoryList[i].name}</option>
+        `;
+    }
+    profileCategory.innerHTML = result;
+}
 
 function getProfileData() {
     const httpRequest = new XMLHttpRequest();
@@ -379,7 +407,7 @@ function updatePassword() {
 }
 
 function setProfileData(newUserProfile) {
-    profileCategory.value = newUserProfile.accountType
+    profileCategory.value = newUserProfile.accountType.id
     profilePhoneNumber.value = newUserProfile.phoneNumber
     profileAboutUser.value = newUserProfile.aboutUser
     profileLanguages.value = newUserProfile.languages
@@ -398,7 +426,7 @@ function setProfileData(newUserProfile) {
     profileExperienceYears.value = newUserProfile.experienceYears
     profileAboutExperience.value = newUserProfile.aboutExperience;
 
-    overviewCategory.innerHTML = getCategory(newUserProfile.accountType);
+    overviewCategory.innerHTML = newUserProfile.accountType.name;
     contactExperienceYears.innerHTML = newUserProfile.experienceYears + " years";
     contactPhone.innerHTML = newUserProfile.phoneNumber;
     contactLocation.innerHTML = newUserProfile.location;
@@ -450,36 +478,4 @@ function getLanguages(languages) {
         divContent += `<span class="badge fs-13 bg-soft-success mt-2 ms-2">${languagesList[i]}</span>`;
     }
     return divContent;
-}
-
-function getCategory(category) {
-    console.log(category)
-    let result = '';
-    switch (category) {
-        case 1:
-            result = 'Accounting';
-            break;
-        case 2:
-            result = 'IT & Software';
-            break;
-        case 3:
-            result = 'Marketing';
-            break;
-        case 4:
-            result = 'Banking';
-            break;
-        case 5:
-            result = 'Digital and Creative';
-            break;
-        case 6:
-            result = 'Retail';
-            break;
-        case 7:
-            result = 'Management';
-            break;
-        case 8:
-            result = 'Human Resources';
-            break;
-    }
-    return result;
 }

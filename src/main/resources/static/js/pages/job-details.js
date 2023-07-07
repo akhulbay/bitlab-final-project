@@ -53,6 +53,7 @@ getUserProfile();
 getApplicationsCount();
 checkForBookmark();
 
+
 function getJob() {
     const httpRequest = new XMLHttpRequest();
 
@@ -107,7 +108,7 @@ function checkIfUserApplied() {
 
 function checkForBookmark() {
     const httpRequest = new XMLHttpRequest();
-    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}`, true);
+    httpRequest.open("GET", `/favorite-jobs?jobId=${jobId}&userId=${userId}`, true);
     httpRequest.send();
 
         httpRequest.onreadystatechange = () => {
@@ -217,7 +218,7 @@ function setJobData(job) {
     overviewCity.innerHTML = job.city;
     overviewOfferedSalary.innerHTML = " $" + job.offeredSalary;
     overviewQualification.innerHTML = job.qualification + " Degree";
-    overviewCategory.innerHTML = getCategory(job.category);
+    overviewCategory.innerHTML = job.category.name;
     overviewCreatedAt.innerHTML = job.createdAt;
 }
 
@@ -314,37 +315,6 @@ function getExperience(experience) {
             break;
         case "3-6":
             result = 'from 3 to 6 years';
-            break;
-    }
-    return result;
-}
-
-function getCategory(category) {
-    let result = '';
-    switch (category) {
-        case 1:
-            result = 'Accounting';
-            break;
-        case 2:
-            result = 'IT & Software';
-            break;
-        case 3:
-            result = 'Marketing';
-            break;
-        case 4:
-            result = 'Banking';
-            break;
-        case 5:
-            result = 'Digital and Creative';
-            break;
-        case 6:
-            result = 'Retail';
-            break;
-        case 7:
-            result = 'Management';
-            break;
-        case 8:
-            result = 'Human Resources';
             break;
     }
     return result;

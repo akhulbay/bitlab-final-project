@@ -42,8 +42,8 @@ public class JobSpecification {
                 predicates.add(criteriaBuilder.equal(root.get("workSchedule"),
                         Enum.valueOf(WorkSchedule.class, jobFilter.workSchedule())));
             }
-            if (jobFilter.category() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("category"), jobFilter.category()));
+            if (jobFilter.categoryId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("category").get("id"), jobFilter.categoryId()));
             }
             if (jobFilter.postDate() != null) {
                 switch (jobFilter.postDate()) {

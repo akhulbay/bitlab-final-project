@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -28,9 +26,6 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserReadDto> findById(@PathVariable("id") Long id) {
         UserReadDto user = userService.findById(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(user);
     }
 
@@ -65,9 +60,6 @@ public class UserController {
     public ResponseEntity<UserReadDto> updateData(@PathVariable("id") Long id,
                               @RequestBody UserEditDto user) {
         UserReadDto newUser = userService.updateData(id, user);
-        if (newUser == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newUser);
     }
 
@@ -75,9 +67,6 @@ public class UserController {
     public ResponseEntity<UserReadDto> updatePassword(@PathVariable("id") Long id,
                                   @RequestBody UserEditPasswordDto userPassword) {
         UserReadDto user = userService.updatePassword(id, userPassword);
-        if (user == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(user);
     }
 
@@ -85,9 +74,6 @@ public class UserController {
     public ResponseEntity<String> updateRole(@PathVariable("id") Long id,
                                              String role) {
         String newRole = userService.updateRole(id, role);
-        if (newRole == null) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(newRole);
     }
 

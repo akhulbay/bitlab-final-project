@@ -120,4 +120,32 @@ public class ApplicationController {
         return "add-user";
     }
 
+    @GetMapping("/post-blog")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String postBlogPage() {
+        return "post-blog";
+    }
+
+    @GetMapping("/edit-blog/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String editBlogPage(@PathVariable("id") Long id,
+                               Model model) {
+        model.addAttribute("id", id);
+        return "edit-blog";
+    }
+
+    @GetMapping("/blog-list")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String blogListPage() {
+        return "blog-list";
+    }
+
+    @GetMapping("/blog-details/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYER', 'ROLE_USER', 'ROLE_ADMIN')")
+    public String blogDetailsPage(@PathVariable("id") Long id,
+                                  Model model) {
+        model.addAttribute("id", id);
+        return "blog-details";
+    }
+
 }

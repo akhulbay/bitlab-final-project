@@ -24,9 +24,6 @@ public class UserProfile {
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
-    @Column(name = "account_type")
-    private Integer accountType;
-
     private String languages;
 
     private String location;
@@ -66,6 +63,10 @@ public class UserProfile {
     private String aboutExperience;
 
     private String image;
+
+    @ManyToOne
+    @JoinColumn(name = "account_type")
+    private GeneralCategory accountType;
 
     @OneToOne
     private User user;

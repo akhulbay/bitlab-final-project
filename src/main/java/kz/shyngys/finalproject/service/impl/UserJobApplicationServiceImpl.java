@@ -17,11 +17,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -53,13 +55,13 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
     public UserJobApplicationReadDto findById(Long id) {
         return userJobAppRepository.findById(id)
                 .map(userJobAppReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Override
     public Integer findStatus(Long id) {
         return userJobAppRepository.findStatusById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     @Transactional
@@ -78,7 +80,7 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 })
                 .map(userJobAppRepository::save)
                 .map(userJobAppReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -97,7 +99,7 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 })
                 .map(userJobAppRepository::saveAndFlush)
                 .map(userJobAppReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST));
     }
 
     @Transactional
@@ -110,7 +112,7 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
                 })
                 .map(userJobAppRepository::saveAndFlush)
                 .map(userJobAppReadMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
 
@@ -128,11 +130,11 @@ public class UserJobApplicationServiceImpl implements UserJobApplicationService 
 
     private Job getJobById(Long jobId) {
         return jobRepository.findById(jobId)
-                .orElseThrow(() -> new NoSuchElementException("Job not found with ID: " + jobId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 
     private UserProfile getUserProfileById(Long userProfileId) {
         return userProfileRepository.findById(userProfileId)
-                .orElseThrow(() -> new NoSuchElementException("User profile not found with ID: " + userProfileId));
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }
