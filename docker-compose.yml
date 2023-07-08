@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  backend:
+    build: ./
+    container_name: 'backend-container'
+    depends_on:
+      - postgres
+    environment:
+      - SERVER_PORT=9999
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+        - "8080:9999"
+
+  postgres:
+    image: postgres
+    container_name: 'pg-container'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "2345:5432"

@@ -18,9 +18,9 @@ public class UserJobApplicationController {
 
     @GetMapping
     public PageResponse<UserJobApplicationReadDto> findAll(UserJobApplicationFilter userJobAppFilter,
-                                                   UserFilter userFilter,
-                                                   UserProfileFilter userProfileFilter,
-                                                   Pageable pageable) {
+                                                           UserFilter userFilter,
+                                                           UserProfileFilter userProfileFilter,
+                                                           Pageable pageable) {
         Page<UserJobApplicationReadDto> userJobApps = userJobAppService.findAll(userJobAppFilter,
                 userFilter, userProfileFilter, pageable);
         return PageResponse.of(userJobApps);
@@ -59,7 +59,8 @@ public class UserJobApplicationController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<UserJobApplicationReadDto> updateStatus(@PathVariable("id") Long id,
-                                                                  @RequestBody UserJobApplicationEditStatusDto userJobAppStatus) {
+                                                                  @RequestBody UserJobApplicationEditStatusDto
+                                                                          userJobAppStatus) {
         UserJobApplicationReadDto newUserJobApp = userJobAppService.updateStatus(id, userJobAppStatus);
         return ResponseEntity.ok(newUserJobApp);
     }
