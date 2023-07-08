@@ -66,6 +66,11 @@ public class JobServiceImpl implements JobService {
         return jobRepository.countByCompanyId(id);
     }
 
+    @Override
+    public Integer countByCategoryId(Long id) {
+        return jobRepository.countByCategoryId(id);
+    }
+
     @Transactional
     @Override
     public JobReadDto create(JobCreateEditDto job) {

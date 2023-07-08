@@ -12,4 +12,6 @@ public interface JobRepository extends JpaRepository<Job, Long>,
     List<Job> findAllByCompanyId(Long companyId);
 
     Integer countByCompanyId(Long companyId);
+
+    Integer countByCategoryId(Long id);
 }

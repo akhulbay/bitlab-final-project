@@ -18,6 +18,8 @@ public interface JobService {
 
     Integer countByCompanyId(Long id);
 
+    Integer countByCategoryId(Long id);
+
     JobReadDto create(JobCreateEditDto job);
 
     JobReadDto update(Long id, JobCreateEditDto job);

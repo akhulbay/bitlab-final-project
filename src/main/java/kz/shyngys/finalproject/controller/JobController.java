@@ -43,6 +43,11 @@ public class JobController {
         return jobService.countByCompanyId(id);
     }
 
+    @GetMapping("/count/category/{id}")
+    public Integer countByCategoryId(@PathVariable("id") Long id) {
+        return jobService.countByCategoryId(id);
+    }
+
     @PostMapping
     public ResponseEntity<JobReadDto> create(@RequestBody JobCreateEditDto job) {
         JobReadDto newJob = jobService.create(job);
