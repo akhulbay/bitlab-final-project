@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface UserCreateMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "blocked", ignore = true)
     User toEntity(UserCreateDto dto);
 }

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface CompanyCreateEditMapper {
 
     @Mapping(source = "userId", target = "user.id")
+    @Mapping(target = "image", ignore = true)
     @Mapping(target = "id", ignore = true)
     Company toEntity(CompanyCreateEditDto dto);
 }
