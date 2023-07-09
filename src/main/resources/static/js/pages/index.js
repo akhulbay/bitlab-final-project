@@ -216,7 +216,7 @@ async function setBlogs(blogList) {
                                 <div class="bg-overlay"></div>
                                 <div class="author">
                                     <p class=" mb-0"><i class="mdi mdi-account text-light"></i> <a
-                                            href="javascript:void(0)"
+                                            href="/blog-details/${blogList[i].id}"
                                             class="text-light user">${blogList[i].user.firstName} ${blogList[i].user.lastName}</a></p>
                                     <p class="text-light mb-0 date"><i class="mdi mdi-calendar-check"></i>
                                      ${getStyledCreatedDate(blogList[i].createdAt)}
@@ -225,7 +225,7 @@ async function setBlogs(blogList) {
                 
                             </div>
                             <div class="card-body">
-                                <a href="/blog-details"
+                                <a href="/blog-details/${blogList[i].id}"
                                    class="primary-link">
                                     <h5 class="fs-17">${blogList[i].title}</h5>
                                 </a>
