@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS t_user_profile
     facebook_link      VARCHAR(255)     NOT NULL,
     faculty            VARCHAR(255)     NOT NULL,
     github_link        VARCHAR(255)     NOT NULL,
-    image              VARCHAR(255)     NOT NULL,
+    image              VARCHAR(255),
     languages          VARCHAR(255)     NOT NULL,
     linkedin_link      VARCHAR(255)     NOT NULL,
     location           VARCHAR(255)     NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS t_job
 CREATE TABLE IF NOT EXISTS t_user_job_application
 (
     id              BIGSERIAL PRIMARY KEY,
-    cover_letter    TEXT NOT NULL,
+    cover_letter    TEXT,
     created_at      DATE NOT NULL,
     status          INT  NOT NULL,
     job_id          BIGINT REFERENCES t_job (id) ON DELETE CASCADE,
