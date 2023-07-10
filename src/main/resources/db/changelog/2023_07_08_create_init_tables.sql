@@ -109,7 +109,8 @@ CREATE TABLE IF NOT EXISTS t_user_job_application
     created_at      DATE NOT NULL,
     status          INT  NOT NULL,
     job_id          BIGINT REFERENCES t_job (id) ON DELETE CASCADE,
-    user_profile_id BIGINT REFERENCES t_user_profile (id) ON DELETE CASCADE
+    user_profile_id BIGINT REFERENCES t_user_profile (id) ON DELETE CASCADE,
+    UNIQUE (job_id, user_profile_id)
 );
 
 --changeset akhulbay:9

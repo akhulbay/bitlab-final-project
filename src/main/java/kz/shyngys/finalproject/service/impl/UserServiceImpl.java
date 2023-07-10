@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
                     newEntity.setPassword(entity.getPassword());
                     newEntity.setUsername(entity.getUsername());
                     newEntity.setRole(entity.getRole());
+                    newEntity.setBlocked(USER_IS_NOT_BLOCKED);
                     return newEntity;
                 })
                 .map(userRepository::saveAndFlush)

@@ -12,7 +12,7 @@ function filterCompanies(page) {
     if (page === undefined || page === '') {
         page = 0;
     }
-    let result = `?page=${page}&size=10`;
+    let result = `?page=${page}&size=9`;
     if (companyListName.value !== '') {
         result += `&name=${companyListName.value}`;
     }

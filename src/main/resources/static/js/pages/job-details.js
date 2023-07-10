@@ -30,6 +30,8 @@ let jobDetailsApplyButton = document.getElementById("jobDetailsApplyButton");
 let jobDetailsBookmarkButton = document.getElementById("jobDetailsBookmarkButton");
 let jobDetailsCoverLetter = document.getElementById("jobDetailsCoverLetter");
 
+let applyButtonDiv = document.getElementById("jobDetailsApplyButtonDiv");
+
 let userProfile = null;
 let favoritesId = null;
 
@@ -99,6 +101,7 @@ function checkIfUserApplied() {
                     setUserApplied();
                     appendApplyAlert("You already applied for this job!", "warning")
                     jobDetailsCoverLetter.value = resultList.data[0].coverLetter;
+                    applyButtonDiv.innerHTML = '';
                 }
             }
         }
@@ -302,6 +305,7 @@ function setUserApplied() {
     jobDetailsApplyButton.innerHTML = `
                     You already applied <i class="uil uil-check"></i>
                 `;
+    applyButtonDiv.innerHTML = '';
 }
 
 function getExperience(experience) {
