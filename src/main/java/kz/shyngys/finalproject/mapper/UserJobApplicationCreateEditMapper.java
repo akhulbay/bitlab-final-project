@@ -11,7 +11,7 @@ public interface UserJobApplicationCreateEditMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "status", ignore = true)
-    @Mapping(source = "userProfileId", target = "userProfile.id")
-    @Mapping(source = "jobId", target = "job.id")
+    @Mapping(target = "userProfile", ignore = true)
+    @Mapping(target = "job", ignore = true)
     UserJobApplication toEntity(UserJobApplicationCreateEditDto dto);
 }

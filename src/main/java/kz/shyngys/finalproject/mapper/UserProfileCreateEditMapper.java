@@ -8,8 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserProfileCreateEditMapper {
 
-    @Mapping(source = "userId", target = "user.id")
-    @Mapping(source = "accountType", target = "accountType.id")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "accountType", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "id", ignore = true)
     UserProfile toEntity(UserProfileCreateEditDto dto);

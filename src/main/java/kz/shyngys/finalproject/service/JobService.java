@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.JobCreateEditDto;
-import kz.shyngys.finalproject.dto.JobFilter;
+import kz.shyngys.finalproject.dto.records.JobFilter;
 import kz.shyngys.finalproject.dto.JobReadDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

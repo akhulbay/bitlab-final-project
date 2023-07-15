@@ -2,7 +2,7 @@ package kz.shyngys.finalproject.service.impl;
 
 import kz.shyngys.finalproject.dto.CompanyCreateEditAvatarDto;
 import kz.shyngys.finalproject.dto.CompanyCreateEditDto;
-import kz.shyngys.finalproject.dto.CompanyFilter;
+import kz.shyngys.finalproject.dto.records.CompanyFilter;
 import kz.shyngys.finalproject.dto.CompanyReadDto;
 import kz.shyngys.finalproject.mapper.CompanyCreateEditMapper;
 import kz.shyngys.finalproject.mapper.CompanyReadMapper;

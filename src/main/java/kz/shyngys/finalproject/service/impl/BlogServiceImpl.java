@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.service.impl;
 
 import kz.shyngys.finalproject.dto.BlogCreateEditDto;
-import kz.shyngys.finalproject.dto.BlogFilter;
+import kz.shyngys.finalproject.dto.records.BlogFilter;
 import kz.shyngys.finalproject.dto.BlogReadDto;
 import kz.shyngys.finalproject.mapper.BlogCreateEditMapper;
 import kz.shyngys.finalproject.mapper.BlogReadMapper;

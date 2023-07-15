@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.service.impl;
 
 import kz.shyngys.finalproject.dto.JobCreateEditDto;
-import kz.shyngys.finalproject.dto.JobFilter;
+import kz.shyngys.finalproject.dto.records.JobFilter;
 import kz.shyngys.finalproject.dto.JobReadDto;
 import kz.shyngys.finalproject.mapper.JobCreateEditMapper;
 import kz.shyngys.finalproject.mapper.JobReadMapper;

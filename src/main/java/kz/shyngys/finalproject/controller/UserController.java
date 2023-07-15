@@ -1,6 +1,7 @@
 package kz.shyngys.finalproject.controller;
 
 import kz.shyngys.finalproject.dto.*;
+import kz.shyngys.finalproject.dto.records.UserFilter;
 import kz.shyngys.finalproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,7 @@ public class UserController {
 
     @GetMapping
     public PageResponse<UserReadDto> findAll(UserFilter userFilter,
-                                     Pageable pageable) {
+                                             Pageable pageable) {
         Page<UserReadDto> users = userService.findAll(userFilter, pageable);
         return PageResponse.of(users);
     }

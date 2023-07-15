@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.CompanyFilter;
+import kz.shyngys.finalproject.dto.records.CompanyFilter;
 import kz.shyngys.finalproject.model.Company;
 import org.springframework.data.jpa.domain.Specification;
 

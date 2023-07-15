@@ -1,6 +1,7 @@
 package kz.shyngys.finalproject.service.impl;
 
 import kz.shyngys.finalproject.dto.*;
+import kz.shyngys.finalproject.dto.records.UserFilter;
 import kz.shyngys.finalproject.mapper.UserCreateMapper;
 import kz.shyngys.finalproject.mapper.UserEditMapper;
 import kz.shyngys.finalproject.mapper.UserReadMapper;

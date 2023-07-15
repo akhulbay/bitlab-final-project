@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CompanyCreateEditMapper {
 
-    @Mapping(source = "userId", target = "user.id")
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "id", ignore = true)
     Company toEntity(CompanyCreateEditDto dto);

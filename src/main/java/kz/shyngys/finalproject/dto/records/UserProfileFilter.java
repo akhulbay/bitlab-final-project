@@ -1,4 +1,4 @@
-package kz.shyngys.finalproject.dto;
+package kz.shyngys.finalproject.dto.records;
 
 public record UserProfileFilter(String location,
                                 String experience,

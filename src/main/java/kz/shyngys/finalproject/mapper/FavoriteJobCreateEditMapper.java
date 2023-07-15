@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface FavoriteJobCreateEditMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "userId", target = "user.id")
-    @Mapping(source = "jobId", target = "job.id")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "job", ignore = true)
     FavoriteJob toEntity(FavoriteJobCreateEditDto dto);
 }

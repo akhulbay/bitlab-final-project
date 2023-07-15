@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.JobFilter;
+import kz.shyngys.finalproject.dto.records.JobFilter;
 import kz.shyngys.finalproject.model.Job;
 import kz.shyngys.finalproject.model.WorkSchedule;
 import org.springframework.data.jpa.domain.Specification;

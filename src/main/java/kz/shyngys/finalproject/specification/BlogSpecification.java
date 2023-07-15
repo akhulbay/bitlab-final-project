@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.BlogFilter;
+import kz.shyngys.finalproject.dto.records.BlogFilter;
 import kz.shyngys.finalproject.model.Blog;
 import org.springframework.data.jpa.domain.Specification;
 

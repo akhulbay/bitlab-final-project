@@ -1,6 +1,7 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.*;
+import kz.shyngys.finalproject.dto.records.CompanyFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

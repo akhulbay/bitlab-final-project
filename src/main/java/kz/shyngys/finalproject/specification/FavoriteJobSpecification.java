@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.FavoriteJobFilter;
+import kz.shyngys.finalproject.dto.records.FavoriteJobFilter;
 import kz.shyngys.finalproject.model.FavoriteJob;
 import org.springframework.data.jpa.domain.Specification;
 

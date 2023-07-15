@@ -1,6 +1,7 @@
 package kz.shyngys.finalproject.controller;
 
 import kz.shyngys.finalproject.dto.*;
+import kz.shyngys.finalproject.dto.records.CompanyFilter;
 import kz.shyngys.finalproject.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.UserFilter;
+import kz.shyngys.finalproject.dto.records.UserFilter;
 import kz.shyngys.finalproject.model.Role;
 import kz.shyngys.finalproject.model.User;
 import org.springframework.data.jpa.domain.Specification;

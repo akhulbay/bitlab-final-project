@@ -1,9 +1,9 @@
 package kz.shyngys.finalproject.specification;
 
 import jakarta.persistence.criteria.Predicate;
-import kz.shyngys.finalproject.dto.UserFilter;
-import kz.shyngys.finalproject.dto.UserJobApplicationFilter;
-import kz.shyngys.finalproject.dto.UserProfileFilter;
+import kz.shyngys.finalproject.dto.records.UserFilter;
+import kz.shyngys.finalproject.dto.records.UserJobApplicationFilter;
+import kz.shyngys.finalproject.dto.records.UserProfileFilter;
 import kz.shyngys.finalproject.model.UserJobApplication;
 import org.springframework.data.jpa.domain.Specification;
 

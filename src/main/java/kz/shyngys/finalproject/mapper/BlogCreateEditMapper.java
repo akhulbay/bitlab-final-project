@@ -16,8 +16,8 @@ public interface BlogCreateEditMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
-    @Mapping(source = "userId", target = "user.id")
-    @Mapping(source = "blogCategoryId", target = "blogCategory.id")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "blogCategory", ignore = true)
     @Mapping(source = "image", target = "image", qualifiedByName = "getImage")
     Blog toEntity(BlogCreateEditDto dto);
 

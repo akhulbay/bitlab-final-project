@@ -1,6 +1,9 @@
 package kz.shyngys.finalproject.service.impl;
 
 import kz.shyngys.finalproject.dto.*;
+import kz.shyngys.finalproject.dto.records.UserFilter;
+import kz.shyngys.finalproject.dto.records.UserJobApplicationFilter;
+import kz.shyngys.finalproject.dto.records.UserProfileFilter;
 import kz.shyngys.finalproject.mapper.UserJobApplicationCreateEditMapper;
 import kz.shyngys.finalproject.mapper.UserJobApplicationReadMapper;
 import kz.shyngys.finalproject.model.Job;

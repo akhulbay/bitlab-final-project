@@ -8,8 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface JobCreateEditMapper {
 
-    @Mapping(source = "companyId", target = "company.id")
-    @Mapping(source = "categoryId", target = "category.id")
+    @Mapping(target = "company")
+    @Mapping(target = "category")
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     Job toEntity(JobCreateEditDto dto);

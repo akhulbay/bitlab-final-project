@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.FavoriteJobCreateEditDto;
-import kz.shyngys.finalproject.dto.FavoriteJobFilter;
+import kz.shyngys.finalproject.dto.records.FavoriteJobFilter;
 import kz.shyngys.finalproject.dto.FavoriteJobReadDto;
 
 import java.util.List;

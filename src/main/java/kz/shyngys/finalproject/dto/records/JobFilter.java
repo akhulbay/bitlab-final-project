@@ -1,4 +1,4 @@
-package kz.shyngys.finalproject.dto;
+package kz.shyngys.finalproject.dto.records;
 
 public record JobFilter(String sortOrder,
                         Long companyId,

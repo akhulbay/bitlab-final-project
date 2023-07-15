@@ -1,7 +1,7 @@
 package kz.shyngys.finalproject.service;
 
 import kz.shyngys.finalproject.dto.BlogCreateEditDto;
-import kz.shyngys.finalproject.dto.BlogFilter;
+import kz.shyngys.finalproject.dto.records.BlogFilter;
 import kz.shyngys.finalproject.dto.BlogReadDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
